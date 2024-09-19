@@ -1,8 +1,8 @@
 <?php
 // Configuración del servidor UDP
 $ip = '0.0.0.0';  // Escucha en todas las interfaces
-
 $port = 6100;     // Puerto al que llega el mensaje UDP
+
 
 // Crear el socket
 $sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
@@ -19,36 +19,61 @@ if (!socket_bind($sock, $ip, $port)) {
 date_default_timezone_set('America/Bogota'); 
 echo "Escuchando en $ip:$port...\n";
 
-// Configuración de la base de datos (cambia estos valores si usas Amazon RDS)
-$servername = "database-1.cdcwiy8egoqg.us-east-1.rds.amazonaws.com"; // Reemplaza con el endpoint de tu RDS si es necesario
-$username = "root";       // Cambia al usuario de tu base de datos
-$password = "15963247";           // Cambia a la contraseña de tu base de datos
-$dbname = "gps";
-$port = 3306;
-try {
-    // Conectar a la base de datos
-    $conn = new mysqli($servername, $username, $password, $dbname, $port);
+// Configuración de las bases de datos
+$db_configs = [
+    [
+        'servername' => 'database-1.cdcwiy8egoqg.us-east-1.rds.amazonaws.com',
+        'username' => 'root',
+        'password' => '15963247',
+        'dbname' => 'gps'
+    ],
+    [
+        'servername' => 'disenoelec.c98ge4aae1fw.us-east-1.rds.amazonaws.com',
+        'username' => 'bastod',
+        'password' => 'bastod0529',
+        'dbname' => 'gps'
+    ],
+    [
+        'servername' => 'alex.cpywocwqwde0.us-east-2.rds.amazonaws.com',
+        'username' => 'alex',
+        'password' => 'alex1234567890',
+        'dbname' => 'alex'
+    ],
+    [
+        'servername' => 'jesus.cpywocwqwde0.us-east-2.rds.amazonaws.com',
+        'username' => 'jesus',
+        'password' => 'jesus234567890',
+        'dbname' => 'jesus'
+    ]
+];
 
-    // Verificar la conexión
-    if ($conn->connect_error) {
-        throw new Exception("Conexión fallida: " . $conn->connect_error);
+$connections = [];
+
+// Establecer conexiones a las bases de datos
+foreach ($db_configs as $config) {
+    try {
+        $conn = new mysqli($config['servername'], $config['username'], $config['password'], $config['dbname']);
+        if ($conn->connect_error) {
+            throw new Exception("Conexión fallida a " . $config['dbname'] . ": " . $conn->connect_error);
+        }
+
+        // Crear la tabla si no existe
+        $sql = "CREATE TABLE IF NOT EXISTS ubicaciones (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            latitud TEXT NOT NULL,
+            longitud TEXT NOT NULL,
+            timestamp DATETIME NOT NULL
+        )";
+
+        if ($conn->query($sql) !== TRUE) {
+            throw new Exception("Error al crear la tabla en " . $config['dbname'] . ": " . $conn->error);
+        }
+
+        $connections[] = $conn;
+        echo "Conectado a la base de datos '{$config['dbname']}' y tabla verificada o creada exitosamente.\n";
+    } catch (Exception $e) {
+        die($e->getMessage());
     }
-
-    // Crear la tabla si no existe
-    $sql = "CREATE TABLE IF NOT EXISTS ubicaciones (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        latitud TEXT NOT NULL,
-        longitud TEXT NOT NULL,
-        timestamp DATETIME NOT NULL
-    )";
-
-    if ($conn->query($sql) !== TRUE) {
-        throw new Exception("Error al crear la tabla: " . $conn->error);
-    }
-
-    echo "Tabla 'ubicaciones' verificada o creada exitosamente.\n";
-} catch (Exception $e) {
-    die($e->getMessage());
 }
 
 // Bucle infinito para escuchar y procesar los datos recibidos
@@ -81,12 +106,14 @@ while (true) {
             $longitud = $conn->real_escape_string($longitud);
             $datetime = $conn->real_escape_string($datetime);
 
-            // Insertar los datos en la base de datos
-            $sql = "INSERT INTO ubicaciones (latitud, longitud, timestamp) VALUES ('$latitud', '$longitud', '$datetime')";
-            if ($conn->query($sql) !== TRUE) {
-                echo "Error: " . $sql . "\n" . $conn->error;
-            } else {
-                echo "Datos guardados en la base de datos\n";
+            // Insertar los datos en cada base de datos
+            foreach ($connections as $conn) {
+                $sql = "INSERT INTO ubicaciones (latitud, longitud, timestamp) VALUES ('$latitud', '$longitud', '$datetime')";
+                if ($conn->query($sql) !== TRUE) {
+                    echo "Error en " . $conn->host_info . ": " . $sql . "\n" . $conn->error;
+                } else {
+                    echo "Datos guardados en la base de datos " . $conn->host_info . "\n";
+                }
             }
         } else {
             echo "Datos inválidos: Latitud: $latitud, Longitud: $longitud, Timestamp: $timestamp\n";
@@ -99,6 +126,8 @@ while (true) {
 // Cerrar el socket cuando termine (en este caso, nunca terminará)
 socket_close($sock);
 
-// Cerrar la conexión de la base de datos
-$conn->close();
+// Cerrar las conexiones de la base de datos
+foreach ($connections as $conn) {
+    $conn->close();
+}
 ?>

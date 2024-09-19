@@ -2,10 +2,10 @@
 header('Content-Type: application/json'); // Para que el cliente sepa que está recibiendo JSON
 
 // Configuración de la base de datos
-$servername = "database-1.cdcwiy8egoqg.us-east-1.rds.amazonaws.com";
-$username = "root";
-$password = "15963247";
-$dbname = "gps";
+$servername = "alex.cpywocwqwde0.us-east-2.rds.amazonaws.com";
+$username = "alex";
+$password = "alex1234567890";
+$dbname = "alex";
 
 // Crear conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
