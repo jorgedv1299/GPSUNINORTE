@@ -1,7 +1,10 @@
 <?php
 // Configuración del servidor UDP
+// Configuración del servidor UDP
 $ip = '0.0.0.0';  // Escucha en todas las interfaces
 $port = 6100;     // Puerto al que llega el mensaje UDP
+
+
 
 // Crear el socket
 $sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
