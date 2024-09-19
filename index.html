@@ -6,11 +6,12 @@
     <title>GPS UNINORTE</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: Roboto, sans-serif;
             margin: 0;
             padding: 0;
             text-align: center;
             background-color: #0f0853;
+
 
         }
         .container {
@@ -33,7 +34,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>GPS<br>Última Ubicación</h1>
+        <h1>GPS<br>Última Ubicación prueba de cambio colaborativo</h1>
         <div id="location">
             <p><strong>Latitud:</strong> <span id="latitud">Cargando...</span></p>
             <p><strong>Longitud:</strong> <span id="longitud">Cargando...</span></p>
@@ -43,10 +44,12 @@
     </div>
 
     <script>
-	const apiKey = 'AIzaSyBEuRBxTVmq8n8PjWb6ZOVZ4xWW2-JPy_w'; // Reemplaza esto con tu clave de API de Google Maps 
+        const apiKey = 'AIzaSyBEuRBxTVmq8n8PjWb6ZOVZ4xWW2-JPy_w'; // Reemplaza esto con tu clave de API de Google Maps
 
         let map;
         let marker;
+        let polyline; // Variable para almacenar la línea que muestra la ruta
+        let path = []; // Arreglo para almacenar las posiciones previas del marcador
 
         function initMap() {
             // Inicializa el mapa en una ubicación predeterminada
@@ -58,6 +61,16 @@
                 position: { lat: 0, lng: 0 },
                 map: map
             });
+
+            // Inicializa el Polyline
+            polyline = new google.maps.Polyline({
+                path: path,
+                geodesic: true,
+                strokeColor: "#FF0000",
+                strokeOpacity: 1.0,
+                strokeWeight: 2
+            });
+            polyline.setMap(map); // Asigna el Polyline al mapa
         }
 
         function fetchLocation() {
@@ -76,6 +89,10 @@
                     const position = { lat: parseFloat(latitud), lng: parseFloat(longitud) };
                     map.setCenter(position);
                     marker.setPosition(position);
+
+                    // Añadir la nueva posición al array de posiciones
+                    path.push(position);
+                    polyline.setPath(path); // Actualiza la Polyline con el nuevo path
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -90,9 +107,8 @@
             setInterval(fetchLocation, 5000);
         };
     </script>
-	
+
     <!-- Carga el script de Google Maps API -->
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEuRBxTVmq8n8PjWb6ZOVZ4xWW2-JPy_w&callback=initMap"></script>
 </body>
 </html>
-
