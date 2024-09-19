@@ -41,10 +41,10 @@ $db_configs = [
         'dbname' => 'alex'
     ],
     [
-        'servername' => 'jesus.cpywocwqwde0.us-east-2.rds.amazonaws.com',
-        'username' => 'jesus',
-        'password' => 'jesus234567890',
-        'dbname' => 'jesus'
+        'servername' => 'dbjmll.c16ww6ag23kz.us-east-2.rds.amazonaws.com',
+        'username' => 'administrador',
+        'password' => 'condorito1',
+        'dbname' => 'dbjmll'
     ]
 ];
 
