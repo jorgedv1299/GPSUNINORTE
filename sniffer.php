@@ -107,5 +107,3 @@ socket_close($sock);
 // Cerrar la conexión de la base de datos
 $conn->close();
 ?>
-
-
