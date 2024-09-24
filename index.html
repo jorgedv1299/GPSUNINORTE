@@ -10,19 +10,11 @@
             margin: 0;
             padding: 0;
             text-align: center;
-
-
-            background-color: #7603036e;
-
-
-
-            background-color: #760359;
+            background-color: #12025a;
         }
         .container {
             padding: 20px;
-
-            background-color: #ffffff;
-
+            background-color: #097f6a;
             margin: 50px auto;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -39,11 +31,37 @@
         .input-group {
             margin: 10px 0;
         }
+        nav {
+            background-color: #444;
+            padding: 10px;
+        }
+        nav a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>GPS<br>Recorrido</h1>
+    <nav>
+        <a href="#realtime">Ver posición en tiempo real</a>
+        <a href="#search">Buscar recorrido</a>
+    </nav>
+    
+    <div class="container" id="realtime">
+        <h1>GPS<br>Recorrido en tiempo real</h1>
+
+        <div id="location">
+            <p><strong>Latitud:</strong> <span id="latitud">Cargando...</span></p>
+            <p><strong>Longitud:</strong> <span id="longitud">Cargando...</span></p>
+            <p><strong>Timestamp:</strong> <span id="timestamp">Cargando...</span></p>
+        </div>
+
+        <div id="map"></div>
+    </div>
+
+    <div class="container" id="search">
+        <h1>Buscar Recorrido</h1>
         
         <div class="input-group">
             <label for="start-date">Fecha y hora inicial:</label>
@@ -56,47 +74,31 @@
         </div>
 
         <button id="show-route">Mostrar recorrido</button>
-
-        <div id="location">
-            <p><strong>Latitud:</strong> <span id="latitud">Cargando...</span></p>
-            <p><strong>Longitud:</strong> <span id="longitud">Cargando...</span></p>
-            <p><strong>Timestamp:</strong> <span id="timestamp">Cargando...</span></p>
-        </div>
-
-        <div id="map"></div>
     </div>
 
     <script>
-        const apiKey = 'AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA'; // Reemplaza esto con tu clave de API de Google Maps
-
         let map;
-        let marker;
-        let path = [];
-        let realTimePath = [];
-        let realTimePolyline; 
         let markerCurrent;
+        let realTimePath = [];
+        let realTimePolyline;
 
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 15,
                 center: { lat: 0, lng: 0 }
             });
-            marker = new google.maps.Marker({
-                position: { lat: 0, lng: 0 },
-                map: map
-            });
             markerCurrent = new google.maps.Marker({
                 position: { lat: 0, lng: 0 },
                 map: map,
                 icon: {
-                    url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png", // Icono de ubicación de Google Maps
-                    scaledSize: new google.maps.Size(30, 30) // Tamaño del icono
+                    url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png",
+                    scaledSize: new google.maps.Size(30, 30)
                 }
             });
             realTimePolyline = new google.maps.Polyline({
                 path: realTimePath,
                 geodesic: true,
-                strokeColor: "#0000FF", // Azul para la polilínea en tiempo real
+                strokeColor: "#0000FF",
                 strokeOpacity: 1.0,
                 strokeWeight: 2
             });
@@ -106,22 +108,26 @@
         function fetchRoute(startDate, endDate) {
             const url = `get_route.php?start=${startDate}&end=${endDate}`;
             fetch(url)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Error en la respuesta de la API");
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if (data.length > 0) {
-                        path = [];
+                        let path = [];
                         data.forEach(point => {
                             const position = { lat: parseFloat(point.latitud), lng: parseFloat(point.longitud) };
                             path.push(position);
                         });
-                        // Mostrar recorrido en el mapa
                         new google.maps.Polyline({
                             path: path,
                             geodesic: true,
-                            strokeColor: "#FF0000", // Rojo para el recorrido anterior
+                            strokeColor: "#FF0000",
                             strokeOpacity: 1.0,
                             strokeWeight: 2
-                        }).setMap(map); 
+                        }).setMap(map);
                         if (path.length > 0) {
                             map.setCenter(path[0]);
                         }
@@ -130,21 +136,20 @@
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
+                    console.error('Error al obtener el recorrido:', error);
+                    alert('Error al obtener el recorrido, revisa la consola para más detalles.');
                 });
         }
 
         function updateCurrentLocation(lat, lng, timestamp) {
             const position = { lat: lat, lng: lng };
             markerCurrent.setPosition(position);
-            realTimePath.push(position); // Agregar a la polilínea en tiempo real
+            realTimePath.push(position);
             realTimePolyline.setPath(realTimePath);
-            map.setCenter(position); // Centrar el mapa en la ubicación actual
-
-            // Actualizar datos de la ubicación
+            map.setCenter(position);
             document.getElementById('latitud').innerText = lat;
             document.getElementById('longitud').innerText = lng;
-            document.getElementById('timestamp').innerText = new Date(timestamp).toLocaleString('es-CO'); // Formato de fecha en Colombia
+            document.getElementById('timestamp').innerText = new Date(timestamp).toLocaleString('es-CO');
         }
 
         document.getElementById('show-route').addEventListener('click', () => {
@@ -157,9 +162,8 @@
             }
         });
 
-        // Función para obtener la ubicación actual cada cierto tiempo
         function getCurrentLocation() {
-            fetch('get_location.php') // Endpoint que debes crear para obtener la ubicación actual
+            fetch('get_location.php')
                 .then(response => response.json())
                 .then(data => {
                     const { latitud, longitud, timestamp } = data;
@@ -170,16 +174,14 @@
                 });
         }
 
-        // Actualiza la ubicación cada 10 segundos
         setInterval(getCurrentLocation, 10000);
 
         window.onload = () => {
             initMap();
-            getCurrentLocation(); // Obtén la ubicación actual al cargar
+            getCurrentLocation();
         };
     </script>
 
-    <!-- Carga el script de Google Maps API -->
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&callback=initMap"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&callback=initMap" async defer></script>
 </body>
 </html>
