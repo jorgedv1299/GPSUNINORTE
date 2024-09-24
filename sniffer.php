@@ -22,43 +22,22 @@ if (!socket_bind($sock, $ip, $port)) {
 date_default_timezone_set('America/Bogota'); 
 echo "Escuchando en $ip:$port...\n";
 
-// Configuración de las bases de datos
-$db_configs = [
-    [
-        'servername' => 'database-1.cdcwiy8egoqg.us-east-1.rds.amazonaws.com',
-        'username' => 'root',
-        'password' => '15963247',
-        'dbname' => 'gps'
-    ],
-    [
-        'servername' => 'disenoelec.c98ge4aae1fw.us-east-1.rds.amazonaws.com',
-        'username' => 'bastod',
-        'password' => 'bastod0529',
-        'dbname' => 'gps'
-    ],
-    [
-        'servername' => 'alex.cpywocwqwde0.us-east-2.rds.amazonaws.com',
-        'username' => 'alex',
-        'password' => 'alex1234567890',
-        'dbname' => 'alex'
-    ],
-    [
-        'servername' => 'jesus.cpywocwqwde0.us-east-2.rds.amazonaws.com',
-        'username' => 'jesus',
-        'password' => 'jesus234567890',
-        'dbname' => 'jesus'
-    ]
-];
+// Configuración de la base de datos (cambia estos valores si usas Amazon RDS)
 
-$connections = [];
+$servername = "database-1.cdcwiy8egoqg.us-east-1.rds.amazonaws.com"; // Reemplaza con el endpoint de tu RDS si es necesario
+$username = "root";       // Cambia al usuario de tu base de datos
+$password = "15963247";           // Cambia a la contraseña de tu base de datos
+$dbname = "gps";
 
-// Establecer conexiones a las bases de datos
-foreach ($db_configs as $config) {
-    try {
-        $conn = new mysqli($config['servername'], $config['username'], $config['password'], $config['dbname']);
-        if ($conn->connect_error) {
-            throw new Exception("Conexión fallida a " . $config['dbname'] . ": " . $conn->connect_error);
-        }
+$port = 3306;
+try {
+    // Conectar a la base de datos
+    $conn = new mysqli($servername, $username, $password, $dbname, $port);
+
+    // Verificar la conexión
+    if ($conn->connect_error) {
+        throw new Exception("Conexión fallida: " . $conn->connect_error);
+    }
 
     // Crear la tabla si no existe
     $sql = "CREATE TABLE IF NOT EXISTS ubicaciones (
