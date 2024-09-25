@@ -1,11 +1,4 @@
 <?php
-require __DIR__ . '/vendor/autoload.php';
-
-// Cargar variables de entorno desde .env
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
-
-
 // Configuración del servidor UDP
 $ip = '0.0.0.0';  // Escucha en todas las interfaces
 
@@ -29,20 +22,14 @@ if (!socket_bind($sock, $ip, $port)) {
 date_default_timezone_set('America/Bogota'); 
 echo "Escuchando en $ip:$port...\n";
 
-// Cargar el autoload de Composer para usar phpdotenv
-require __DIR__ . '/vendor/autoload.php';
 
-// Cargar variables de entorno desde .env
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
+$servername = "database-1.cdcwiy8egoqg.us-east-1.rds.amazonaws.com"; // Reemplaza con el endpoint de tu RDS si es necesario
+$username = "root";       // Cambia al usuario de tu base de datos
+$password = "15963247";           // Cambia a la contraseña de tu base de datos
+$dbname = "gps";
 
-// Obtener credenciales de la base de datos desde el archivo .env
-$servername = getenv('DB_SERVER');
-$username = getenv('DB_USER');
-$password = getenv('DB_PASSWORD');
-$dbname = getenv('DB_NAME');
+
 $port = 3306;
-
 try {
     // Conectar a la base de datos
     $conn = new mysqli($servername, $username, $password, $dbname, $port);
@@ -120,5 +107,3 @@ socket_close($sock);
 // Cerrar la conexión de la base de datos
 $conn->close();
 ?>
-
-
