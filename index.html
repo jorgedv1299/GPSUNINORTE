@@ -212,7 +212,7 @@
 
         // Obtener la ubicación actual y actualizar el mapa de tiempo real
         function getCurrentLocation() {
-            fetch('get_location.php')
+            fetch('/var/www/html/gps/get_location.php')
                 .then(response => response.json())
                 .then(data => {
                     const { latitud, longitud, timestamp } = data;
