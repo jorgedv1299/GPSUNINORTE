@@ -12,6 +12,7 @@
             text-align: center;
             background-color: #12025a;
         }
+
         .container {
             padding: 20px;
             background-color: #097f6a;
@@ -21,42 +22,62 @@
             max-width: 600px;
             display: none; /* Secciones ocultas por defecto */
         }
+
         h1 {
             color: #333;
         }
+
         #map-realtime, #map-route {
             height: 400px;
             width: 100%;
             margin-top: 20px;
         }
+
         .input-group {
             margin: 10px 0;
         }
-        nav {
+
+        /* Estilo para el contenedor de botones */
+        .nav-container {
             background-color: #444;
-            padding: 10px;
+            padding: 20px;
             display: flex;
             justify-content: center;
+            gap: 20px; /* Separación entre los botones */
+            margin-top: 20px;
         }
-        nav a {
-            color: white;
-            margin: 0 10px;
+
+        /* Estilo para los enlaces como botones */
+        .nav-container a {
+            background-color: white;
+            color: #444;
+            padding: 10px 20px;
             text-decoration: none;
+            border-radius: 8px;
+            border: 2px solid #444;
+            transition: background-color 0.3s;
+        }
+
+        .nav-container a:hover {
+            background-color: #333;
+            color: white;
             cursor: pointer;
         }
-        nav a.active {
+
+        .nav-container a.active {
             background-color: #333;
-            padding: 5px 10px;
-            border-radius: 5px;
+            color: white;
         }
     </style>
 </head>
 <body>
-    <nav>
+
+    <!-- Contenedor de botones -->
+    <div class="nav-container">
         <a href="#realtime" id="nav-realtime">Ver posición en tiempo real</a>
         <a href="#search" id="nav-search">Buscar recorrido</a>
-    </nav>
-    
+    </div>
+
     <div class="container" id="realtime-section">
         <h1>GPS<br>Recorrido en tiempo real</h1>
 
@@ -233,6 +254,6 @@
     </script>
 
     <!-- API de Google Maps para ambos mapas -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&callback=initMapRealTime" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
 </body>
 </html>
