@@ -10,23 +10,24 @@
             margin: 0;
             padding: 0;
             text-align: center;
-            background-color: #8d0000;
+            background-color: #12025a;
         }
         .container {
             padding: 20px;
-            background-color: #ffffff;
+            background-color: #097f6a;
             margin: 50px auto;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
             max-width: 600px;
+            display: none; /* Secciones ocultas por defecto */
         }
         h1 {
             color: #333;
         }
-        #map {
-            height: 500px;
+        #map-realtime, #map-route {
+            height: 400px;
             width: 100%;
-            margin-top: 25px;
+            margin-top: 20px;
         }
         .input-group {
             margin: 10px 0;
@@ -34,21 +35,29 @@
         nav {
             background-color: #444;
             padding: 10px;
+            display: flex;
+            justify-content: center;
         }
         nav a {
             color: white;
             margin: 0 10px;
             text-decoration: none;
+            cursor: pointer;
+        }
+        nav a.active {
+            background-color: #333;
+            padding: 5px 10px;
+            border-radius: 5px;
         }
     </style>
 </head>
 <body>
     <nav>
-        <a href="#realtime">Ver posición en tiempo real</a>
-        <a href="#search">Buscar recorrido</a>
+        <a href="#realtime" id="nav-realtime">Ver posición en tiempo real</a>
+        <a href="#search" id="nav-search">Buscar recorrido</a>
     </nav>
     
-    <div class="container" id="realtime">
+    <div class="container" id="realtime-section">
         <h1>GPS<br>Recorrido en tiempo real</h1>
 
         <div id="location">
@@ -57,10 +66,11 @@
             <p><strong>Timestamp:</strong> <span id="timestamp">Cargando...</span></p>
         </div>
 
-        <div id="map"></div>
+        <!-- Mapa para ver posición en tiempo real -->
+        <div id="map-realtime"></div>
     </div>
 
-    <div class="container" id="search">
+    <div class="container" id="search-section">
         <h1>Buscar Recorrido</h1>
         
         <div class="input-group">
@@ -74,22 +84,30 @@
         </div>
 
         <button id="show-route">Mostrar recorrido</button>
+
+        <!-- Mapa para ver recorridos por fecha -->
+        <div id="map-route"></div>
     </div>
 
     <script>
-        let map;
-        let markerCurrent;
+        // Variables para los mapas
+        let mapRealTime;
+        let markerRealTime;
         let realTimePath = [];
         let realTimePolyline;
 
-        function initMap() {
-            map = new google.maps.Map(document.getElementById('map'), {
+        let mapRoute;
+        let routePolyline;
+
+        // Inicializar el mapa de tiempo real
+        function initMapRealTime() {
+            mapRealTime = new google.maps.Map(document.getElementById('map-realtime'), {
                 zoom: 15,
                 center: { lat: 0, lng: 0 }
             });
-            markerCurrent = new google.maps.Marker({
+            markerRealTime = new google.maps.Marker({
                 position: { lat: 0, lng: 0 },
-                map: map,
+                map: mapRealTime,
                 icon: {
                     url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png",
                     scaledSize: new google.maps.Size(30, 30)
@@ -102,18 +120,34 @@
                 strokeOpacity: 1.0,
                 strokeWeight: 2
             });
-            realTimePolyline.setMap(map);
+            realTimePolyline.setMap(mapRealTime);
         }
 
+        // Inicializar el mapa para buscar recorridos por fecha
+        function initMapRoute() {
+            mapRoute = new google.maps.Map(document.getElementById('map-route'), {
+                zoom: 15,
+                center: { lat: 0, lng: 0 }
+            });
+        }
+
+        // Actualizar la ubicación en tiempo real
+        function updateCurrentLocation(lat, lng, timestamp) {
+            const position = { lat: lat, lng: lng };
+            markerRealTime.setPosition(position);
+            realTimePath.push(position);
+            realTimePolyline.setPath(realTimePath);
+            mapRealTime.setCenter(position);
+            document.getElementById('latitud').innerText = lat;
+            document.getElementById('longitud').innerText = lng;
+            document.getElementById('timestamp').innerText = new Date(timestamp).toLocaleString('es-CO');
+        }
+
+        // Mostrar el recorrido entre dos fechas
         function fetchRoute(startDate, endDate) {
             const url = `get_route.php?start=${startDate}&end=${endDate}`;
             fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Error en la respuesta de la API");
-                    }
-                    return response.json();
-                })
+                .then(response => response.json())
                 .then(data => {
                     if (data.length > 0) {
                         let path = [];
@@ -121,15 +155,19 @@
                             const position = { lat: parseFloat(point.latitud), lng: parseFloat(point.longitud) };
                             path.push(position);
                         });
-                        new google.maps.Polyline({
+                        if (routePolyline) {
+                            routePolyline.setMap(null);  // Limpiar ruta anterior
+                        }
+                        routePolyline = new google.maps.Polyline({
                             path: path,
                             geodesic: true,
                             strokeColor: "#FF0000",
                             strokeOpacity: 1.0,
                             strokeWeight: 2
-                        }).setMap(map);
+                        });
+                        routePolyline.setMap(mapRoute);
                         if (path.length > 0) {
-                            map.setCenter(path[0]);
+                            mapRoute.setCenter(path[0]);
                         }
                     } else {
                         alert('No se encontraron datos en el rango de fechas seleccionado.');
@@ -139,17 +177,6 @@
                     console.error('Error al obtener el recorrido:', error);
                     alert('Error al obtener el recorrido, revisa la consola para más detalles.');
                 });
-        }
-
-        function updateCurrentLocation(lat, lng, timestamp) {
-            const position = { lat: lat, lng: lng };
-            markerCurrent.setPosition(position);
-            realTimePath.push(position);
-            realTimePolyline.setPath(realTimePath);
-            map.setCenter(position);
-            document.getElementById('latitud').innerText = lat;
-            document.getElementById('longitud').innerText = lng;
-            document.getElementById('timestamp').innerText = new Date(timestamp).toLocaleString('es-CO');
         }
 
         document.getElementById('show-route').addEventListener('click', () => {
@@ -162,6 +189,7 @@
             }
         });
 
+        // Obtener la ubicación actual y actualizar el mapa de tiempo real
         function getCurrentLocation() {
             fetch('get_location.php')
                 .then(response => response.json())
@@ -176,12 +204,35 @@
 
         setInterval(getCurrentLocation, 10000);
 
+        // Mostrar la sección correspondiente y ocultar las demás
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.container');
+            sections.forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        // Manejo del navbar para cambiar entre secciones
+        document.getElementById('nav-realtime').addEventListener('click', () => {
+            showSection('realtime-section');
+            initMapRealTime(); // Re-inicializar mapa al mostrar la sección
+        });
+
+        document.getElementById('nav-search').addEventListener('click', () => {
+            showSection('search-section');
+            initMapRoute(); // Re-inicializar mapa al mostrar la sección
+        });
+
+        // Inicializar la página mostrando la sección de tiempo real por defecto
         window.onload = () => {
-            initMap();
+            showSection('realtime-section');
+            initMapRealTime();
             getCurrentLocation();
         };
     </script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&callback=initMap" async defer></script>
+    <!-- API de Google Maps para ambos mapas -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&callback=initMapRealTime" async defer></script>
 </body>
 </html>
