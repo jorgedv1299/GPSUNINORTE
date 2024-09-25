@@ -1,12 +1,22 @@
 <?php
+// Asegúrate de que la librería phpdotenv esté cargada
+require __DIR__ . '/vendor/autoload.php';
+
+// Cargar variables de entorno desde .env
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+
 header('Content-Type: application/json'); // Para que el cliente sepa que está recibiendo JSON
 
 // Configuración de la base de datos
 
-$servername = "disenoelec.c98ge4aae1fw.us-east-1.rds.amazonaws.com"; // Reemplaza con el endpoint de tu RDS si es necesario
-$username = "bastod";       // Cambia al usuario de tu base de datos
-$password = "bastod0529";           // Cambia a la contraseña de tu base de datos
-$dbname = "disenoelec";
+// Configuración de la base de datos utilizando variables de entorno
+$servername = getenv('DB_SERVER');
+$username = getenv('DB_USER');
+$password = getenv('DB_PASSWORD');
+$dbname = getenv('DB_NAME');
+
 
 
 // Crear conexión
