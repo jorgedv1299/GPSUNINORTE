@@ -1,12 +1,101 @@
 nohup: ignoring input
 Escuchando en 0.0.0.0:6100...
 Tabla 'ubicaciones' verificada o creada exitosamente.
-Datos recibidos: 11.02529256096375,-74.83844521566219,1727308678602
+Datos recibidos: 10.992969689729932,-74.80007524396055,1727309651202
 Datos divididos: Array
 (
-    [0] => 11.02529256096375
-    [1] => -74.83844521566219
-    [2] => 1727308678602
+    [0] => 10.992969689729932
+    [1] => -74.80007524396055
+    [2] => 1727309651202
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.992407220875597,-74.79901115198076,1727309661203
+Datos divididos: Array
+(
+    [0] => 10.992407220875597
+    [1] => -74.79901115198076
+    [2] => 1727309661203
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.991845662199083,-74.79794878189706,1727309671201
+Datos divididos: Array
+(
+    [0] => 10.991845662199083
+    [1] => -74.79794878189706
+    [2] => 1727309671201
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.991283288437517,-74.79688486981605,1727309681202
+Datos divididos: Array
+(
+    [0] => 10.991283288437517
+    [1] => -74.79688486981605
+    [2] => 1727309681202
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.990721215976622,-74.79582152774282,1727309691201
+Datos divididos: Array
+(
+    [0] => 10.990721215976622
+    [1] => -74.79582152774282
+    [2] => 1727309691201
+)
+
+Datos guardados en la base de datos
+PHP Warning:  socket_recvfrom(): Unable to recvfrom [4]: Interrupted system call in /var/www/html/GPSUNINORTE/sniffer.php on line 66
+Datos recibidos: 
+Datos divididos: Array
+(
+    [0] => 
+)
+
+Formato de datos incorrecto
+Datos recibidos: 10.990155231176763,-74.79475078421352,1727309701202
+Datos divididos: Array
+(
+    [0] => 10.990155231176763
+    [1] => -74.79475078421352
+    [2] => 1727309701202
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.98953709388911,-74.79358137736526,1727309712202
+Datos divididos: Array
+(
+    [0] => 10.98953709388911
+    [1] => -74.79358137736526
+    [2] => 1727309712202
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.988972733359514,-74.79251370666914,1727309722202
+Datos divididos: Array
+(
+    [0] => 10.988972733359514
+    [1] => -74.79251370666914
+    [2] => 1727309722202
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.98840887686787,-74.79144698952403,1727309732203
+Datos divididos: Array
+(
+    [0] => 10.98840887686787
+    [1] => -74.79144698952403
+    [2] => 1727309732203
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.987844748112455,-74.79037975730384,1727309742202
+Datos divididos: Array
+(
+    [0] => 10.987844748112455
+    [1] => -74.79037975730384
+    [2] => 1727309742202
 )
 
 Datos guardados en la base de datos
