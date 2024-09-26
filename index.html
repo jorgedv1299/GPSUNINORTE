@@ -12,6 +12,7 @@
             text-align: center;
             background-color: #12025a;
         }
+
         .container {
             padding: 20px;
             background-color: #097f6a;
@@ -21,56 +22,62 @@
             max-width: 600px;
             display: none; /* Secciones ocultas por defecto */
         }
+
         h1 {
             color: #333;
         }
+
         #map-realtime, #map-route {
             height: 400px;
             width: 100%;
             margin-top: 20px;
         }
+
         .input-group {
             margin: 10px 0;
         }
-        nav {
+
+        /* Estilo para el contenedor de botones */
+        .nav-container {
             background-color: #444;
-            padding: 10px;
+            padding: 20px;
             display: flex;
             justify-content: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Sombra para el navbar */
-            border-radius: 8px; /* Esquinas redondeadas */
-            margin: 20px 0; /* Margen superior e inferior */
+            gap: 20px; /* Separación entre los botones */
+            margin-top: 20px;
         }
 
-        nav a {
-            color: white;
-            margin: 0 15px; /* Más espacio entre enlaces */
+        /* Estilo para los enlaces como botones */
+        .nav-container a {
+            background-color: white;
+            color: #444;
+            padding: 10px 20px;
             text-decoration: none;
+            border-radius: 8px;
+            border: 2px solid #444;
+            transition: background-color 0.3s;
+        }
+
+        .nav-container a:hover {
+            background-color: #333;
+            color: white;
             cursor: pointer;
-            padding: 10px 15px; /* Espaciado interno para enlaces */
-            border-radius: 5px; /* Esquinas redondeadas en los enlaces */
-            transition: background-color 0.3s ease, transform 0.2s; /* Suavizar transiciones */
         }
 
-        nav a:hover {
-            background-color: #666; /* Color de fondo al pasar el mouse */
-            transform: scale(1.05); /* Efecto de aumento al pasar el mouse */
+        .nav-container a.active {
+            background-color: #333;
+            color: white;
         }
-
-        nav a.active {
-            background-color: #333; /* Color activo */
-            padding: 5px 10px; /* Mantener espaciado activo más pequeño */
-            box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2); /* Sombra interior para destacar */
-        }
-
     </style>
 </head>
 <body>
-    <nav>
+
+    <!-- Contenedor de botones -->
+    <div class="nav-container">
         <a href="#realtime" id="nav-realtime">Ver posición en tiempo real</a>
         <a href="#search" id="nav-search">Buscar recorrido</a>
-    </nav>
-    
+    </div>
+
     <div class="container" id="realtime-section">
         <h1>GPS<br>Recorrido en tiempo real</h1>
 
