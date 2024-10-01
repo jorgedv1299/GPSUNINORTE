@@ -10,14 +10,11 @@
             margin: 0;
             padding: 0;
             text-align: center;
-
             background-color: #12025a;
-
         }
         .container {
             padding: 20px;
             background-color: #0cc782;
-
             margin: 50px auto;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -35,7 +32,6 @@
         .input-group {
             margin: 10px 0;
         }
-<<<<<<< HEAD
         nav {
             background-color: #444;
             padding: 10px;
@@ -77,6 +73,14 @@
             background-color: #444;
             color: white;
         }
+        #log {
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
@@ -88,13 +92,11 @@
     
     <div class="container" id="realtime-section">
         <h1>GPS<br>Recorrido en tiempo real</h1>
-
         <div id="location">
             <p><strong>Latitud:</strong> <span id="latitud">Cargando...</span></p>
             <p><strong>Longitud:</strong> <span id="longitud">Cargando...</span></p>
             <p><strong>Timestamp:</strong> <span id="timestamp">Cargando...</span></p>
         </div>
-<<<<<<< HEAD
         <div id="map-realtime"></div>
     </div>
 
@@ -130,6 +132,8 @@
             </thead>
             <tbody></tbody>
         </table>
+        <h2>Log de Envíos</h2>
+        <div id="log"></div>
     </div>
 
     <script>
@@ -139,12 +143,11 @@
 
         function initMapRealTime() {
             mapRealTime = new google.maps.Map(document.getElementById('map-realtime'), {
-
                 zoom: 15,
-                center: { lat: 0, lng: 0 }
+                center: { lat: 11.0190513, lng: -74.8511425 }
             });
             markerRealTime = new google.maps.Marker({
-                position: { lat: 0, lng: 0 },
+                position: { lat: 11.0190513, lng: -74.8511425 },
                 map: mapRealTime,
                 icon: {
                     url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png",
@@ -183,11 +186,10 @@
             }, 5000);
         }
 
-
         function initMapRoute() {
             mapRoute = new google.maps.Map(document.getElementById('map-route'), {
                 zoom: 15,
-                center: { lat: 0, lng: 0 }
+                center: { lat: 11.0190513, lng: -74.8511425 }
             });
 
             document.getElementById('show-route').addEventListener('click', () => {
@@ -225,7 +227,7 @@
         function initMapSearch() {
             mapSearch = new google.maps.Map(document.getElementById('map-search'), {
                 zoom: 15,
-                center: { lat: 0, lng: 0 }
+                center: { lat: 11.0190513, lng: -74.8511425 }
             });
 
             const autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'));
@@ -249,8 +251,10 @@
                 mapSearch.setCenter(position);
 
                 // Log de la dirección y coordenadas
-                console.log(`Dirección: ${place.formatted_address}`);
-                console.log(`Enviando a check_proximity.php: lat=${position.lat()}, lng=${position.lng()}`);
+                const logDiv = document.getElementById('log');
+                const logMessage = `${new Date().toLocaleString()}: ${place.formatted_address} | Enviando a check_proximity.php: lat=${position.lat()}, lng=${position.lng()}`;
+                logDiv.innerHTML = `<div>${logMessage}</div>`; // Solo mostrar el último mensaje
+// Agregar al log visual
 
                 fetch(`check_proximity.php?lat=${position.lat()}&lng=${position.lng()}`)
                 .then(response => response.json())
@@ -269,36 +273,32 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const realtimeSection = document.getElementById('realtime-section');
-            const searchSection = document.getElementById('search-section');
-            const addressSearchSection = document.getElementById('address-search-section');
-
             document.getElementById('nav-realtime').addEventListener('click', () => {
-                realtimeSection.style.display = 'block';
-                searchSection.style.display = 'none';
-                addressSearchSection.style.display = 'none';
+                document.querySelectorAll('.container').forEach(container => container.style.display = 'none');
+                document.getElementById('realtime-section').style.display = 'block';
                 initMapRealTime();
             });
 
             document.getElementById('nav-search').addEventListener('click', () => {
-                realtimeSection.style.display = 'none';
-                searchSection.style.display = 'block';
-                addressSearchSection.style.display = 'none';
+                document.querySelectorAll('.container').forEach(container => container.style.display = 'none');
+                document.getElementById('search-section').style.display = 'block';
                 initMapRoute();
             });
 
             document.getElementById('nav-address-search').addEventListener('click', () => {
-                realtimeSection.style.display = 'none';
-                searchSection.style.display = 'none';
-                addressSearchSection.style.display = 'block';
+                document.querySelectorAll('.container').forEach(container => container.style.display = 'none');
+                document.getElementById('address-search-section').style.display = 'block';
                 initMapSearch();
             });
+
+            // Activar sección por defecto
+            document.getElementById('nav-realtime').click();
         });
 
     </script>
 
     <!-- Cargar la API de Google Maps y Places -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRealTime"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRealTime" async defer></script>
 
 </body>
 </html>
