@@ -22,7 +22,6 @@ if (!socket_bind($sock, $ip, $port)) {
 date_default_timezone_set('America/Bogota'); 
 echo "Escuchando en $ip:$port...\n";
 
-// Configuración de la base de datos (cambia estos valores si usas Amazon RDS)
 
 $servername = "alex.cpywocwqwde0.us-east-2.rds.amazonaws.com"; // Reemplaza con el endpoint de tu RDS si es necesario
 $username = "alex";       // Cambia al usuario de tu base de datos
@@ -108,5 +107,3 @@ socket_close($sock);
 // Cerrar la conexión de la base de datos
 $conn->close();
 ?>
-
-

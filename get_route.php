@@ -14,7 +14,11 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> deeeef20d1274c9cf3a13623aafba75240e6e301
 // Obtener fechas desde la solicitud
 $start = $_GET['start'];
 $end = $_GET['end'];

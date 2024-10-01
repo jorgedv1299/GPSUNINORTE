@@ -10,11 +10,14 @@
             margin: 0;
             padding: 0;
             text-align: center;
+
             background-color: #12025a;
+
         }
         .container {
             padding: 20px;
             background-color: #0cc782;
+
             margin: 50px auto;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -32,6 +35,7 @@
         .input-group {
             margin: 10px 0;
         }
+<<<<<<< HEAD
         nav {
             background-color: #444;
             padding: 10px;
@@ -84,11 +88,13 @@
     
     <div class="container" id="realtime-section">
         <h1>GPS<br>Recorrido en tiempo real</h1>
+
         <div id="location">
             <p><strong>Latitud:</strong> <span id="latitud">Cargando...</span></p>
             <p><strong>Longitud:</strong> <span id="longitud">Cargando...</span></p>
             <p><strong>Timestamp:</strong> <span id="timestamp">Cargando...</span></p>
         </div>
+<<<<<<< HEAD
         <div id="map-realtime"></div>
     </div>
 
@@ -114,7 +120,7 @@
         </div>
         <button id="search-address">Buscar</button>
         <div id="map-search"></div>
-        <h2>Historial de visitas en 30 metros</h2>
+        <h2>Historial de visitas en 40 metros</h2>
         <table id="proximity-table">
             <thead>
                 <tr>
@@ -133,6 +139,7 @@
 
         function initMapRealTime() {
             mapRealTime = new google.maps.Map(document.getElementById('map-realtime'), {
+
                 zoom: 15,
                 center: { lat: 0, lng: 0 }
             });
@@ -144,6 +151,7 @@
                     scaledSize: new google.maps.Size(30, 30)
                 }
             });
+
             realTimePolyline = new google.maps.Polyline({
                 path: realTimePath,
                 geodesic: true,
@@ -169,10 +177,12 @@
 
                     realTimePath.push(newPosition);
                     realTimePolyline.setPath(realTimePath);
+
                 })
                 .catch(error => console.error('Error al obtener la ubicación en tiempo real:', error));
             }, 5000);
         }
+
 
         function initMapRoute() {
             mapRoute = new google.maps.Map(document.getElementById('map-route'), {
@@ -289,5 +299,6 @@
 
     <!-- Cargar la API de Google Maps y Places -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRealTime"></script>
+
 </body>
 </html>
