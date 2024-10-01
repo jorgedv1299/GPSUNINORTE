@@ -24,7 +24,7 @@
         h1 {
             color: #333;
         }
-        #map-realtime, #map-route {
+        #map-realtime, #map-route, #map-search {
             height: 400px;
             width: 100%;
             margin-top: 20px;
@@ -37,83 +37,112 @@
             padding: 10px;
             display: flex;
             justify-content: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Sombra para el navbar */
-            border-radius: 8px; /* Esquinas redondeadas */
-            margin: 20px 0; /* Margen superior e inferior */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            margin: 20px 0;
         }
-
         nav a {
             color: white;
-            margin: 0 15px; /* Más espacio entre enlaces */
+            margin: 0 15px;
             text-decoration: none;
             cursor: pointer;
-            padding: 10px 15px; /* Espaciado interno para enlaces */
-            border-radius: 5px; /* Esquinas redondeadas en los enlaces */
-            transition: background-color 0.3s ease, transform 0.2s; /* Suavizar transiciones */
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s;
         }
-
         nav a:hover {
-            background-color: #666; /* Color de fondo al pasar el mouse */
-            transform: scale(1.05); /* Efecto de aumento al pasar el mouse */
+            background-color: #666;
+            transform: scale(1.05);
         }
-
         nav a.active {
-            background-color: #333; /* Color activo */
-            padding: 5px 10px; /* Mantener espaciado activo más pequeño */
-            box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2); /* Sombra interior para destacar */
+            background-color: #333;
+            padding: 5px 10px;
+            box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
         }
-
+        table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #444;
+            color: white;
+        }
+        #log-area {
+            margin-top: 20px;
+            background-color: #e7f3fe;
+            padding: 10px;
+            border: 1px solid #b3d7ff;
+            border-radius: 5px;
+            color: #31708f;
+            text-align: left;
+            max-height: 200px;
+            overflow-y: auto; /* Permite el desplazamiento si hay mucho texto */
+        }
     </style>
 </head>
 <body>
     <nav>
         <a href="#realtime" id="nav-realtime">Ver posición en tiempo real</a>
         <a href="#search" id="nav-search">Buscar recorrido</a>
+        <a href="#address-search" id="nav-address-search">Buscar por dirección</a>
     </nav>
     
     <div class="container" id="realtime-section">
         <h1>GPS<br>Recorrido en tiempo real</h1>
-
         <div id="location">
             <p><strong>Latitud:</strong> <span id="latitud">Cargando...</span></p>
             <p><strong>Longitud:</strong> <span id="longitud">Cargando...</span></p>
             <p><strong>Timestamp:</strong> <span id="timestamp">Cargando...</span></p>
         </div>
-
-        <!-- Mapa para ver posición en tiempo real -->
         <div id="map-realtime"></div>
     </div>
 
     <div class="container" id="search-section">
         <h1>Buscar Recorrido</h1>
-        
         <div class="input-group">
             <label for="start-date">Fecha y hora inicial:</label>
             <input type="datetime-local" id="start-date">
         </div>
-
         <div class="input-group">
             <label for="end-date">Fecha y hora final:</label>
             <input type="datetime-local" id="end-date">
         </div>
-
         <button id="show-route">Mostrar recorrido</button>
-
-        <!-- Mapa para ver recorridos por fecha -->
         <div id="map-route"></div>
     </div>
 
+    <div class="container" id="address-search-section">
+        <h1>Buscar por dirección</h1>
+        <div class="input-group">
+            <label for="address-input">Dirección:</label>
+            <input type="text" id="autocomplete" placeholder="Ingrese una dirección">
+        </div>
+        <button id="search-address">Buscar</button>
+        <div id="map-search"></div>
+        <h2>Historial de visitas en un rango de 40 metros a la redonda del lugar</h2>
+        <table id="proximity-table">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Cantidad de Pasos</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div id="log-area"></div> <!-- Área para mostrar logs -->
+    </div>
+
     <script>
-        // Variables para los mapas
-        let mapRealTime;
-        let markerRealTime;
-        let realTimePath = [];
-        let realTimePolyline;
+        let mapRealTime, markerRealTime, realTimePath = [], realTimePolyline;
+        let mapRoute, routePolyline;
+        let mapSearch, markerSearch;
 
-        let mapRoute;
-        let routePolyline;
-
-        // Inicializar el mapa de tiempo real
         function initMapRealTime() {
             mapRealTime = new google.maps.Map(document.getElementById('map-realtime'), {
                 zoom: 15,
@@ -135,118 +164,145 @@
                 strokeWeight: 2
             });
             realTimePolyline.setMap(mapRealTime);
+
+            setInterval(() => {
+                fetch('get_location.php')
+                .then(response => response.json())
+                .then(data => {
+                    const { latitud, longitud, timestamp } = data;
+
+                    document.getElementById('latitud').innerText = latitud;
+                    document.getElementById('longitud').innerText = longitud;
+                    document.getElementById('timestamp').innerText = timestamp;
+
+                    const newPosition = { lat: parseFloat(latitud), lng: parseFloat(longitud) };
+                    markerRealTime.setPosition(newPosition);
+                    mapRealTime.setCenter(newPosition);
+
+                    realTimePath.push(newPosition);
+                    realTimePolyline.setPath(realTimePath);
+                })
+                .catch(error => console.error('Error al obtener la ubicación en tiempo real:', error));
+            }, 5000);
         }
 
-        // Inicializar el mapa para buscar recorridos por fecha
         function initMapRoute() {
             mapRoute = new google.maps.Map(document.getElementById('map-route'), {
                 zoom: 15,
                 center: { lat: 0, lng: 0 }
             });
-        }
 
-        // Actualizar la ubicación en tiempo real
-        function updateCurrentLocation(lat, lng, timestamp) {
-            const position = { lat: lat, lng: lng };
-            markerRealTime.setPosition(position);
-            realTimePath.push(position);
-            realTimePolyline.setPath(realTimePath);
-            mapRealTime.setCenter(position);
-            document.getElementById('latitud').innerText = lat;
-            document.getElementById('longitud').innerText = lng;
-            document.getElementById('timestamp').innerText = new Date(timestamp).toLocaleString('es-CO');
-        }
+            document.getElementById('show-route').addEventListener('click', () => {
+                const startDate = document.getElementById('start-date').value;
+                const endDate = document.getElementById('end-date').value;
 
-        // Mostrar el recorrido entre dos fechas
-        function fetchRoute(startDate, endDate) {
-            const url = `get_route.php?start=${startDate}&end=${endDate}`;
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.length > 0) {
-                        let path = [];
-                        data.forEach(point => {
-                            const position = { lat: parseFloat(point.latitud), lng: parseFloat(point.longitud) };
-                            path.push(position);
-                        });
+                if (startDate && endDate) {
+                    const url = `get_route.php?start=${startDate}&end=${endDate}`;
+                    fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        const routePath = data.map(point => ({ lat: parseFloat(point.latitud), lng: parseFloat(point.longitud) }));
+
                         if (routePolyline) {
-                            routePolyline.setMap(null);  // Limpiar ruta anterior
+                            routePolyline.setMap(null);
                         }
+
                         routePolyline = new google.maps.Polyline({
-                            path: path,
+                            path: routePath,
                             geodesic: true,
                             strokeColor: "#FF0000",
                             strokeOpacity: 1.0,
                             strokeWeight: 2
                         });
                         routePolyline.setMap(mapRoute);
-                        if (path.length > 0) {
-                            mapRoute.setCenter(path[0]);
-                        }
-                    } else {
-                        alert('No se encontraron datos en el rango de fechas seleccionado.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error al obtener el recorrido:', error);
-                    alert('Error al obtener el recorrido, revisa la consola para más detalles.');
-                });
+                        mapRoute.setCenter(routePath[0]);
+                    })
+                    .catch(error => console.error('Error al obtener el recorrido:', error));
+                } else {
+                    alert('Por favor, seleccione una fecha de inicio y final.');
+                }
+            });
         }
 
-        document.getElementById('show-route').addEventListener('click', () => {
-            const startDate = document.getElementById('start-date').value;
-            const endDate = document.getElementById('end-date').value;
-            if (startDate && endDate) {
-                fetchRoute(startDate, endDate);
-            } else {
-                alert('Por favor selecciona ambas fechas.');
-            }
-        });
+        function initMapSearch() {
+            mapSearch = new google.maps.Map(document.getElementById('map-search'), {
+                zoom: 15,
+                center: { lat: 0, lng: 0 }
+            });
 
-        // Obtener la ubicación actual y actualizar el mapa de tiempo real
-        function getCurrentLocation() {
-            fetch('get_location.php')
+            const autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'));
+            autocomplete.addListener('place_changed', function () {
+                const place = autocomplete.getPlace();
+                if (!place.geometry) {
+                    alert('Por favor, seleccione una dirección de la lista.');
+                    return;
+                }
+
+                const position = place.geometry.location;
+                mapSearch.setCenter(position);
+
+                if (markerSearch) {
+                    markerSearch.setMap(null);
+                }
+
+                markerSearch = new google.maps.Marker({
+                    position: position,
+                    map: mapSearch
+                });
+
+                // Log de la dirección y coordenadas
+                const logArea = document.getElementById('log-area');
+                const logMessage = `Dirección: ${place.formatted_address}<br>Enviando a check_proximity.php: lat=${position.lat()}, lng=${position.lng()}`;
+                logArea.innerHTML = logMessage; // Mostrar en el frontend
+
+                // Verificar proximidad
+                const url = `check_proximity.php?lat=${position.lat()}&lng=${position.lng()}`;
+                fetch(url)
                 .then(response => response.json())
                 .then(data => {
-                    const { latitud, longitud, timestamp } = data;
-                    updateCurrentLocation(parseFloat(latitud), parseFloat(longitud), timestamp);
+                    const tbody = document.querySelector('#proximity-table tbody');
+                    tbody.innerHTML = ''; // Limpiar contenido anterior
+
+                    data.forEach(row => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `<td>${row.fecha}</td><td>${row.cantidad}</td>`;
+                        tbody.appendChild(tr);
+                    });
                 })
-                .catch(error => {
-                    console.error('Error al obtener la ubicación actual:', error);
-                });
-        }
-
-        setInterval(getCurrentLocation, 10000);
-
-        // Mostrar la sección correspondiente y ocultar las demás
-        function showSection(sectionId) {
-            const sections = document.querySelectorAll('.container');
-            sections.forEach(section => {
-                section.style.display = 'none';
+                .catch(error => console.error('Error al verificar la proximidad:', error));
             });
-            document.getElementById(sectionId).style.display = 'block';
         }
 
-        // Manejo del navbar para cambiar entre secciones
-        document.getElementById('nav-realtime').addEventListener('click', () => {
-            showSection('realtime-section');
-            initMapRealTime(); // Re-inicializar mapa al mostrar la sección
+        document.addEventListener('DOMContentLoaded', () => {
+            const realtimeSection = document.getElementById('realtime-section');
+            const searchSection = document.getElementById('search-section');
+            const addressSearchSection = document.getElementById('address-search-section');
+
+            document.getElementById('nav-realtime').addEventListener('click', () => {
+                realtimeSection.style.display = 'block';
+                searchSection.style.display = 'none';
+                addressSearchSection.style.display = 'none';
+                initMapRealTime();
+            });
+
+            document.getElementById('nav-search').addEventListener('click', () => {
+                realtimeSection.style.display = 'none';
+                searchSection.style.display = 'block';
+                addressSearchSection.style.display = 'none';
+                initMapRoute();
+            });
+
+            document.getElementById('nav-address-search').addEventListener('click', () => {
+                realtimeSection.style.display = 'none';
+                searchSection.style.display = 'none';
+                addressSearchSection.style.display = 'block';
+                initMapSearch();
+            });
         });
 
-        document.getElementById('nav-search').addEventListener('click', () => {
-            showSection('search-section');
-            initMapRoute(); // Re-inicializar mapa al mostrar la sección
-        });
-
-        // Inicializar la página mostrando la sección de tiempo real por defecto
-        window.onload = () => {
-            showSection('realtime-section');
-            initMapRealTime();
-            getCurrentLocation();
-        };
     </script>
 
-    <!-- API de Google Maps para ambos mapas -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&callback=initMapRealTime" async defer></script>
+    <!-- Cargar la API de Google Maps y Places -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRealTime"></script>
 </body>
 </html>
