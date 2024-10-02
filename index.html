@@ -11,15 +11,10 @@
             padding: 0;
             text-align: center;
             background-color: #12025a;
-
-
-            background-color: #760359;
         }
         .container {
             padding: 20px;
-
-            background-color: #097f6a;
-
+            background-color: #0cc782;
             margin: 50px auto;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
@@ -29,7 +24,7 @@
         h1 {
             color: #333;
         }
-        #map {
+        #map-realtime, #map-route, #map-search {
             height: 400px;
             width: 100%;
             margin-top: 20px;
@@ -37,12 +32,76 @@
         .input-group {
             margin: 10px 0;
         }
+        nav {
+            background-color: #444;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            cursor: pointer;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, transform 0.2s;
+        }
+        nav a:hover {
+            background-color: #666;
+            transform: scale(1.05);
+        }
+        nav a.active {
+            background-color: #333;
+            padding: 5px 10px;
+            box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
+        }
+        table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #444;
+            color: white;
+        }
+        #log {
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>GPS<br>Recorrido</h1>
-        
+    <nav>
+        <a href="#realtime" id="nav-realtime">Ver posición en tiempo real</a>
+        <a href="#search" id="nav-search">Buscar recorrido</a>
+        <a href="#address-search" id="nav-address-search">Buscar por dirección</a>
+    </nav>
+    
+    <div class="container" id="realtime-section">
+        <h1>GPS<br>Recorrido en tiempo real</h1>
+        <div id="location">
+            <p><strong>Latitud:</strong> <span id="latitud">Cargando...</span></p>
+            <p><strong>Longitud:</strong> <span id="longitud">Cargando...</span></p>
+            <p><strong>Timestamp:</strong> <span id="timestamp">Cargando...</span></p>
+        </div>
+        <div id="map-realtime"></div>
+    </div>
+
+    <div class="container" id="search-section">
+        <h1>Buscar Recorrido</h1>
         <div class="input-group">
             <label for="start-date">Fecha y hora inicial:</label>
             <input type="datetime-local" id="start-date">
@@ -52,28 +111,38 @@
             <input type="datetime-local" id="end-date">
         </div>
         <button id="show-route">Mostrar recorrido</button>
+        <div id="map-route"></div>
+    </div>
 
-        <div id="location">
-            <p><strong>Latitud:</strong> <span id="latitud">Cargando...</span></p>
-            <p><strong>Longitud:</strong> <span id="longitud">Cargando...</span></p>
-            <p><strong>Timestamp:</strong> <span id="timestamp">Cargando...</span></p>
+    <div class="container" id="address-search-section">
+        <h1>Buscar por dirección</h1>
+        <div class="input-group">
+            <label for="address-input">Dirección:</label>
+            <input type="text" id="autocomplete" placeholder="Ingrese una dirección">
         </div>
-
-        <div id="map"></div>
+        <button id="search-address">Buscar</button>
+        <div id="map-search"></div>
+        <h2>Historial de visitas en 40 metros</h2>
+        <table id="proximity-table">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Cantidad de Pasos</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <h2>Log de Envíos</h2>
+        <div id="log"></div>
     </div>
 
     <script>
-        const apiKey = 'AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA'; // Reemplaza esto con tu clave de API de Google Maps
+        let mapRealTime, markerRealTime, realTimePath = [], realTimePolyline;
+        let mapRoute, routePolyline;
+        let mapSearch, markerSearch;
 
-        let map;
-        let marker;
-        let path = [];
-        let realTimePath = [];
-        let realTimePolyline; 
-        let markerCurrent;
-
-        function initMap() {
-            map = new google.maps.Map(document.getElementById('map'), {
+        function initMapRealTime() {
+            mapRealTime = new google.maps.Map(document.getElementById('map-realtime'), {
                 zoom: 15,
                 center: { lat: 11.0190513, lng: -74.8511425 }
             });
@@ -93,90 +162,183 @@
                 strokeOpacity: 1.0,
                 strokeWeight: 2
             });
-            realTimePolyline.setMap(map);
-        }
+            realTimePolyline.setMap(mapRealTime);
 
-        function fetchRoute(startDate, endDate) {
-            const url = `get_route.php?start=${startDate}&end=${endDate}`;
-            fetch(url)
+            setInterval(() => {
+                fetch('get_location.php')
                 .then(response => response.json())
                 .then(data => {
-                    if (data.length > 0) {
-                        path = [];
-                        data.forEach(point => {
-                            const position = { lat: parseFloat(point.latitud), lng: parseFloat(point.longitud) };
-                            path.push(position);
-                        });
-                        // Mostrar recorrido en el mapa
-                        new google.maps.Polyline({
-                            path: path,
+                    const { latitud, longitud, timestamp } = data;
+
+                    document.getElementById('latitud').innerText = latitud;
+                    document.getElementById('longitud').innerText = longitud;
+                    document.getElementById('timestamp').innerText = timestamp;
+
+                    const newPosition = { lat: parseFloat(latitud), lng: parseFloat(longitud) };
+                    markerRealTime.setPosition(newPosition);
+                    mapRealTime.setCenter(newPosition);
+
+                    realTimePath.push(newPosition);
+                    realTimePolyline.setPath(realTimePath);
+
+                })
+                .catch(error => console.error('Error al obtener la ubicación en tiempo real:', error));
+            }, 5000);
+        }
+
+        function initMapRoute() {
+            mapRoute = new google.maps.Map(document.getElementById('map-route'), {
+                zoom: 15,
+                center: { lat: 11.0190513, lng: -74.8511425 }
+            });
+
+            document.getElementById('show-route').addEventListener('click', () => {
+                const startDate = document.getElementById('start-date').value;
+                const endDate = document.getElementById('end-date').value;
+
+                if (startDate && endDate) {
+                    const url = `get_route.php?start=${startDate}&end=${endDate}`;
+                    fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        const routePath = data.map(point => ({ lat: parseFloat(point.latitud), lng: parseFloat(point.longitud) }));
+
+                        if (routePolyline) {
+                            routePolyline.setMap(null);
+                        }
+
+                        routePolyline = new google.maps.Polyline({
+                            path: routePath,
                             geodesic: true,
                             strokeColor: "#FF0000",
                             strokeOpacity: 1.0,
                             strokeWeight: 2
-                        }).setMap(map); 
-                        if (path.length > 0) {
-                            map.setCenter(path[0]);
-                        }
-                    } else {
-                        alert('No se encontraron datos en el rango de fechas seleccionado.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
+                        });
+                        routePolyline.setMap(mapRoute);
+                        mapRoute.setCenter(routePath[0]);
+                    })
+                    .catch(error => console.error('Error al obtener el recorrido:', error));
+                } else {
+                    alert('Por favor, seleccione una fecha de inicio y final.');
+                }
+            });
+        }
+
+        function initMapSearch() {
+            mapSearch = new google.maps.Map(document.getElementById('map-search'), {
+                zoom: 15,
+                center: { lat: 11.0190513, lng: -74.8511425 }
+            });
+
+            const autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'));
+            autocomplete.addListener('place_changed', function () {
+                const place = autocomplete.getPlace();
+                if (!place.geometry) {
+                    alert('No se pudo obtener la ubicación de la dirección ingresada.');
+                    return;
+                }
+
+                if (markerSearch) {
+                    markerSearch.setMap(null);
+                }
+
+                const position = place.geometry.location;
+                markerSearch = new google.maps.Marker({
+                    position: position,
+                    map: mapSearch,
+                    title: place.formatted_address
                 });
-        }
+                mapSearch.setCenter(position);
 
-        function updateCurrentLocation(lat, lng, timestamp) {
-            const position = { lat: lat, lng: lng };
-            markerCurrent.setPosition(position);
-            realTimePath.push(position); // Agregar a la polilínea en tiempo real
-            realTimePolyline.setPath(realTimePath);
-            map.setCenter(position); // Centrar el mapa en la ubicación actual
+                // Log de la dirección y coordenadas
+                const logDiv = document.getElementById('log');
+                const logMessage = `${new Date().toLocaleString()}: ${place.formatted_address} | Enviando a check_proximity.php: lat=${position.lat()}, lng=${position.lng()}`;
+                logDiv.innerHTML = `<div>${logMessage}</div>`; // Solo mostrar el último mensaje
 
-            // Actualizar datos de la ubicación
-            document.getElementById('latitud').innerText = lat;
-            document.getElementById('longitud').innerText = lng;
-            document.getElementById('timestamp').innerText = new Date(timestamp).toLocaleString('es-CO'); // Formato de fecha en Colombia
-        }
-
-        document.getElementById('show-route').addEventListener('click', () => {
-            const startDate = document.getElementById('start-date').value;
-            const endDate = document.getElementById('end-date').value;
-            if (startDate && endDate) {
-                fetchRoute(startDate, endDate);
-            } else {
-                alert('Por favor selecciona ambas fechas.');
-            }
-        });
-
-        // Función para obtener la ubicación actual cada cierto tiempo
-        function getCurrentLocation() {
-            fetch('get_location.php') // Endpoint que debes crear para obtener la ubicación actual
+                fetch(`check_proximity.php?lat=${position.lat()}&lng=${position.lng()}`)
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data); // Verificar la respuesta del servidor
                     const tbody = document.querySelector('#proximity-table tbody');
                     tbody.innerHTML = ''; // Limpiar contenido anterior
 
-                    data.forEach(row => {
+                    // Crear un array para almacenar las ubicaciones para la polilínea
+                    const pathForPolyline = [];
+
+                    // Solo mostrar los datos que cumplen la condición de proximidad en la tabla
+                    if (data.locations.length > 0) {
+                        data.locations.forEach(row => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `<td>${row.fecha}</td><td>${row.cantidad}</td>`;
+                            tbody.appendChild(tr);
+                            
+                            // Agregar los datos para la polilínea desde antes y después
+                            if (data.proximityData.before[row.fecha]) {
+                                pathForPolyline.push(...data.proximityData.before[row.fecha].map(item => ({
+                                    lat: parseFloat(item.latitud),
+                                    lng: parseFloat(item.longitud)
+                                })));
+                            }
+                            if (data.proximityData.after[row.fecha]) {
+                                pathForPolyline.push(...data.proximityData.after[row.fecha].map(item => ({
+                                    lat: parseFloat(item.latitud),
+                                    lng: parseFloat(item.longitud)
+                                })));
+                            }
+                        });
+
+                        // Trazar la polilínea en el mapa de búsqueda solo con ubicaciones dentro del radio
+                        if (routePolyline) {
+                            routePolyline.setMap(null); // Limpiar la polilínea anterior
+                        }
+
+                        // Crear y mostrar la polilínea solo si hay puntos
+                        if (pathForPolyline.length > 0) {
+                            routePolyline = new google.maps.Polyline({
+                                path: pathForPolyline,
+                                geodesic: true,
+                                strokeColor: "#FF0000",
+                                strokeOpacity: 1.0,
+                                strokeWeight: 2
+                            });
+                            routePolyline.setMap(mapSearch);
+                        }
+                    } else {
+                        // Si no hay datos, muestra un mensaje en la tabla
                         const tr = document.createElement('tr');
-                        tr.innerHTML = `<td>${row.fecha}</td><td>${row.cantidad}</td>`;
+                        tr.innerHTML = `<td colspan="2">No se encontraron registros dentro del radio.</td>`;
                         tbody.appendChild(tr);
-                    });
+                    }
                 })
                 .catch(error => console.error('Error al verificar la proximidad:', error));
-            };
-        
+            });
+        }
 
-        // Actualiza la ubicación cada 10 segundos
-        setInterval(getCurrentLocation, 10000);
 
-        window.onload = () => {
-            initMap();
-            getCurrentLocation(); // Obtén la ubicación actual al cargar
-        };
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('nav-realtime').addEventListener('click', () => {
+                document.querySelectorAll('.container').forEach(container => container.style.display = 'none');
+                document.getElementById('realtime-section').style.display = 'block';
+                initMapRealTime();
+            });
+
+            document.getElementById('nav-search').addEventListener('click', () => {
+                document.querySelectorAll('.container').forEach(container => container.style.display = 'none');
+                document.getElementById('search-section').style.display = 'block';
+                initMapRoute();
+            });
+
+            document.getElementById('nav-address-search').addEventListener('click', () => {
+                document.querySelectorAll('.container').forEach(container => container.style.display = 'none');
+                document.getElementById('address-search-section').style.display = 'block';
+                initMapSearch();
+            });
+
+            // Activar sección por defecto
+            document.getElementById('nav-realtime').click();
+        });
+
     </script>
-
 
     <!-- Cargar la API de Google Maps y Places -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRealTime" async defer></script>
