@@ -47,8 +47,58 @@ try {
     // Obtener los resultados
     $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    // Obtener los IDs de las ubicaciones para la segunda consulta
+    $ids = [];
+    foreach ($locations as $location) {
+        $ids[] = $location['fecha'];
+    }
+
+    // Obtener 20 datos antes y después de cada ubicación dentro del radio
+    $proximityData = [];
+    foreach ($ids as $fecha) {
+        // Obtener datos de la fecha específica
+        $currentDataSql = "
+            SELECT latitud, longitud, timestamp
+            FROM ubicaciones
+            WHERE DATE_FORMAT(timestamp, '%Y-%m-%d %H:%i:%s') = :fecha";
+
+        // Consulta para datos anteriores
+        $beforeSql = "
+            SELECT latitud, longitud, timestamp
+            FROM ubicaciones
+            WHERE timestamp < :fecha
+            ORDER BY timestamp DESC
+            LIMIT 20";
+        
+        // Consulta para datos posteriores
+        $afterSql = "
+            SELECT latitud, longitud, timestamp
+            FROM ubicaciones
+            WHERE timestamp > :fecha
+            ORDER BY timestamp ASC
+            LIMIT 20";
+
+        // Consulta para datos de la fecha actual
+        $currentStmt = $pdo->prepare($currentDataSql);
+        $currentStmt->bindParam(':fecha', $fecha);
+        $currentStmt->execute();
+        $proximityData['current'][$fecha] = $currentStmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Consulta para datos anteriores
+        $beforeStmt = $pdo->prepare($beforeSql);
+        $beforeStmt->bindParam(':fecha', $fecha);
+        $beforeStmt->execute();
+        $proximityData['before'][$fecha] = $beforeStmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Consulta para datos posteriores
+        $afterStmt = $pdo->prepare($afterSql);
+        $afterStmt->bindParam(':fecha', $fecha);
+        $afterStmt->execute();
+        $proximityData['after'][$fecha] = $afterStmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     // Devolver los resultados en formato JSON
-    echo json_encode($locations);
+    echo json_encode(['locations' => $locations, 'proximityData' => $proximityData]);
 
 } catch (PDOException $e) {
     // Manejar errores en la conexión o consulta
@@ -56,4 +106,3 @@ try {
     echo json_encode(['error' => 'Error de conexión a la base de datos: ' . $e->getMessage()]);
 }
 ?>
- 

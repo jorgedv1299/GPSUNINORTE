@@ -254,23 +254,66 @@
                 const logDiv = document.getElementById('log');
                 const logMessage = `${new Date().toLocaleString()}: ${place.formatted_address} | Enviando a check_proximity.php: lat=${position.lat()}, lng=${position.lng()}`;
                 logDiv.innerHTML = `<div>${logMessage}</div>`; // Solo mostrar el último mensaje
-// Agregar al log visual
 
                 fetch(`check_proximity.php?lat=${position.lat()}&lng=${position.lng()}`)
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data); // Verificar la respuesta del servidor
                     const tbody = document.querySelector('#proximity-table tbody');
                     tbody.innerHTML = ''; // Limpiar contenido anterior
 
-                    data.forEach(row => {
+                    // Crear un array para almacenar las ubicaciones para la polilínea
+                    const pathForPolyline = [];
+
+                    // Solo mostrar los datos que cumplen la condición de proximidad en la tabla
+                    if (data.locations.length > 0) {
+                        data.locations.forEach(row => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `<td>${row.fecha}</td><td>${row.cantidad}</td>`;
+                            tbody.appendChild(tr);
+                            
+                            // Agregar los datos para la polilínea desde antes y después
+                            if (data.proximityData.before[row.fecha]) {
+                                pathForPolyline.push(...data.proximityData.before[row.fecha].map(item => ({
+                                    lat: parseFloat(item.latitud),
+                                    lng: parseFloat(item.longitud)
+                                })));
+                            }
+                            if (data.proximityData.after[row.fecha]) {
+                                pathForPolyline.push(...data.proximityData.after[row.fecha].map(item => ({
+                                    lat: parseFloat(item.latitud),
+                                    lng: parseFloat(item.longitud)
+                                })));
+                            }
+                        });
+
+                        // Trazar la polilínea en el mapa de búsqueda solo con ubicaciones dentro del radio
+                        if (routePolyline) {
+                            routePolyline.setMap(null); // Limpiar la polilínea anterior
+                        }
+
+                        // Crear y mostrar la polilínea solo si hay puntos
+                        if (pathForPolyline.length > 0) {
+                            routePolyline = new google.maps.Polyline({
+                                path: pathForPolyline,
+                                geodesic: true,
+                                strokeColor: "#FF0000",
+                                strokeOpacity: 1.0,
+                                strokeWeight: 2
+                            });
+                            routePolyline.setMap(mapSearch);
+                        }
+                    } else {
+                        // Si no hay datos, muestra un mensaje en la tabla
                         const tr = document.createElement('tr');
-                        tr.innerHTML = `<td>${row.fecha}</td><td>${row.cantidad}</td>`;
+                        tr.innerHTML = `<td colspan="2">No se encontraron registros dentro del radio.</td>`;
                         tbody.appendChild(tr);
-                    });
+                    }
                 })
                 .catch(error => console.error('Error al verificar la proximidad:', error));
             });
         }
+
 
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('nav-realtime').addEventListener('click', () => {
