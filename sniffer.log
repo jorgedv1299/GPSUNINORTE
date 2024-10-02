@@ -1,4 +1,8 @@
 nohup: ignoring input
+<<<<<<< HEAD
+PHP Warning:  socket_bind(): Unable to bind address [98]: Address already in use in /var/www/html/GPSUNINORTE/sniffer.php on line 17
+No se pudo asociar el socket: Address already in use
+=======
 Escuchando en 0.0.0.0:6100...
 Tabla 'ubicaciones' verificada o creada exitosamente.
 Datos recibidos: 10.992969689729932,-74.80007524396055,1727309651202
@@ -324,3 +328,4 @@ Datos divididos: Array
 )
 
 Datos guardados en la base de datos
+>>>>>>> master
