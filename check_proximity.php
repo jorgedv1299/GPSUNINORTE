@@ -36,7 +36,10 @@ try {
         cos(radians(longitud) - radians(:lng)) + 
         sin(radians(:lat)) * sin(radians(latitud)))) <= :radius
         GROUP BY fecha, latitud, longitud
-        ORDER BY fecha ASC";
+
+
+        ORDER BY fecha ASC"; //formula de haaverside
+
 
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':lat', $lat, PDO::PARAM_STR);
@@ -56,3 +59,7 @@ try {
     echo json_encode(['error' => 'Error de conexión a la base de datos: ' . $e->getMessage()]);
 }
 ?>
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> Alexander
