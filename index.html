@@ -75,10 +75,10 @@
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
                 zoom: 15,
-                center: { lat: 0, lng: 0 }
+                center: { lat: 11.0190513, lng: -74.8511425 }
             });
             markerRealTime = new google.maps.Marker({
-                position: { lat: 0, lng: 0 },
+                position: { lat: 11.0190513, lng: -74.8511425 },
                 map: mapRealTime,
                 icon: {
                     url: "https://maps.google.com/mapfiles/ms/icons/green-dot.png",
@@ -177,7 +177,9 @@
         };
     </script>
 
-    <!-- Carga el script de Google Maps API -->
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&callback=initMap"></script>
+
+    <!-- Cargar la API de Google Maps y Places -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRealTime" async defer></script>
+
 </body>
 </html>
