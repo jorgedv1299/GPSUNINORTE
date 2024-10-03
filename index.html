@@ -26,8 +26,9 @@
         h1 {
             color: #333;
         }
+
         #map-realtime, #map-route, #map-search {
-            height: 700px;
+            height: 80vh; /* Ajustado para dar más protagonismo al mapa */
             width: 100%;
             margin-top: 20px;
         }
@@ -46,32 +47,30 @@
             border-radius: 8px;
             margin: 20px 0;
         }
-        nav a {
-            color: white;
-            margin: 0 15px;
-            text-decoration: none;
-            border-radius: 8px;
+
+        nav select {
+            padding: 10px;
             border: 2px solid #444;
-            transition: background-color 0.3s;
+            border-radius: 5px;
+            background-color: white;
+            color: #444;
         }
 
-        .nav-container a:hover {
+        nav button {
+            margin-left: 10px;
+            padding: 10px;
+            border: 2px solid #444;
             background-color: #333;
             color: white;
-            cursor: pointer;
-            padding: 10px 15px;
             border-radius: 5px;
-            transition: background-color 0.3s ease, transform 0.2s;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
-        nav a:hover {
+
+        nav button:hover {
             background-color: #666;
-            transform: scale(1.05);
         }
-        nav a.active {
-            background-color: #333;
-            padding: 5px 10px;
-            box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
-        }
+
         table {
             margin-top: 20px;
             width: 100%;
@@ -100,10 +99,16 @@
 
     <!-- Contenedor de botones -->
     <div class="nav-container">
-        <a href="#realtime" id="nav-realtime">Ver posición en tiempo real</a>
-        <a href="#search" id="nav-search">Buscar recorrido</a>
-        <a href="#address-search" id="nav-address-search">Buscar por dirección</a>
-    </nav>
+        <nav>
+            <select id="nav-options">
+                <option value="">Seleccione una opción</option>
+                <option value="realtime">Ver posición en tiempo real</option>
+                <option value="search">Buscar recorrido</option>
+                <option value="address-search">Buscar por dirección</option>
+            </select>
+            <button id="select-option">Seleccionar</button>
+        </nav>
+    </div>
     
     <div class="container" id="realtime-section">
         <h1>GPS<br>Recorrido en tiempo real</h1>
@@ -195,7 +200,6 @@
 
                     realTimePath.push(newPosition);
                     realTimePolyline.setPath(realTimePath);
-
                 })
                 .catch(error => console.error('Error al obtener la ubicación en tiempo real:', error));
             }, 5000);
@@ -249,141 +253,92 @@
             autocomplete.addListener('place_changed', function () {
                 const place = autocomplete.getPlace();
                 if (!place.geometry) {
-                    alert('No se pudo obtener la ubicación de la dirección ingresada.');
+                    alert('No se pudo obtener la ubicación de la dirección seleccionada.');
                     return;
                 }
-
                 if (markerSearch) {
                     markerSearch.setMap(null);
                 }
-
-                const position = place.geometry.location;
                 markerSearch = new google.maps.Marker({
-                    position: position,
-                    map: mapSearch,
-                    title: place.formatted_address
+                    position: place.geometry.location,
+                    map: mapSearch
                 });
-                mapSearch.setCenter(position);
+                mapSearch.setCenter(place.geometry.location);
+                getNearbyVisits(place.geometry.location);
+            });
 
-                // Log de la dirección y coordenadas
-                const logDiv = document.getElementById('log');
-                const logMessage = `${new Date().toLocaleString()}: ${place.formatted_address} | Enviando a check_proximity.php: lat=${position.lat()}, lng=${position.lng()}`;
-                logDiv.innerHTML = `<div>${logMessage}</div>`; // Solo mostrar el último mensaje
-
-                fetch(`check_proximity.php?lat=${position.lat()}&lng=${position.lng()}`)
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data); // Verificar la respuesta del servidor
-                    const tbody = document.querySelector('#proximity-table tbody');
-                    tbody.innerHTML = ''; // Limpiar contenido anterior
-
-                    // Crear un array para almacenar las ubicaciones para la polilínea
-                    const pathForPolyline = [];
-
-                    // Solo mostrar los datos que cumplen la condición de proximidad en la tabla
-                    if (data.locations.length > 0) {
-                        data.locations.forEach(row => {
-                            const tr = document.createElement('tr');
-                            tr.innerHTML = `<td>${row.fecha}</td><td>${row.cantidad}</td>`;
-                            tbody.appendChild(tr);
-                            
-                            // Agregar los datos para la polilínea desde antes y después
-                            if (data.proximityData.before[row.fecha]) {
-                                pathForPolyline.push(...data.proximityData.before[row.fecha].map(item => ({
-                                    lat: parseFloat(item.latitud),
-                                    lng: parseFloat(item.longitud)
-                                })));
+            document.getElementById('search-address').addEventListener('click', () => {
+                const address = document.getElementById('autocomplete').value;
+                if (address) {
+                    const geocoder = new google.maps.Geocoder();
+                    geocoder.geocode({ address: address }, (results, status) => {
+                        if (status === 'OK') {
+                            const location = results[0].geometry.location;
+                            mapSearch.setCenter(location);
+                            if (markerSearch) {
+                                markerSearch.setMap(null);
                             }
-                            if (data.proximityData.after[row.fecha]) {
-                                pathForPolyline.push(...data.proximityData.after[row.fecha].map(item => ({
-                                    lat: parseFloat(item.latitud),
-                                    lng: parseFloat(item.longitud)
-                                })));
-                            }
-                        });
-
-                        // Trazar la polilínea en el mapa de búsqueda solo con ubicaciones dentro del radio
-                        if (routePolyline) {
-                            routePolyline.setMap(null); // Limpiar la polilínea anterior
-                        }
-
-                        // Crear y mostrar la polilínea solo si hay puntos
-                        if (pathForPolyline.length > 0) {
-                            routePolyline = new google.maps.Polyline({
-                                path: pathForPolyline,
-                                geodesic: true,
-                                strokeColor: "#FF0000",
-                                strokeOpacity: 1.0,
-                                strokeWeight: 2
+                            markerSearch = new google.maps.Marker({
+                                position: location,
+                                map: mapSearch
                             });
-                            routePolyline.setMap(mapSearch);
+                            getNearbyVisits(location);
+                        } else {
+                            alert('No se encontró la dirección: ' + status);
                         }
-                    } else {
-                        // Si no hay datos, muestra un mensaje en la tabla
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `<td colspan="2">No se encontraron registros dentro del radio.</td>`;
-                        tbody.appendChild(tr);
-                    }
-                })
-                .catch(error => console.error('Error al verificar la proximidad:', error));
-            });
-        }
-
-
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('nav-realtime').addEventListener('click', () => {
-                document.querySelectorAll('.container').forEach(container => container.style.display = 'none');
-                document.getElementById('realtime-section').style.display = 'block';
-                initMapRealTime();
-            });
-
-            document.getElementById('nav-search').addEventListener('click', () => {
-                document.querySelectorAll('.container').forEach(container => container.style.display = 'none');
-                document.getElementById('search-section').style.display = 'block';
-                initMapRoute();
-            });
-
-            document.getElementById('nav-address-search').addEventListener('click', () => {
-                document.querySelectorAll('.container').forEach(container => container.style.display = 'none');
-                document.getElementById('address-search-section').style.display = 'block';
-                initMapSearch();
-            });
-
-            // Activar sección por defecto
-            document.getElementById('nav-realtime').click();
-        });
-
-        // Función que oculta el enlace del navbar según la sección activa
-        function updateNavbar() {
-            // Obtener todos los enlaces del navbar
-            const navLinks = document.querySelectorAll('nav a');
-            
-            // Obtener el hash actual de la URL (e.g., #realtime)
-            const currentHash = window.location.hash;
-            
-            // Iterar sobre todos los enlaces
-            navLinks.forEach(link => {
-                // Si el href del enlace coincide con el hash actual, lo ocultamos
-                if (link.getAttribute('href') === currentHash) {
-                    link.style.display = 'none';
+                    });
                 } else {
-                    // Mostrar los enlaces que no coinciden con el hash actual
-                    link.style.display = 'inline'; // O 'block' según el estilo de tu nav
+                    alert('Por favor, ingrese una dirección.');
                 }
             });
         }
 
-        // Ejecutar la función al cargar la página para manejar el estado inicial
-        window.addEventListener('load', updateNavbar);
+        function getNearbyVisits(location) {
+            const lat = location.lat();
+            const lng = location.lng();
+            const url = `get_proximity.php?lat=${lat}&lng=${lng}`;
 
-        // Escuchar cambios en el hash de la URL para actualizar la navbar dinámicamente
-        window.addEventListener('hashchange', updateNavbar);
+            fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('proximity-table').getElementsByTagName('tbody')[0];
+                tableBody.innerHTML = ''; // Limpiar tabla anterior
 
+                data.forEach(item => {
+                    const row = tableBody.insertRow();
+                    const cellDate = row.insertCell(0);
+                    const cellSteps = row.insertCell(1);
+                    cellDate.innerText = item.date;
+                    cellSteps.innerText = item.steps;
+                });
 
+                // Mostrar el log
+                const logDiv = document.getElementById('log');
+                logDiv.innerHTML += `Búsqueda realizada en: ${location}<br>`;
+            })
+            .catch(error => console.error('Error al obtener visitas cercanas:', error));
+        }
+
+        document.getElementById('select-option').addEventListener('click', () => {
+            const selectedOption = document.getElementById('nav-options').value;
+            document.querySelectorAll('.container').forEach(container => container.style.display = 'none');
+            if (selectedOption) {
+                const sectionId = selectedOption === 'realtime' ? 'realtime-section' :
+                                 selectedOption === 'search' ? 'search-section' :
+                                 'address-search-section';
+                document.getElementById(sectionId).style.display = 'block';
+
+                // Inicializar el mapa correspondiente
+                if (sectionId === 'realtime-section') {
+                    initMapRealTime();
+                } else if (sectionId === 'search-section') {
+                    initMapRoute();
+                } else if (sectionId === 'address-search-section') {
+                    initMapSearch();
+                }
+            }
+        });
     </script>
-
-    <!-- Cargar la API de Google Maps y Places -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRealTime" async defer></script>
-
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
 </body>
 </html>
