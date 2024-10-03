@@ -109,7 +109,3 @@ try {
     echo json_encode(['error' => 'Error de conexión a la base de datos: ' . $e->getMessage()]);
 }
 ?>
-<<<<<<< HEAD
-=======
- 
->>>>>>> Alexander
