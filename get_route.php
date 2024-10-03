@@ -2,10 +2,14 @@
 header('Content-Type: application/json');
 
 // Configuración de la base de datos
+<<<<<<< HEAD
 $servername = "dbjmll.c16ww6ag23kz.us-east-2.rds.amazonaws.com";
 $username = "administrador";       
 $password = "condorito1";
 $dbname = "dbjmll";
+=======
+
+>>>>>>> origin/master
 
 
 // Crear conexión
@@ -15,7 +19,6 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
-
 // Obtener fechas desde la solicitud
 $start = $_GET['start'];
 $end = $_GET['end'];
