@@ -8,6 +8,7 @@ $password = "alex1234567890";           // Cambia a la contraseña de tu base de
 $dbname = "alex";
 
 
+
 // Crear conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -15,7 +16,6 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
- 
 // Obtener fechas desde la solicitud
 $start = $_GET['start'];
 $end = $_GET['end'];
