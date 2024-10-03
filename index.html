@@ -232,6 +232,47 @@
     
             const autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'));
             autocomplete.addListener('place_changed', function () {
+<<<<<<< HEAD
+<<<<<<< HEAD
+                const place = autocomplete.getPlace();
+                if (!place.geometry) {
+                    alert('No se pudo obtener la ubicación de la dirección seleccionada.');
+                    return;
+                }
+                if (markerSearch) {
+                    markerSearch.setMap(null);
+                }
+                markerSearch = new google.maps.Marker({
+                    position: place.geometry.location,
+                    map: mapSearch
+                });
+                mapSearch.setCenter(place.geometry.location);
+                getNearbyVisits(place.geometry.location);
+            });
+
+            document.getElementById('search-address').addEventListener('click', () => {
+                const address = document.getElementById('autocomplete').value;
+                if (address) {
+                    const geocoder = new google.maps.Geocoder();
+                    geocoder.geocode({ address: address }, (results, status) => {
+                        if (status === 'OK') {
+                            const location = results[0].geometry.location;
+                            mapSearch.setCenter(location);
+                            if (markerSearch) {
+                                markerSearch.setMap(null);
+                            }
+                            markerSearch = new google.maps.Marker({
+                                position: location,
+                                map: mapSearch
+                            });
+                            getNearbyVisits(location);
+                        } else {
+                            alert('No se encontró la dirección: ' + status);
+                        }
+                    });
+=======
+=======
+>>>>>>> 6e6c71161edc0c52a90150a85bfe963ee10447ad
                     const place = autocomplete.getPlace();
                     if (!place.geometry) {
                             alert('No se pudo obtener la ubicación de la dirección ingresada.');
@@ -355,6 +396,10 @@
                 // Si el href del enlace coincide con el hash actual, lo ocultamos
                 if (link.getAttribute('href') === currentHash) {
                     link.style.display = 'none';
+<<<<<<< HEAD
+>>>>>>> master
+=======
+>>>>>>> 6e6c71161edc0c52a90150a85bfe963ee10447ad
                 } else {
                     // Mostrar los enlaces que no coinciden con el hash actual
                     link.style.display = 'inline'; // O 'block' según el estilo de tu nav
