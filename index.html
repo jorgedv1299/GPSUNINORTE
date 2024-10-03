@@ -19,7 +19,7 @@
             margin: 50px auto;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            max-width: 1500px;
+            max-width: 1200px;
             display: none; /* Secciones ocultas por defecto */
         }
 
@@ -27,7 +27,7 @@
             color: #333;
         }
         #map-realtime, #map-route, #map-search {
-            height: 400px;
+            height: 700px;
             width: 100%;
             margin-top: 20px;
         }
@@ -352,6 +352,33 @@
             // Activar sección por defecto
             document.getElementById('nav-realtime').click();
         });
+
+        // Función que oculta el enlace del navbar según la sección activa
+        function updateNavbar() {
+            // Obtener todos los enlaces del navbar
+            const navLinks = document.querySelectorAll('nav a');
+            
+            // Obtener el hash actual de la URL (e.g., #realtime)
+            const currentHash = window.location.hash;
+            
+            // Iterar sobre todos los enlaces
+            navLinks.forEach(link => {
+                // Si el href del enlace coincide con el hash actual, lo ocultamos
+                if (link.getAttribute('href') === currentHash) {
+                    link.style.display = 'none';
+                } else {
+                    // Mostrar los enlaces que no coinciden con el hash actual
+                    link.style.display = 'inline'; // O 'block' según el estilo de tu nav
+                }
+            });
+        }
+
+        // Ejecutar la función al cargar la página para manejar el estado inicial
+        window.addEventListener('load', updateNavbar);
+
+        // Escuchar cambios en el hash de la URL para actualizar la navbar dinámicamente
+        window.addEventListener('hashchange', updateNavbar);
+
 
     </script>
 
