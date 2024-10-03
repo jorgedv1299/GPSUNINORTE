@@ -1,10 +1,5 @@
 .env
 get_location.php
 sniffer.php
-<<<<<<< HEAD
 check_proximity.php
 get_route.php
-
-=======
-get_route.php
->>>>>>> ea6c37af2124be884417120807cbd202440be8f3
