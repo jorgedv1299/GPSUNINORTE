@@ -38,6 +38,7 @@ try {
         GROUP BY fecha, latitud, longitud
         ORDER BY fecha ASC"; //formula de haaverside
 
+        
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':lat', $lat, PDO::PARAM_STR);
     $stmt->bindParam(':lng', $lng, PDO::PARAM_STR);
