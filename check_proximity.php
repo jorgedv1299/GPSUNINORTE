@@ -16,10 +16,17 @@ error_log("Latitud: $lat, Longitud: $lng"); // Registro en el log del servidor
 
 try {
     // Conectar a la base de datos
+<<<<<<< HEAD
     $host = 'disenoelec.c98ge4aae1fw.us-east-1.rds.amazonaws.com';
     $db = 'disenoelec';
     $user = 'bastod';
     $pass = 'bastod0529';
+=======
+    $host = 'alex.cpywocwqwde0.us-east-2.rds.amazonaws.com';
+    $db = 'alex';
+    $user = 'alex';
+    $pass = 'alex1234567890';
+>>>>>>> master
     $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Manejo de errores
 
@@ -36,9 +43,11 @@ try {
         cos(radians(longitud) - radians(:lng)) + 
         sin(radians(:lat)) * sin(radians(latitud)))) <= :radius
         GROUP BY fecha, latitud, longitud
+
+
         ORDER BY fecha ASC"; //formula de haaverside
 
-        
+
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':lat', $lat, PDO::PARAM_STR);
     $stmt->bindParam(':lng', $lng, PDO::PARAM_STR);
@@ -69,7 +78,7 @@ try {
             FROM ubicaciones
             WHERE timestamp < :fecha
             ORDER BY timestamp DESC
-            LIMIT 20";
+            LIMIT 4";
         
         // Consulta para datos posteriores
         $afterSql = "
@@ -77,7 +86,7 @@ try {
             FROM ubicaciones
             WHERE timestamp > :fecha
             ORDER BY timestamp ASC
-            LIMIT 20";
+            LIMIT 4";
 
         // Consulta para datos de la fecha actual
         $currentStmt = $pdo->prepare($currentDataSql);
@@ -107,3 +116,4 @@ try {
     echo json_encode(['error' => 'Error de conexión a la base de datos: ' . $e->getMessage()]);
 }
 ?>
+<?php
