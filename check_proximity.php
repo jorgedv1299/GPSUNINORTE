@@ -71,7 +71,7 @@ try {
             FROM ubicaciones
             WHERE timestamp < :fecha
             ORDER BY timestamp DESC
-            LIMIT 5";
+            LIMIT 4";
         
         // Consulta para datos posteriores
         $afterSql = "
@@ -79,7 +79,7 @@ try {
             FROM ubicaciones
             WHERE timestamp > :fecha
             ORDER BY timestamp ASC
-            LIMIT 5";
+            LIMIT 4";
 
         // Consulta para datos de la fecha actual
         $currentStmt = $pdo->prepare($currentDataSql);
