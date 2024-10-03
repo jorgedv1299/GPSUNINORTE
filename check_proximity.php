@@ -16,10 +16,10 @@ error_log("Latitud: $lat, Longitud: $lng"); // Registro en el log del servidor
 
 try {
     // Conectar a la base de datos
-    $host = 'alex.cpywocwqwde0.us-east-2.rds.amazonaws.com';
-    $db = 'alex';
-    $user = 'alex';
-    $pass = 'alex1234567890';
+    $host = 'database-1.cdcwiy8egoqg.us-east-1.rds.amazonaws.com';
+    $db = 'gps';
+    $user = 'root';
+    $pass = '15963247';
     $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Manejo de errores
 
@@ -40,6 +40,7 @@ try {
 
         ORDER BY fecha ASC"; //formula de haaverside
 
+        
 
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':lat', $lat, PDO::PARAM_STR);
