@@ -2,14 +2,10 @@
 header('Content-Type: application/json');
 
 // Configuración de la base de datos
-<<<<<<< HEAD
 $servername = "dbjmll.c16ww6ag23kz.us-east-2.rds.amazonaws.com";
 $username = "administrador";       
 $password = "condorito1";
 $dbname = "dbjmll";
-=======
-
->>>>>>> origin/master
 
 
 // Crear conexión
