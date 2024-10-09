@@ -2,7 +2,8 @@
 // Obtener los parámetros de latitud y longitud desde la solicitud GET
 $lat = isset($_GET['lat']) ? $_GET['lat'] : null;
 $lng = isset($_GET['lng']) ? $_GET['lng'] : null;
-$radius = 40; // Radio en metros
+$radius = 100
+; // Radio en metros
 
 // Verificar si los parámetros son válidos
 if (!$lat || !$lng) {
