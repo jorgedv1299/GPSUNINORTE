@@ -2,7 +2,8 @@
 // Obtener los parámetros de latitud y longitud desde la solicitud GET
 $lat = isset($_GET['lat']) ? $_GET['lat'] : null;
 $lng = isset($_GET['lng']) ? $_GET['lng'] : null;
-$radius = 40; // Radio en metros
+$radius = isset($_GET['radius']) ? $_GET['radius'] : 100;
+; // Radio en metros
 
 // Verificar si los parámetros son válidos
 if (!$lat || !$lng) {
@@ -16,10 +17,10 @@ error_log("Latitud: $lat, Longitud: $lng"); // Registro en el log del servidor
 
 try {
     // Conectar a la base de datos
-    $host = 'alex.cpywocwqwde0.us-east-2.rds.amazonaws.com';
-    $db = 'alex';
-    $user = 'alex';
-    $pass = 'alex1234567890';
+    $host = 'dbjmll.c16ww6ag23kz.us-east-2.rds.amazonaws.com';
+    $db = 'dbjmll';
+    $user = 'administrador';
+    $pass = 'condorito1';
     $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Manejo de errores
 
