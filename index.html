@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GPS UNINORTE</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Archivo CSS externo -->
     <style>
         body {
             font-family: Roboto, sans-serif;
@@ -99,6 +100,7 @@
     </nav>
     
     <div class="container" id="realtime-section">
+        <h1>GPS<br>Recorrido en Tiempo <Ri:a></Ri:a>eal</h1>
         <h1 style ="text-shadow: #6374AB 0px 3px 1px;">GPS<br>Recorrido en tiempo real</h1>
         <div id="location">
             <p><strong>Latitud:</strong> <span id="latitud">Cargando...</span></p>
@@ -109,6 +111,7 @@
     </div>
 
     <div class="container" id="search-section">
+        <h1>GPS<br>Buscar Recorrido</h1>
         <h1 style ="text-shadow: #6374AB 0px 3px 1px;">Buscar Recorrido</h1>
         <div class="input-group">
             <label for="start-date">Fecha y hora inicial:</label>
@@ -123,6 +126,7 @@
     </div>
 
     <div class="container" id="address-search-section">
+        <h1>GPS<br>Buscar por Dirección</h1>
         <h1 style="font-family: times new roman, sans-serif;text-shadow: #6374AB 0px 3px 1px;font-weight: bold; font-size: 40px; background-color:#ff9730;margin-top: 20px; display: inline-block; border-radius: 10px;box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2), -3px -3px 6px rgba(255, 255, 255, 0.5);padding: 10px 10px; ">
             Busqueda por dirección</h1>
         <div class="input-group">
@@ -146,12 +150,12 @@
         <h2>Historial de visitas en 100 metros</h2>
         <p id="visit-count"></p>
         <table id="proximity-table">
-                <thead>
-                        <tr>
-                                <th>Fecha</th>
-                        </tr>
-                </thead>
-                <tbody></tbody>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
         </table>
       <h2>Log de Envíos</h2>
         <div id="log"></div>
@@ -452,5 +456,3 @@
 
 </body>
 </html>
-
-
