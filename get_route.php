@@ -2,10 +2,10 @@
 header('Content-Type: application/json');
 
 // Configuración de la base de datos
-$servername = "dbjmll.c16ww6ag23kz.us-east-2.rds.amazonaws.com";
-$username = "administrador";
-$password = "condorito1";
-$dbname = "dbjmll";
+$servername = "alex.cpywocwqwde0.us-east-2.rds.amazonaws.com"; // Reemplaza con el endpoint de tu RDS si es necesario
+$username = "alex";       // Cambia al usuario de tu base de datos
+$password = "alex1234567890";           // Cambia a la contraseña de tu base de datos
+$dbname = "alex";
 
 
 // Crear conexión
