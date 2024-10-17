@@ -327,8 +327,8 @@
                     const logMessage = `${new Date().toLocaleString()}: ${place.formatted_address} | Enviando a check_proximity.php: lat=${position.lat()}, lng=${position.lng()}`;
                     logDiv.innerHTML = `<div>${logMessage}</div>`; // Solo mostrar el último mensaje
     
-                    fetch(`check_proximity.php?lat=${position.lat()}&lng=${position.lng()}`)
-                    //fetch(`check_proximity.php?lat=${position.lat()}&lng=${position.lng()}&radius=${radiusValue}`) 
+                    //fetch(`check_proximity.php?lat=${position.lat()}&lng=${position.lng()}`)
+                    fetch(`check_proximity.php?lat=${position.lat()}&lng=${position.lng()}&radius=${radiusValue}`) 
                     .then(response => response.json())
                     .then(data => {
                             console.log(data); // Verificar la respuesta del servidor
