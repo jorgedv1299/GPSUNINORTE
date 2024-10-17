@@ -23,11 +23,10 @@ date_default_timezone_set('America/Bogota');
 echo "Escuchando en $ip:$port...\n";
 
 
-
-$servername = "alex.cpywocwqwde0.us-east-2.rds.amazonaws.com"; // Reemplaza con el endpoint de tu RDS si es necesario
-$username = "alex";       // Cambia al usuario de tu base de datos
-$password = "alex1234567890";           // Cambia a la contraseña de tu base de datos
-$dbname = "alex";
+$servername = "disenoelec.c98ge4aae1fw.us-east-1.rds.amazonaws.com"; // Reemplaza con el endpoint de tu RDS si es necesario
+$username = "bastod";       // Cambia al usuario de tu base de datos
+$password = "bastod0529";           // Cambia a la contraseña de tu base de datos
+$dbname = "disenoelec";
 
 
 
