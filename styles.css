@@ -15,6 +15,7 @@ html {
 
 .container {
     padding: 20px;
+    align-items: center; /* Cambié 'c' por 'center' para alinear el contenido */
     background-color: #0cc782;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -22,20 +23,25 @@ html {
     width: 100%;
     margin: 20px auto; /* Centramos el contenedor */
     box-sizing: border-box; /* Asegura que el padding esté dentro de la altura */
-    display: none; /* Secciones ocultas por defecto */
+    display: block; /* Aseguramos que se muestre correctamente */
     flex-grow: 1; /* Para que el contenido ocupe el espacio restante */
-    
+    overflow: hidden; /* Para evitar que los elementos sobrepasen el contenedor */
 }
 
 h1 {
     color: #333;
 }
 
+/* Asegúrate de que el mapa ocupe el 100% del contenedor */
 #map-realtime, #map-route, #map-search {
-    height: calc(100% - 100px); /* El mapa ocupará todo el contenedor */
-    width: 100%;
+    height: 500px; /* Ajusta la altura del mapa según el contenedor */
+    width: 100%; /* Ocupa todo el ancho del contenedor */
     margin-top: 20px;
+    border: 1px solid #ccc; /* Agrega un borde para ver los límites del mapa */
+    box-sizing: border-box; /* Asegura que el padding no afecte el tamaño del mapa */
+    margin: 20 px auto;
 }
+
 
 .input-group {
     margin: 10px 0;
