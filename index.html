@@ -284,9 +284,10 @@
                     center: { lat: 11.0190513, lng: -74.8511425 }
             });
             //Lineas paraobtener valores del Slider
-            //const radiusValue = radiusSlider.value;  porque esta ?
+           
             const radiusSlider = document.getElementById("radius-slider");
             const radiusDisplay = document.getElementById("radius-value");
+            const radiusValue = radiusSlider.value; 
             radiusSlider.oninput = function(){
                 radiusDisplay.innerText = "Valor actual: " + this.value + " m";
             };
