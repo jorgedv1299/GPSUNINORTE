@@ -1,12 +1,14 @@
 #!/bin/bash
 
+# Cambiar al directorio del repositorio
+
+# Bucle infinito
 while true; do
-    # Cambiar al directorio del repositorio
     cd /var/www/html/GPSUNINORTE || exit
 
-    # Hacer pull de los cambios del repositorio remoto
-    git pull
+    # Ejecutar git pull
+    git pull 
 
-    # Esperar 5 segundos antes de repetir
+    # Esperar 5 segundos
     sleep 5
 done

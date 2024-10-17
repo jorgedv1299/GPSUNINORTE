@@ -227,27 +227,27 @@
         function initMapSearch() {
             mapSearch = new google.maps.Map(document.getElementById('map-search'), {
                     zoom: 15,
-                    center: { lat: 11.0190513, lng: -74.8511425 }
+                    center: { lat: 11.0190513, lng: -74.8511425 } //inicializar el mapa 
             });
     
             const autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'));
             autocomplete.addListener('place_changed', function () {
-                    const place = autocomplete.getPlace();
+                    const place = autocomplete.getPlace(); // gp obtiene la información completa del lugar seleccionado.
                     if (!place.geometry) {
                             alert('No se pudo obtener la ubicación de la dirección ingresada.');
-                            return;
+                            return; //aqui generamos el autocclcompletado con la informacion de google y generamos la geocordenada
                     }
     
                     if (markerSearch) {
-                            markerSearch.setMap(null);
+                            markerSearch.setMap(null); //Si ya existe un marcador previo eliminar del mpaa
                     }
     
-                    const position = place.geometry.location;
+                    const position = place.geometry.location; //Se obtiene la lt y la longitsd
                     markerSearch = new google.maps.Marker({
-                            position: position,
+                            position: position, 
                             map: mapSearch,
                             title: place.formatted_address
-                    });
+                    }); // hacer la abstraccion del lugar, centrar marcador en este
                     mapSearch.setCenter(position);
     
                     // Log de la dirección y coordenadas
