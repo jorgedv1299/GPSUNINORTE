@@ -109,7 +109,7 @@
     </div>
 
     <div class="container" id="search-section">
-        <h1>Buscar Recorrido</h1>
+        <h1 style ="text-shadow: #6374AB 0px 3px 1px;">Buscar Recorrido</h1>
         <div class="input-group">
             <label for="start-date">Fecha y hora inicial:</label>
             <input type="datetime-local" id="start-date">
@@ -123,7 +123,7 @@
     </div>
 
     <div class="container" id="address-search-section">
-        <h1 style="font-family: times new roman, sans-serif;font-weight: bold; font-size: 40px; background-color:#ff9730;margin-top: 20px; display: inline-block; border-radius: 10px;box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2), -3px -3px 6px rgba(255, 255, 255, 0.5);padding: 10px 10px; ">
+        <h1 style="font-family: times new roman, sans-serif;text-shadow: #6374AB 0px 3px 1px;font-weight: bold; font-size: 40px; background-color:#ff9730;margin-top: 20px; display: inline-block; border-radius: 10px;box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2), -3px -3px 6px rgba(255, 255, 255, 0.5);padding: 10px 10px; ">
             Busqueda por dirección</h1>
         <div class="input-group">
             <label 
@@ -132,9 +132,18 @@
             Dirección:</label>
             <input type="text" id="autocomplete" placeholder="Ingrese una dirección"style="width: 400px;" >
         </div>
+
+
+        <label for="radius-slider" style="font-family: times new roman, sans-serif;font-weight: bold; font-size: 20px; background-color:#ff9730;margin-top: 20px; display: inline-block; border-radius: 10px;box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2), -3px -3px 6px rgba(255, 255, 255, 0.5);padding: 10px 10px;">
+            Radio (m):
+        </label>
+        <input type="range" id="radius-slider" min="10" max="200" step="10" value="100" style="width: 400px;">
+        <p id="radius-value">Valor actual: 100 m</p>
+
+
         <button id="search-address">Buscar</button>
         <div id="map-search"></div>
-        <h2>Historial de visitas en 40 metros</h2>
+        <h2>Historial de visitas en 100 metros</h2>
         <p id="visit-count"></p>
         <table id="proximity-table">
                 <thead>
@@ -149,11 +158,13 @@
     </div>
 
     <script>
+        //-----------------------Declarar variables-------------------------------------------------------------------------------------
+
         let mapRealTime, markerRealTime, realTimePath = [], realTimePolyline;
         let mapRoute, routePolyline,segmentPolylines=[];
         let mapSearch, markerSearch;
 
-        //-------------------------------------------------------------------------------------------------------
+        //--------------------------------------Buscada Tiempo Real------------------------------------------------------------------------------------
 
         function initMapRealTime() {
             mapRealTime = new google.maps.Map(document.getElementById('map-realtime'), {
@@ -199,7 +210,7 @@
                 .catch(error => console.error('Error al obtener la ubicación en tiempo real:', error));
             }, 5000);
         }
-        //--------------------------------------------------------------------------------------------------------------------------
+        //--------------------------------------Busqueda por Ruta------------------------------------------------------------------------------------
 
         function initMapRoute() {
             mapRoute = new google.maps.Map(document.getElementById('map-route'), {
@@ -265,14 +276,26 @@
             });
         }
 
-        //-----------------------------------------------------------------------------------------------------------------
+        //-------------------------------Busqueda por Direccion----------------------------------------------------------------------------------
 
         function initMapSearch() {
             mapSearch = new google.maps.Map(document.getElementById('map-search'), {
                     zoom: 15,
                     center: { lat: 11.0190513, lng: -74.8511425 }
             });
-    
+            //Lineas paraobtener valores del Slider
+            const radiusValue = radiusSlider.value;
+            const radiusSlider = document.getElementById("radius-slider");
+            const radiusDisplay = document.getElementById("radius-value");
+            radiusSlider.oninput = function(){
+                radiusDisplay.innerText = "Valor actual: " + this.value + " m";
+            };
+            //Linea para reiniciar la barra de busqueda
+            const autocompleteInput = document.getElementById('autocomplete');
+            autocompleteInput.value = '';
+
+            //Linea de Busqueda direccion
+
             const autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'));
             autocomplete.addListener('place_changed', function () {
                     const place = autocomplete.getPlace();
@@ -303,6 +326,7 @@
                     logDiv.innerHTML = `<div>${logMessage}</div>`; // Solo mostrar el último mensaje
     
                     fetch(`check_proximity.php?lat=${position.lat()}&lng=${position.lng()}`)
+                    //fetch(`check_proximity.php?lat=${position.lat()}&lng=${position.lng()}&radius=${radiusValue}`) 
                     .then(response => response.json())
                     .then(data => {
                             console.log(data); // Verificar la respuesta del servidor
@@ -312,7 +336,7 @@
                             // Mostrar la cantidad de veces que se ha pasado por el lugar
                             document.getElementById('visit-count').innerText = `Cantidad de visitas: ${data.locations.length}`;
     
-                            // Crear un array para almacenar las ubicaciones para la polilínea
+                            // Crear un array para almacenar las ubicaciones para la polilínea (Array de Respaldo de informacion)
                             const pathForPolyline = [];
     
                             // Solo mostrar los datos que cumplen la condición de proximidad en la tabla
