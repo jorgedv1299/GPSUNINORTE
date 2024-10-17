@@ -1,7 +1,6 @@
 <?php
 header('Content-Type: application/json');
 
-
 $servername = "disenoelec.c98ge4aae1fw.us-east-1.rds.amazonaws.com"; // Reemplaza con el endpoint de tu RDS si es necesario
 $username = "bastod";       // Cambia al usuario de tu base de datos
 $password = "bastod0529";           // Cambia a la contraseña de tu base de datos
