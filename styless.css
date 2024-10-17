@@ -1,0 +1,219 @@
+/* Estilos generales */
+body {
+    font-family: Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #12025a;
+    height: 100vh; /* Altura completa de la pantalla */
+    display: flex;
+    flex-direction: column; /* Alineación en columna */
+}
+
+html {
+    height: 100%; /* Aseguramos que html ocupe toda la pantalla */
+}
+
+.container {
+    padding: 20px;
+    background-color: #0cc782;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 1200px;
+    width: 100%;
+    margin: 20px auto; /* Centramos el contenedor */
+    box-sizing: border-box; /* Asegura que el padding esté dentro de la altura */
+    display: none; /* Secciones ocultas por defecto */
+    flex-grow: 1; /* Para que el contenido ocupe el espacio restante */
+    
+}
+
+h1 {
+    color: #333;
+}
+
+#map-realtime, #map-route, #map-search {
+    height: calc(100% - 100px); /* El mapa ocupará todo el contenedor */
+    width: 100%;
+    margin-top: 20px;
+}
+
+.input-group {
+    margin: 10px 0;
+}
+
+/* Navbar en la parte superior de la página */
+nav {
+    background-color: #444;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    border-radius: 0; /* Quitamos el borde redondeado del navbar */
+    width: 100%;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Para mantenerlo encima de otros elementos */
+}
+
+nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+nav a:hover {
+    background-color: #666;
+    transform: scale(1.05);
+}
+
+nav a.active {
+    background-color: #333;
+    padding: 5px 10px;
+    box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+/* Ajuste para dar espacio debajo del navbar */
+.main-content {
+    padding-top: 80px; /* Espacio para evitar que el contenido quede detrás del navbar */
+}
+
+#location {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+#location p {
+    margin: 0 20px;
+    font-size: 1.2rem;
+}
+
+/* Tablas */
+table {
+    margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #444;
+    color: white;
+}
+
+#log {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* Responsive adjustments */
+
+/* Para pantallas de menos de 1200px (tablets y pequeños escritorios) */
+@media (max-width: 1200px) {
+    .container {
+        width: 100%;
+        margin: 20px auto; /* Centramos el contenedor */
+        box-sizing: border-box; /* Asegura que el padding esté dentro de la altura */
+        display: none; /* Secciones ocultas por defecto */
+        flex-grow: 1; /* Para que el contenido ocupe el espacio restante */
+    }
+
+    #map-realtime, #map-route, #map-search {
+        height: calc(100% - 100px);
+    }
+
+    nav a {
+        margin: 0 10px;
+        padding: 8px 12px;
+    }
+}
+
+/* Para pantallas de menos de 768px (tablets en orientación vertical) */
+@media (max-width: 768px) {
+    .container {
+        margin: 0;
+        padding: 10px;
+        max-width: 95%;
+        height: calc(100vh - 80px);
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    #map-realtime, #map-route, #map-search {
+        height: calc(100% - 100px);
+    }
+
+    nav {
+        flex-direction: column;
+        padding: 5px;
+    }
+
+    nav a {
+        margin: 5px 0;
+        padding: 10px;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Para pantallas de menos de 480px (smartphones) */
+@media (max-width: 480px) {
+    .container {
+        margin: 0;
+        padding: 10px;
+        height: calc(100vh - 70px);
+    }
+
+    h1 {
+        font-size: 1.2rem;
+    }
+
+    #map-realtime, #map-route, #map-search {
+        height: calc(100% - 100px);
+    }
+
+    nav a {
+        font-size: 0.9rem;
+        padding: 8px;
+    }
+
+    .input-group label, .input-group input {
+        font-size: 0.9rem;
+        padding: 5px;
+    }
+
+    table, th, td {
+        font-size: 0.8rem;
+    }
+
+    #log {
+        font-size: 0.8rem;
+        max-height: 150px;
+    }
+
+    #location {
+        flex-direction: column;
+    }
+
+    #location p {
+        margin: 10px 0;
+    }
+}
