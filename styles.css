@@ -4,7 +4,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: #12025a;
-    height: 100vh; /* Altura completa de la pantalla */
+    /*height: 100vh; /* Altura completa de la pantalla | Esta linea es el encargado de fijar el tamaño de la pagina */
     display: flex;
     flex-direction: column; /* Alineación en columna */
 }
@@ -34,7 +34,7 @@ h1 {
 
 /* Asegúrate de que el mapa ocupe el 100% del contenedor */
 #map-realtime, #map-route, #map-search {
-    height: 500px; /* Ajusta la altura del mapa según el contenedor */
+    height: 500px; 
     width: 100%; /* Ocupa todo el ancho del contenedor */
     margin-top: 20px;
     border: 1px solid #ccc; /* Agrega un borde para ver los límites del mapa */
@@ -88,7 +88,7 @@ nav a.active {
 .main-content {
     padding-top: 80px; /* Espacio para evitar que el contenido quede detrás del navbar */
 }
-
+/* Display de los textos */
 #location {
     display: flex;
     justify-content: space-around;
