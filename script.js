@@ -165,7 +165,9 @@ function initMapSearch() {
                         scaledSize: new google.maps.Size(30, 30)
                     }
             });
-            mapSearch.setCenter(position);
+            mapSearch.setCenter(position); //Centrar mapa
+            document.getElementById('search-address').disabled = true; // desabilitar busqueda
+            document.getElementById('new-search').style.display = 'inline-block'; // Mostrar boton nuevo
 
             // Log de la dirección y coordenadas
             const logDiv = document.getElementById('log');
@@ -236,6 +238,25 @@ function initMapSearch() {
             })
             .catch(error => console.error('Error al verificar la proximidad:', error));
     });
+    // Evento de clic en el botón de "Nueva Búsqueda"
+    document.getElementById('new-search').addEventListener('click', function () {
+        // Habilitar el botón de búsqueda y ocultar el de "Nueva Búsqueda"
+        document.getElementById('search-address').disabled = false;
+        document.getElementById('new-search').style.display = 'none';
+
+        // Limpiar el campo de dirección
+        document.getElementById('autocomplete').value = '';
+        // Eliminar el marcador actual del mapa si existe
+        if (markerSearch) {
+            markerSearch.setMap(null);
+        }
+        // Limpia el log y la tabla de resultados de proximidad
+        document.getElementById('log').innerHTML = '';
+        document.querySelector('#proximity-table tbody').innerHTML = '';
+        document.getElementById('visit-count').innerText = '';
+
+    });
+
 }
 
 //----------------------------------------------------------------------------------------------------------------------------

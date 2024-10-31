@@ -26,6 +26,7 @@ html {
     display: block; /* Aseguramos que se muestre correctamente */
     flex-grow: 1; /* Para que el contenido ocupe el espacio restante */
     overflow: hidden; /* Para evitar que los elementos sobrepasen el contenedor */
+    text-align: center; /*para centrar el texto*/
 }
 
 h1 {
