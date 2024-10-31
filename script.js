@@ -64,7 +64,7 @@ function initMapRoute() {
 
         if (startDate && endDate) {
             const url = `get_route.php?start=${startDate}&end=${endDate}`;
-            const colors = ["#FF0000", "#0000FF", "#FFA500","#aa8caf"]; // rojo, azul, naranja
+            const colors = ["#FF0000", "#0000FF", "#FFA500","#AA8CAF"]; // rojo, azul, naranja
             //const colors = ["#FF0000", "#0000FF", "#FFA500", "#00FFFF", "#FF6347", "#008000", "#FFD700", "#800080"];//rojo, azul, naranja, azul marino, rojo tomate, dorado, morado
 
             fetch(url)
