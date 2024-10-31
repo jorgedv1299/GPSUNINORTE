@@ -4,7 +4,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: #12025a;
-    height: 100vh; /* Altura completa de la pantalla */
+    /*height: 100vh; /* Altura completa de la pantalla | Esta linea es el encargado de fijar el tamaño de la pagina */
     display: flex;
     flex-direction: column; /* Alineación en columna */
 }
@@ -15,7 +15,12 @@ html {
 
 .container {
     padding: 20px;
+
+    align-items: center; /* Cambié 'c' por 'center' para alinear el contenido */
+    background-color: #ff8000;
+
     background-color: #0cc782;
+
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     max-width: 1200px;
@@ -24,7 +29,10 @@ html {
     box-sizing: border-box; /* Asegura que el padding esté dentro de la altura */
     display: none; /* Secciones ocultas por defecto */
     flex-grow: 1; /* Para que el contenido ocupe el espacio restante */
-    
+
+    overflow: hidden; /* Para evitar que los elementos sobrepasen el contenedor */
+    text-align: center; /*para centrar el texto*/
+
 }
 
 h1 {
@@ -32,8 +40,13 @@ h1 {
 }
 
 #map-realtime, #map-route, #map-search {
+
+    height: 500px; 
+    width: 100%; /* Ocupa todo el ancho del contenedor */
+
     height: calc(100% - 100px); /* El mapa ocupará todo el contenedor */
     width: 100%;
+
     margin-top: 20px;
 }
 
@@ -82,7 +95,7 @@ nav a.active {
 .main-content {
     padding-top: 80px; /* Espacio para evitar que el contenido quede detrás del navbar */
 }
-
+/* Display de los textos */
 #location {
     display: flex;
     justify-content: space-around;

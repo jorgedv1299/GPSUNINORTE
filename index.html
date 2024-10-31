@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GPS UNINORTE</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Archivo CSS externo -->
+    <link rel="stylesheet" href="styles.css"> <!-- Archivo CSS que dicta la Estetica -->
 </head>
 <body>
     <nav>
@@ -12,9 +12,13 @@
         <a href="#search" id="nav-search">Buscar recorrido</a>
         <a href="#address-search" id="nav-address-search">Buscar por dirección</a>
     </nav>
-    
+    <!-- Pagina principal | Tiempo real  ------------------------------------------------------------------------>
     <div class="container" id="realtime-section">
+
+        <h1>GPS Recorrido en Tiempo Real</h1>
+
         <h1>GPS<br>Recorrido en Tiempo Real</h1>
+
         <div id="location">
             <p><strong>Latitud:</strong> <span id="latitud">Cargando...</span></p>
             <p><strong>Longitud:</strong> <span id="longitud">Cargando...</span></p>
@@ -44,22 +48,70 @@
         </div>
     </div>
 
+    <!-- Busqueda por Fecha  ------------------------------------------------------------------------------------>
+
     <div class="container" id="search-section">
+
+        <h1 style="font-family: times new roman, sans-serif;text-shadow: #6374AB 0px 3px 1px;font-weight: bold; font-size: 40px; background-color:#FFA420;margin-top: 20px; display: inline-block; border-radius: 10px;box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2), -3px -3px 6px rgba(255, 255, 255, 0.5);padding: 10px 10px; ">Buscar Recorrido</h1>
+
         <h1>GPS<br>Buscar Recorrido</h1>
+
         <div class="input-group">
-            <label for="start-date">Fecha y hora inicial:</label>
+            <label for="start-date"style="font-family: times new roman, sans-serif;font-weight: bold; font-size: 20px; background-color:#FFA420;margin-top: 20px; display: inline-block; border-radius: 10px;box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2), -3px -3px 6px rgba(255, 255, 255, 0.5);padding: 10px 10px; " >Fecha y hora inicial:</label>
             <input type="datetime-local" id="start-date">
         </div>
         <div class="input-group">
-            <label for="end-date">Fecha y hora final:</label>
+            <label for="end-date"style="font-family: times new roman, sans-serif;font-weight: bold; font-size: 20px; background-color:#FFA420;margin-top: 20px; display: inline-block; border-radius: 10px;box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2), -3px -3px 6px rgba(255, 255, 255, 0.5);padding: 10px 10px; " >Fecha y hora final:</label>
             <input type="datetime-local" id="end-date">
         </div>
         <button id="show-route">Mostrar recorrido</button>
         <div id="map-route"></div>
     </div>
 
+    <!-- Busqueda por direccion -------------------------------------------------------------------------------->
+
     <div class="container" id="address-search-section">
+
+        <h1 style="font-family: times new roman, sans-serif;text-shadow: #6374AB 0px 3px 1px;font-weight: bold; font-size: 40px; background-color:#FFA420;margin-top: 20px; display: inline-block; border-radius: 10px;box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2), -3px -3px 6px rgba(255, 255, 255, 0.5);padding: 10px 10px; ">
+            Busqueda por dirección</h1>
+        <div class="input-group">
+            <label 
+            for="address-input" 
+            style="font-family: times new roman, sans-serif;font-weight: bold; font-size: 20px; background-color:#FFA420;margin-top: 20px; display: inline-block; border-radius: 10px;box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2), -3px -3px 6px rgba(255, 255, 255, 0.5);padding: 10px 10px; ">
+            Dirección:</label>
+            <input type="text" id="autocomplete" placeholder="Ingrese una dirección"style="width: 550px;" >
+        </div>
+
+
+        <label for="radius-slider" style="font-family: times new roman, sans-serif;font-weight: bold; font-size: 20px; background-color:#FFA420;margin-top: 20px; display: inline-block; border-radius: 10px;box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2), -3px -3px 6px rgba(255, 255, 255, 0.5);padding: 10px 10px;">
+            Radio (m):
+        </label>
+        <input type="range" id="radius-slider" min="10" max="1000" step="10" value="100" style="width: 550px;">
+        <p id="radius-value">Valor actual: 100 m</p>
+        
+        
+        <button id="search-address">Buscar</button>
+        <button id="new-search" style="display: none;">Nueva Búsqueda</button>
+        <div id="map-search"></div>
+        <h2 id="table-title">Historial de visitas</h2>
+        <p id="visit-count"></p>
+        <table id="proximity-table">
+                <thead>
+                        <tr>
+                                <th>Fecha</th>
+                        </tr>
+                </thead>
+                <tbody></tbody>
+        </table>
+      <h2>Log de Envíos</h2>
+        <div id="log"></div>
+    </div>
+
+    <!--<div class="container" id="address-search-section">
+        <h1>GPS Buscar por Dirección</h1>
+
         <h1>GPS<br>Buscar por Dirección</h1>
+
         <div class="input-group">
             <label for="address-input">Dirección:</label>
             <input type="text" id="autocomplete" placeholder="Ingrese una dirección">
@@ -85,9 +137,15 @@
         </table>
       <h2>Log de Envíos</h2>
         <div id="log"></div>
-    </div>
+    </div>-->
+
+
+    <script src="script.js"></script> <!-- Archivo JS externo que se encarga del Back-end -->
+    
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRealTime" async defer></script>
 
     <script src="script.js"></script> 
     <script src="scriptINT.js"></script> 
+
 </body>
 </html>
