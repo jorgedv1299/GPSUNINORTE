@@ -49,7 +49,7 @@
             for="address-input" 
             style="font-family: times new roman, sans-serif;font-weight: bold; font-size: 20px; background-color:#FFA420;margin-top: 20px; display: inline-block; border-radius: 10px;box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2), -3px -3px 6px rgba(255, 255, 255, 0.5);padding: 10px 10px; ">
             Dirección:</label>
-            <input type="text" id="autocomplete" placeholder="Ingrese una dirección"style="width: 400px;" >
+            <input type="text" id="autocomplete" placeholder="Ingrese una dirección"style="width: 550px;" >
         </div>
 
 
@@ -59,7 +59,9 @@
         <input type="range" id="radius-slider" min="10" max="300" step="10" value="100" style="width: 400px;">
         <p id="radius-value">Valor actual: 100 m</p>
         
+        
         <button id="search-address">Buscar</button>
+        <button id="new-search" style="display: none;">Nueva Búsqueda</button>
         <div id="map-search"></div>
         <h2 id="table-title">Historial de visitas</h2>
         <p id="visit-count"></p>

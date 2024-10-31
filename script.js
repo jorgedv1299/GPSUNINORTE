@@ -124,7 +124,8 @@ function initMapSearch() {
             zoom: 15,
             center: { lat: 11.0190513, lng: -74.8511425 }
     });
-    //Lineas paraobtener valores del Slider
+
+    //Lineas para obtener valores del Slider
    
     const radiusSlider = document.getElementById("radius-slider");
     const radiusDisplay = document.getElementById("radius-value");
@@ -137,21 +138,24 @@ function initMapSearch() {
     const autocompleteInput = document.getElementById('autocomplete');
     autocompleteInput.value = '';
 
-    //Linea de Busqueda direccion
+    //Lineas de Busqueda direccion
 
-    const autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'));
-    autocomplete.addListener('place_changed', function () {
+    const autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete')); 
+    //autocomplete.addListener('place_changed', function () {
+    document.getElementById('search-address').addEventListener('click', function () {
             const place = autocomplete.getPlace();
-            if (!place.geometry) {
+            if (!place || !place.geometry)  {
                     alert('No se pudo obtener la ubicación de la dirección ingresada.');
                     return;
             }
+
+            const position = place.geometry.location;
 
             if (markerSearch) {
                     markerSearch.setMap(null);
             }
 
-            const position = place.geometry.location;
+            
             markerSearch = new google.maps.Marker({
                     position: position,
                     map: mapSearch,
@@ -168,7 +172,8 @@ function initMapSearch() {
             const logMessage = `${new Date().toLocaleString()}: ${place.formatted_address} | Enviando a check_proximity.php: lat=${position.lat()}, lng=${position.lng()}`;
             logDiv.innerHTML = `<div>${logMessage}</div>`; // Solo mostrar el último mensaje
 
-            //fetch(`check_proximity.php?lat=${position.lat()}&lng=${position.lng()}`)
+            // Linea comentada para usar el default sin slider fetch(`check_proximity.php?lat=${position.lat()}&lng=${position.lng()}`)
+
             fetch(`check_proximity.php?lat=${position.lat()}&lng=${position.lng()}&radius=${radiusValue}`) 
             .then(response => response.json())
             .then(data => {
