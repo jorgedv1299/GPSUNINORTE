@@ -16,10 +16,12 @@ error_log("Latitud: $lat, Longitud: $lng"); // Registro en el log del servidor
 
 try {
     // Conectar a la base de datos
-    $host = 'database-1.cdcwiy8egoqg.us-east-1.rds.amazonaws.com';
-    $db = 'gps';
-    $user = 'root';
-    $pass = '15963247';
+
+    $host = 'disenoelec.c98ge4aae1fw.us-east-1.rds.amazonaws.com';
+    $db = 'disenoelec';
+    $user = 'bastod';
+    $pass = 'bastod0529';
+
     $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Manejo de errores
 
