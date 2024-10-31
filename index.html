@@ -5,123 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GPS UNINORTE</title>
     <link rel="stylesheet" href="styles.css"> <!-- Archivo CSS externo -->
-<<<<<<< HEAD
-    <style>
-        body {
-            font-family: Roboto, sans-serif;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            background-color: #12025a;
-        }
-        .container {
-            padding: 20px;
-            background-color: #ff8000;
-            margin: 50px auto;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 1200px;
-            display: none; /* Secciones ocultas por defecto */
-        }
-        h1 {
-            color: #000000;
-            background-blend-mode:luminosity;
-            display: flex; 
-            justify-content: center;
-            align-items: center;
-            height: 15vh;
-        }
-        p{
-            color:#000000;
-        }
-        #map-realtime, #map-route, #map-search {
-            height: 700px;
-            width: 100%;
-            margin-top: 20px;
-        }
-        .input-group {
-            margin: 5px 0;
-        }
-        nav {
-            background-color: #444;
-            padding: 10px;
-            display: flex;
-            justify-content: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-        nav a {
-            color: white;
-            margin: 0 15px;
-            text-decoration: none;
-            cursor: pointer;
-            padding: 10px 15px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease, transform 0.2s;
-        }
-        nav a:hover {
-            background-color: #666;
-            transform: scale(1.05);
-        }
-        nav a.active {
-            background-color: #333;
-            padding: 5px 10px;
-            box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
-        }
-        table {
-            margin-top: 20px;
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #444;
-            color: white;
-        }
-        #log {
-            background-color: #fff;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-    </style>
-=======
->>>>>>> refs/remotes/origin/master
 </head>
 <body>
     <nav>
         <a href="#realtime" id="nav-realtime">Ver posición en tiempo real</a>
         <a href="#search" id="nav-search">Buscar recorrido</a>
-        <a href="#address-search" id="nav-address-search">Busqueda por dirección</a>
+        <a href="#address-search" id="nav-address-search">Buscar por dirección</a>
     </nav>
     
     <div class="container" id="realtime-section">
-        <h1>GPS<br>Recorrido en Tiempo <Ri:a></Ri:a>eal</h1>
-<<<<<<< HEAD
-        <h1 style ="text-shadow: #6374AB 0px 3px 1px;">GPS<br>Recorrido en tiempo real</h1>
-=======
->>>>>>> refs/remotes/origin/master
+        <h1>GPS<br>Recorrido en Tiempo Real</h1>
         <div id="location">
             <p><strong>Latitud:</strong> <span id="latitud">Cargando...</span></p>
             <p><strong>Longitud:</strong> <span id="longitud">Cargando...</span></p>
             <p><strong>Timestamp:</strong> <span id="timestamp">Cargando...</span></p>
         </div>
-        <div id="map-realtime"></div>
+        
+        <div id="realtime-info">
+            <div id="map-realtime"></div>
+
+            <div id="vehicle-info">
+                <h2>Información del vehículo</h2>
+                <div class="gauge-container">
+                    <div class="gauge">
+                        <div class="needle" id="speed-needle"></div>
+                        <div class="center-circle"></div>
+                        <div class="gauge-label">Velocidad</div>
+                        <div class="gauge-value" id="speed-value">0 km/h</div>
+                    </div>
+                    <div class="gauge">
+                        <div class="needle" id="rpm-needle"></div>
+                        <div class="center-circle"></div>
+                        <div class="gauge-label">RPM</div>
+                        <div class="gauge-value" id="rpm-value">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="container" id="search-section">
         <h1>GPS<br>Buscar Recorrido</h1>
-<<<<<<< HEAD
-        <h1 style ="text-shadow: #6374AB 0px 3px 1px;">Buscar Recorrido</h1>
-=======
->>>>>>> refs/remotes/origin/master
         <div class="input-group">
             <label for="start-date">Fecha y hora inicial:</label>
             <input type="datetime-local" id="start-date">
@@ -136,30 +60,20 @@
 
     <div class="container" id="address-search-section">
         <h1>GPS<br>Buscar por Dirección</h1>
-<<<<<<< HEAD
-        <h1 style="font-family: times new roman, sans-serif;text-shadow: #6374AB 0px 3px 1px;font-weight: bold; font-size: 40px; background-color:#ff9730;margin-top: 20px; display: inline-block; border-radius: 10px;box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2), -3px -3px 6px rgba(255, 255, 255, 0.5);padding: 10px 10px; ">
-            Busqueda por dirección</h1>
-=======
->>>>>>> refs/remotes/origin/master
         <div class="input-group">
-            <label 
-            for="address-input" 
-            style="font-family: times new roman, sans-serif;font-weight: bold; font-size: 20px; background-color:#ff9730;margin-top: 20px; display: inline-block; border-radius: 10px;box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2), -3px -3px 6px rgba(255, 255, 255, 0.5);padding: 10px 10px; ">
-            Dirección:</label>
-            <input type="text" id="autocomplete" placeholder="Ingrese una dirección"style="width: 400px;" >
+            <label for="address-input">Dirección:</label>
+            <input type="text" id="autocomplete" placeholder="Ingrese una dirección">
         </div>
 
+        <div class="input-group">
+            <label for="range-input">Rango (metros):</label>
+            <input type="number" id="range-input" placeholder="Ingrese el rango en metros" min="1">
+        </div>
 
-        <label for="radius-slider" style="font-family: times new roman, sans-serif;font-weight: bold; font-size: 20px; background-color:#ff9730;margin-top: 20px; display: inline-block; border-radius: 10px;box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2), -3px -3px 6px rgba(255, 255, 255, 0.5);padding: 10px 10px;">
-            Radio (m):
-        </label>
-        <input type="range" id="radius-slider" min="10" max="200" step="10" value="100" style="width: 400px;">
-        <p id="radius-value">Valor actual: 100 m</p>
-
-
+        
         <button id="search-address">Buscar</button>
         <div id="map-search"></div>
-        <h2>Historial de visitas en 100 metros</h2>
+        <h2>Historial de visitas en 40 metros</h2>
         <p id="visit-count"></p>
         <table id="proximity-table">
             <thead>
@@ -173,298 +87,7 @@
         <div id="log"></div>
     </div>
 
-    <script>
-        //-----------------------Declarar variables-------------------------------------------------------------------------------------
-
-        let mapRealTime, markerRealTime, realTimePath = [], realTimePolyline;
-        let mapRoute, routePolyline,segmentPolylines=[];
-        let mapSearch, markerSearch;
-
-        //--------------------------------------Buscada Tiempo Real------------------------------------------------------------------------------------
-
-        function initMapRealTime() {
-            mapRealTime = new google.maps.Map(document.getElementById('map-realtime'), {
-                zoom: 15,
-                center: { lat: 11.0190513, lng: -74.8511425 }
-            });
-            markerRealTime = new google.maps.Marker({
-                position: { lat: 11.0190513, lng: -74.8511425 },
-                map: mapRealTime,
-                icon: {
-                    url: "https://maps.google.com/mapfiles/ms/icons/orange-dot.png",
-                    scaledSize: new google.maps.Size(30, 30)
-                }
-            });
-
-            realTimePolyline = new google.maps.Polyline({
-                path: realTimePath,
-                geodesic: true,
-                strokeColor: "#0000FF",
-                strokeOpacity: 1.0,
-                strokeWeight: 2
-            });
-            realTimePolyline.setMap(mapRealTime);
-
-            setInterval(() => {
-                fetch('get_location.php')
-                .then(response => response.json())
-                .then(data => {
-                    const { latitud, longitud, timestamp } = data;
-
-                    document.getElementById('latitud').innerText = latitud;
-                    document.getElementById('longitud').innerText = longitud;
-                    document.getElementById('timestamp').innerText = timestamp;
-
-                    const newPosition = { lat: parseFloat(latitud), lng: parseFloat(longitud) };
-                    markerRealTime.setPosition(newPosition);
-                    mapRealTime.setCenter(newPosition);
-
-                    realTimePath.push(newPosition);
-                    realTimePolyline.setPath(realTimePath);
-
-                })
-                .catch(error => console.error('Error al obtener la ubicación en tiempo real:', error));
-            }, 5000);
-        }
-        //--------------------------------------Busqueda por Ruta------------------------------------------------------------------------------------
-
-        function initMapRoute() {
-            mapRoute = new google.maps.Map(document.getElementById('map-route'), {
-                zoom: 15,
-                center: { lat: 11.0190513, lng: -74.8511425 }
-            });
-
-            document.getElementById('show-route').addEventListener('click', () => {
-                const startDate = document.getElementById('start-date').value;
-                const endDate = document.getElementById('end-date').value;
-
-                if (startDate && endDate) {
-                    const url = `get_route.php?start=${startDate}&end=${endDate}`;
-                    const colors = ["#FF0000", "#0000FF", "#FFA500"]; // rojo, azul, naranja
-
-                    fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
-                        const routePath = data.map(point => ({lat: parseFloat(point.latitud),lng: parseFloat(point.longitud) }));
-
-                        //Limpiar mapas de posibles Polilineas-------------
-                        if (routePolyline) {
-                            routePolyline.setMap(null);
-                        }
-                        segmentPolylines.forEach(polyline => polyline.setMap(null));
-                        segmentPolylines=[];
-                        //--------------------------------------------------
-
-                        routePolyline = new google.maps.Polyline({
-                            path: routePath,
-                            geodesic: true,
-                            strokeColor: "#FF0000",
-                            strokeOpacity: 0.5,
-                            strokeWeight: 2
-                        });
-                        // Recorre los puntos de la ruta y crea segmentos
-                        for (let i = 0; i < routePath.length - 1; i++) {
-                            const segmentPath = [routePath[i], routePath[i + 1]]; // Segmento entre dos puntos consecutivos
-                            const segmentPolyline= new google.maps.Polyline({
-                                path: segmentPath,
-                                geodesic: true,
-                                strokeColor: colors[i%colors.length],
-                                strokeOpacity:1.0,
-                                strokeWeight:2
-
-                            });
-
-                            //Ponerla segmentada en el mapa
-                            segmentPolyline.setMap(mapRoute);
-                            segmentPolylines.push(segmentPolyline);
-                        }
-                        //Centrar el mapa desde el incio
-                        if(routePath.length > 0){
-                            mapRoute.setCenter(routePath[0]);
-                        }
-
-                        
-                    })
-                    .catch(error => console.error('Error al obtener el recorrido:', error));
-                } else {
-                    alert('Por favor, seleccione una fecha de inicio y final.');
-                }
-            });
-        }
-
-        //-------------------------------Busqueda por Direccion----------------------------------------------------------------------------------
-
-        function initMapSearch() {
-            mapSearch = new google.maps.Map(document.getElementById('map-search'), {
-                    zoom: 15,
-                    center: { lat: 11.0190513, lng: -74.8511425 }
-            });
-            //Lineas paraobtener valores del Slider
-           
-            const radiusSlider = document.getElementById("radius-slider");
-            const radiusDisplay = document.getElementById("radius-value");
-            const radiusValue = radiusSlider.value; 
-            radiusSlider.oninput = function(){
-                radiusDisplay.innerText = "Valor actual: " + this.value + " m";
-            };
-            //Linea para reiniciar la barra de busqueda
-            const autocompleteInput = document.getElementById('autocomplete');
-            autocompleteInput.value = '';
-
-            //Linea de Busqueda direccion
-
-            const autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'));
-            autocomplete.addListener('place_changed', function () {
-                    const place = autocomplete.getPlace();
-                    if (!place.geometry) {
-                            alert('No se pudo obtener la ubicación de la dirección ingresada.');
-                            return;
-                    }
-    
-                    if (markerSearch) {
-                            markerSearch.setMap(null);
-                    }
-    
-                    const position = place.geometry.location;
-                    markerSearch = new google.maps.Marker({
-                            position: position,
-                            map: mapSearch,
-                            title: place.formatted_address,
-                            icon: {
-                                url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
-                                scaledSize: new google.maps.Size(30, 30)
-                            }
-                    });
-                    mapSearch.setCenter(position);
-    
-                    // Log de la dirección y coordenadas
-                    const logDiv = document.getElementById('log');
-                    const logMessage = `${new Date().toLocaleString()}: ${place.formatted_address} | Enviando a check_proximity.php: lat=${position.lat()}, lng=${position.lng()}`;
-                    logDiv.innerHTML = `<div>${logMessage}</div>`; // Solo mostrar el último mensaje
-    
-                    fetch(`check_proximity.php?lat=${position.lat()}&lng=${position.lng()}`)
-                    //fetch(`check_proximity.php?lat=${position.lat()}&lng=${position.lng()}&radius=${radiusValue}`) 
-                    .then(response => response.json())
-                    .then(data => {
-                            console.log(data); // Verificar la respuesta del servidor
-                            const tbody = document.querySelector('#proximity-table tbody');
-                            tbody.innerHTML = ''; // Limpiar contenido anterior
-    
-                            // Mostrar la cantidad de veces que se ha pasado por el lugar
-                            document.getElementById('visit-count').innerText = `Cantidad de visitas: ${data.locations.length}`;
-    
-                            // Crear un array para almacenar las ubicaciones para la polilínea (Array de Respaldo de informacion)
-                            const pathForPolyline = [];
-    
-                            // Solo mostrar los datos que cumplen la condición de proximidad en la tabla
-                            if (data.locations.length > 0) {
-                                    data.locations.forEach(row => {
-                                            const tr = document.createElement('tr');
-                                            tr.innerHTML = `<td>${row.fecha}</td>`; // Solo mostrar la fecha
-                                            tbody.appendChild(tr);
-
-                                            //Linea para marcador
-                                            const position={
-                                                lat: parseFloat(row.latitud),
-                                                lng: parseFloat(row.longitud)
-                                            };
-
-                                            //Intercalar Colores
-                                            const marker = new google.maps.Marker({
-                                                position:position,
-                                                map: mapSearch,
-                                                title: row.fecha, // mostrar fecha
-                                                icon:{
-                                                    path:google.maps.SymbolPath.CIRCLE,
-                                                    scale:8, // Tamao del Marcador
-                                                    fillColor: "#FF0000",
-                                                    fillOpacity: 1,
-                                                    strokeColor:"#FFFFFF",
-                                                    strokeWeight:2,     
-                                                }
-
-                                            });
-                                            //Linea para que la fecha salga cuando pase el mause
-                                            const infoWindow = new google.maps.InfoWindow();
-                                            google.maps.event.addListener(marker, 'mouseover', function() {
-                                                infoWindow.setContent(row.fecha);
-                                                infoWindow.open(mapSearch, marker);
-                                            });
-
-                                            //Linea para que el infoWindow desaparesca
-                                            google.maps.event.addListener(marker, 'mouseout', function() {
-                                                infoWindow.close();
-                                            });
-                                    });        
-                            } else {
-                                    // Si no hay datos, muestra un mensaje en la tabla
-                                    const tr = document.createElement('tr');
-                                    tr.innerHTML = `<td colspan="1">No se encontraron registros dentro del radio.</td>`;
-                                    tbody.appendChild(tr);
-                            }
-                    })
-                    .catch(error => console.error('Error al verificar la proximidad:', error));
-            });
-        }
-
-        //----------------------------------------------------------------------------------------------------------------------------
-    
-
-
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('nav-realtime').addEventListener('click', () => {
-                document.querySelectorAll('.container').forEach(container => container.style.display = 'none');
-                document.getElementById('realtime-section').style.display = 'block';
-                initMapRealTime();
-            });
-
-            document.getElementById('nav-search').addEventListener('click', () => {
-                document.querySelectorAll('.container').forEach(container => container.style.display = 'none');
-                document.getElementById('search-section').style.display = 'block';
-                initMapRoute();
-            });
-
-            document.getElementById('nav-address-search').addEventListener('click', () => {
-                document.querySelectorAll('.container').forEach(container => container.style.display = 'none');
-                document.getElementById('address-search-section').style.display = 'block';
-                initMapSearch();
-            });
-
-            // Activar sección por defecto
-            document.getElementById('nav-realtime').click();
-        });
-
-        // Función que oculta el enlace del navbar según la sección activa
-        function updateNavbar() {
-            // Obtener todos los enlaces del navbar
-            const navLinks = document.querySelectorAll('nav a');
-            
-            // Obtener el hash actual de la URL (e.g., #realtime)
-            const currentHash = window.location.hash;
-            
-            // Iterar sobre todos los enlaces
-            navLinks.forEach(link => {
-                // Si el href del enlace coincide con el hash actual, lo ocultamos
-                if (link.getAttribute('href') === currentHash) {
-                    link.style.display = 'none';
-                } else {
-                    // Mostrar los enlaces que no coinciden con el hash actual
-                    link.style.display = 'inline'; // O 'block' según el estilo de tu nav
-                }
-            });
-        }
-
-        // Ejecutar la función al cargar la página para manejar el estado inicial
-        window.addEventListener('load', updateNavbar);
-
-        // Escuchar cambios en el hash de la URL para actualizar la navbar dinámicamente
-        window.addEventListener('hashchange', updateNavbar);
-
-
-    </script>
-
-    <!-- Cargar la API de Google Maps y Places -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRealTime" async defer></script>
-
+    <script src="script.js"></script> 
+    <script src="scriptINT.js"></script> 
 </body>
 </html>

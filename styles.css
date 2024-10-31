@@ -122,6 +122,88 @@ th {
     overflow-y: auto;
 }
 
+
+#realtime-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+#map-realtime {
+    width: 70%;
+    height: 400px;
+}
+
+#vehicle-info {
+    width: 25%;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gauge-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.gauge {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border: 5px solid #ccc;
+    border-radius: 50%;
+    margin: 20px;
+    background: #fff;
+}
+
+.needle {
+    position: absolute;
+    width: 4px;
+    height: 60px;
+    background: red;
+    top: 5%;
+    left: 50%;
+    transform-origin: bottom center;
+    transform: rotate(0deg);
+    transition: transform 0.3s ease-out;
+}
+
+.center-circle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #333;
+    border-radius: 50%;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.gauge-label {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translate(-45%, 200%);
+
+    font-weight: bold;
+    color: #333;
+}
+
+.gauge-value {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-35%);
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
 /* Responsive adjustments */
 
 /* Para pantallas de menos de 1200px (tablets y pequeños escritorios) */

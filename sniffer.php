@@ -45,6 +45,8 @@ try {
         id INT AUTO_INCREMENT PRIMARY KEY,
         latitud TEXT NOT NULL,
         longitud TEXT NOT NULL,
+        Velocidad TEXT NOT NULL,
+        rpm TEXT NOT NULL,
         timestamp DATETIME NOT NULL
     )";
 
@@ -86,16 +88,18 @@ while (true) {
             $latitud = $conn->real_escape_string($latitud);
             $longitud = $conn->real_escape_string($longitud);
             $datetime = $conn->real_escape_string($datetime);
+            $velocidad=$conn->real_escape_string($velocidad);
+            $rpm=$conn->real_escape_string($rpm);
 
             // Insertar los datos en la base de datos
-            $sql = "INSERT INTO ubicaciones (latitud, longitud, timestamp) VALUES ('$latitud', '$longitud', '$datetime')";
+            $sql = "INSERT INTO ubicaciones (latitud, longitud, timestamp) VALUES ('$latitud', '$longitud', '$datetime','$velocidad' )";
             if ($conn->query($sql) !== TRUE) {
                 echo "Error: " . $sql . "\n" . $conn->error;
             } else {
                 echo "Datos guardados en la base de datos\n";
             }
         } else {
-            echo "Datos inválidos: Latitud: $latitud, Longitud: $longitud, Timestamp: $timestamp\n";
+            echo "Datos inválidos: Latitud: $latitud, Longitud: $longitud, Timestamp: $timestamp, VELOCIDAD: $velocidad\n";
         }
     } else {
         echo "Formato de datos incorrecto\n";
