@@ -14,17 +14,38 @@
     </nav>
     
     <div class="container" id="realtime-section">
-        <h1>GPS Recorrido en Tiempo <Ri:a></Ri:a>Real</h1>
+        <h1>GPS<br>Recorrido en Tiempo Real</h1>
         <div id="location">
             <p><strong>Latitud:</strong> <span id="latitud">Cargando...</span></p>
             <p><strong>Longitud:</strong> <span id="longitud">Cargando...</span></p>
             <p><strong>Timestamp:</strong> <span id="timestamp">Cargando...</span></p>
         </div>
-        <div id="map-realtime"></div>
+        
+        <div id="realtime-info">
+            <div id="map-realtime"></div>
+
+            <div id="vehicle-info">
+                <h2>Información del vehículo</h2>
+                <div class="gauge-container">
+                    <div class="gauge">
+                        <div class="needle" id="speed-needle"></div>
+                        <div class="center-circle"></div>
+                        <div class="gauge-label">Velocidad</div>
+                        <div class="gauge-value" id="speed-value">0 km/h</div>
+                    </div>
+                    <div class="gauge">
+                        <div class="needle" id="rpm-needle"></div>
+                        <div class="center-circle"></div>
+                        <div class="gauge-label">RPM</div>
+                        <div class="gauge-value" id="rpm-value">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="container" id="search-section">
-        <h1>GPS Buscar Recorrido</h1>
+        <h1>GPS<br>Buscar Recorrido</h1>
         <div class="input-group">
             <label for="start-date">Fecha y hora inicial:</label>
             <input type="datetime-local" id="start-date">
@@ -38,11 +59,17 @@
     </div>
 
     <div class="container" id="address-search-section">
-        <h1>GPS Buscar por Dirección</h1>
+        <h1>GPS<br>Buscar por Dirección</h1>
         <div class="input-group">
             <label for="address-input">Dirección:</label>
             <input type="text" id="autocomplete" placeholder="Ingrese una dirección">
         </div>
+
+        <div class="input-group">
+            <label for="range-input">Rango (metros):</label>
+            <input type="number" id="range-input" placeholder="Ingrese el rango en metros" min="1">
+        </div>
+
         
         <button id="search-address">Buscar</button>
         <div id="map-search"></div>
@@ -60,8 +87,7 @@
         <div id="log"></div>
     </div>
 
-    <script src="script.js"></script> <!-- Archivo JS externo -->
-    
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRealTime" async defer></script>
+    <script src="script.js"></script> 
+    <script src="scriptINT.js"></script> 
 </body>
 </html>
