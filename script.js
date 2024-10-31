@@ -128,7 +128,6 @@ function initMapSearch() {
     //Lineas para obtener valores del Slider
    
     const radiusSlider = document.getElementById("radius-slider");
-    let additionalMarkers = [];
     const radiusDisplay = document.getElementById("radius-value");
     const radiusValue = radiusSlider.value; 
     radiusSlider.oninput = function(){
@@ -166,8 +165,7 @@ function initMapSearch() {
                         scaledSize: new google.maps.Size(30, 30)
                     }
             });
-            additionalMarkers.push(marker);
-
+            
             mapSearch.setCenter(position); //Centrar mapa
             document.getElementById('search-address').disabled = true; // desabilitar busqueda
             document.getElementById('new-search').style.display = 'inline-block'; // Mostrar boton nuevo
@@ -243,10 +241,6 @@ function initMapSearch() {
     });
     // Evento de clic en el botón de "Nueva Búsqueda"
     document.getElementById('new-search').addEventListener('click', function () {
-
-        additionalMarkers.forEach(marker => marker.setMap(null));
-        additionalMarkers = []; // Vaciar el array de marcadores adicionales
-        
         // Habilitar el botón de búsqueda y ocultar el de "Nueva Búsqueda"
         document.getElementById('search-address').disabled = false;
         document.getElementById('new-search').style.display = 'none';
