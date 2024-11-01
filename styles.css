@@ -3,7 +3,7 @@ body {
     font-family: Roboto, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #12025a;
+    background-color: #3f3f41;
     /*height: 100vh; /* Altura completa de la pantalla | Esta linea es el encargado de fijar el tamaño de la pagina */
     display: flex;
     flex-direction: column; /* Alineación en columna */
@@ -17,9 +17,9 @@ html {
     padding: 20px;
 
     align-items: center; /* Cambié 'c' por 'center' para alinear el contenido */
-    background-color: #ff8000;
+    background-color: #000000;
 
-    background-color: #0cc782;
+    background-color: #b7c0bd;
 
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
