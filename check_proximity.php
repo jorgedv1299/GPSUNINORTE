@@ -2,7 +2,12 @@
 // Obtener los parámetros de latitud y longitud desde la solicitud GET
 $lat = isset($_GET['lat']) ? $_GET['lat'] : null;
 $lng = isset($_GET['lng']) ? $_GET['lng'] : null;
+
+$radius = isset($_GET['radius']) ? $_GET['radius'] : 100;
+; // Radio en metros
+
 $radius = 60; // Radio en metros
+
 
 // Verificar si los parámetros son válidos
 if (!$lat || !$lng) {
@@ -67,6 +72,7 @@ try {
             FROM ubicaciones
             WHERE DATE_FORMAT(timestamp, '%Y-%m-%d %H:%i:%s') = :fecha";
 
+
         // Consulta para datos anteriores
         $beforeSql = "
             SELECT latitud, longitud, timestamp
@@ -82,6 +88,25 @@ try {
             WHERE timestamp > :fecha
             ORDER BY timestamp ASC
             LIMIT 4";
+
+
+
+        // Consulta para datos anteriores
+        $beforeSql = "
+            SELECT latitud, longitud, timestamp
+            FROM ubicaciones
+            WHERE timestamp < :fecha
+            ORDER BY timestamp DESC
+            LIMIT 4";
+        
+        // Consulta para datos posteriores
+        $afterSql = "
+            SELECT latitud, longitud, timestamp
+            FROM ubicaciones
+            WHERE timestamp > :fecha
+            ORDER BY timestamp ASC
+            LIMIT 4";
+
 
         // Consulta para datos de la fecha actual
         $currentStmt = $pdo->prepare($currentDataSql);
@@ -111,4 +136,8 @@ try {
     echo json_encode(['error' => 'Error de conexión a la base de datos: ' . $e->getMessage()]);
 }
 ?>
+
+
+
 <?php
+
