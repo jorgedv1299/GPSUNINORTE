@@ -1,11 +1,10 @@
 <?php
 header('Content-Type: application/json'); // Para que el cliente sepa que está recibiendo JSON
 
-$servername = "dbjmll.c16ww6ag23kz.us-east-2.rds.amazonaws.com";
-$username = "administrador";       
-$password = "condorito1";
-$dbname = "dbjmll";
-
+$servername = "database-1.cdcwiy8egoqg.us-east-1.rds.amazonaws.com"; // Reemplaza con el endpoint de tu RDS si es necesario
+$username = "root";       // Cambia al usuario de tu base de datos
+$password = "15963247";           // Cambia a la contraseña de tu base de datos
+$dbname = "gps";
 
 // Crear conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
