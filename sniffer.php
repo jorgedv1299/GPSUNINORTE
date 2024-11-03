@@ -23,10 +23,10 @@ date_default_timezone_set('America/Bogota');
 echo "Escuchando en $ip:$port...\n";
 
 
-$servername = "dbjmll.c16ww6ag23kz.us-east-2.rds.amazonaws.com";
-$username = "administrador";       
-$password = "condorito1";
-$dbname = "dbjmll";
+$servername = "disenoelec.c98ge4aae1fw.us-east-1.rds.amazonaws.com";
+$username = "disenoelec";       
+$password = "bastod";
+$dbname = "bastod0529";
 
 
 

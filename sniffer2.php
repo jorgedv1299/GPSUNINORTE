@@ -19,15 +19,15 @@ date_default_timezone_set('America/Bogota');
 echo "Escuchando en $ip:$port...\n";
 
 // Configuración de la base de datos
-$servername = "dbjmll.c16ww6ag23kz.us-east-2.rds.amazonaws.com";
-$username = "administrador";       
-$password = "condorito1";
-$dbname = "dbjmll";
-
+$servername = "disenoelec.c98ge4aae1fw.us-east-1.rds.amazonaws.com";
+$username = "disenoelec";       
+$password = "bastod";
+$dbname = "bastod0529";
+$port_db = 3306;
 
 try {
     // Conectar a la base de datos
-    $conn = new mysqli($servername, $username, $password, $dbname, $port);
+    $conn = new mysqli($servername, $username, $password, $dbname, $port_db);
 
     // Verificar la conexión
     if ($conn->connect_error) {
