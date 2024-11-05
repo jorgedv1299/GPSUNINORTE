@@ -15,34 +15,40 @@ html {
 
 .container {
     padding: 20px;
+
     align-items: center; /* Cambié 'c' por 'center' para alinear el contenido */
     background-color: #ff8000;
+
+    background-color: #0cc782;
+
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     max-width: 1200px;
     width: 100%;
     margin: 20px auto; /* Centramos el contenedor */
     box-sizing: border-box; /* Asegura que el padding esté dentro de la altura */
-    display: block; /* Aseguramos que se muestre correctamente */
+    display: none; /* Secciones ocultas por defecto */
     flex-grow: 1; /* Para que el contenido ocupe el espacio restante */
+
     overflow: hidden; /* Para evitar que los elementos sobrepasen el contenedor */
     text-align: center; /*para centrar el texto*/
+
 }
 
 h1 {
     color: #333;
 }
 
-/* Asegúrate de que el mapa ocupe el 100% del contenedor */
 #map-realtime, #map-route, #map-search {
+
     height: 500px; 
     width: 100%; /* Ocupa todo el ancho del contenedor */
-    margin-top: 20px;
-    border: 1px solid #ccc; /* Agrega un borde para ver los límites del mapa */
-    box-sizing: border-box; /* Asegura que el padding no afecte el tamaño del mapa */
-    margin: 20 px auto;
-}
 
+    height: calc(100% - 100px); /* El mapa ocupará todo el contenedor */
+    width: 100%;
+
+    margin-top: 20px;
+}
 
 .input-group {
     margin: 10px 0;
@@ -128,6 +134,88 @@ th {
     max-height: 200px;
     overflow-y: auto;
 }
+
+
+#realtime-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+#map-realtime {
+    width: 70%;
+    height: 400px;
+}
+
+#vehicle-info {
+    width: 25%;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gauge-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.gauge {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border: 5px solid #ccc;
+    border-radius: 50%;
+    margin: 20px;
+    background: #fff;
+}
+
+.needle {
+    position: absolute;
+    width: 4px;
+    height: 60px;
+    background: red;
+    top: 5%;
+    left: 50%;
+    transform-origin: bottom center;
+    transform: rotate(0deg);
+    transition: transform 0.3s ease-out;
+}
+
+.center-circle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #333;
+    border-radius: 50%;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.gauge-label {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translate(-45%, 200%);
+
+    font-weight: bold;
+    color: #333;
+}
+
+.gauge-value {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-35%);
+    font-size: 18px;
+    font-weight: bold;
+}
+
 
 /* Responsive adjustments */
 
