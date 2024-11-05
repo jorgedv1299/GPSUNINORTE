@@ -23,10 +23,12 @@ date_default_timezone_set('America/Bogota');
 echo "Escuchando en $ip:$port...\n";
 
 
+
 $servername = "disenoelec.c98ge4aae1fw.us-east-1.rds.amazonaws.com";
 $username = "bastod";       
 $password = "bastod0529";
 $dbname = "disenoelec";
+
 $port = 3306;
 
 try {

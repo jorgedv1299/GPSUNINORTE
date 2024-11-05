@@ -1,10 +1,12 @@
 <?php
 header('Content-Type: application/json');
 
+
 $servername = "disenoelec.c98ge4aae1fw.us-east-1.rds.amazonaws.com";
 $username = "disenoelec";       
 $password = "bastod";
 $dbname = "bastod0529";
+
 
 
 // Crear conexión
