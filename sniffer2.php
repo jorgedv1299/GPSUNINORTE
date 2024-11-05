@@ -1,3 +1,4 @@
+
 <?php
 // Configuración del servidor UDP
 $ip = '0.0.0.0';  
@@ -20,7 +21,7 @@ echo "Escuchando en $ip:$port...\n";
 
 // Configuración de la base de datos
 $servername = "dbjmll.c16ww6ag23kz.us-east-2.rds.amazonaws.com";
-$username = "administrador";
+$username = "administrador";       
 $password = "condorito1";
 $dbname = "dbjmll";
 $port_db = 3306;
