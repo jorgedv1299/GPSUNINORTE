@@ -24,14 +24,11 @@ echo "Escuchando en $ip:$port...\n";
 
 
 $servername = "disenoelec.c98ge4aae1fw.us-east-1.rds.amazonaws.com";
-$username = "disenoelec";       
-$password = "bastod";
-$dbname = "bastod0529";
-
-
-
-
+$username = "bastod";       
+$password = "bastod0529";
+$dbname = "disenoelec";
 $port = 3306;
+
 try {
     // Conectar a la base de datos
     $conn = new mysqli($servername, $username, $password, $dbname, $port);
