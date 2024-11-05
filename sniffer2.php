@@ -30,13 +30,13 @@ try {
         throw new Exception("Conexión fallida: " . $conn->connect_error);
     }
 
-    // Crear la tabla con columnas para latitud y longitud si no existe
+    // Crear la tabla con latitud y longitud como TEXT si no existe
     $sql = "CREATE TABLE IF NOT EXISTS mediciones (
         id INT AUTO_INCREMENT PRIMARY KEY,
         velocidad TEXT NOT NULL,
         rpm TEXT NOT NULL,
-        latitude DECIMAL(10, 6) NOT NULL,
-        longitude DECIMAL(10, 6) NOT NULL,
+        latitude TEXT NOT NULL,
+        longitude TEXT NOT NULL,
         timestamp DATETIME NOT NULL
     )";
 
@@ -63,10 +63,14 @@ while (true) {
     if ($data !== null && isset($data['speed'], $data['rpm'], $data['timestamp'], $data['latitude'], $data['longitude'])) {
         $velocidad = $data['speed'];
         $rpm = $data['rpm'];
-        $latitude = $data['latitude'];
-        $longitude = $data['longitude'];
+        $latitude_text = $data['latitude'];
+        $longitude_text = $data['longitude'];
         $timestamp = $data['timestamp'] / 1000;
         $datetime = date('Y-m-d H:i:s', $timestamp);
+
+        // Convertir latitud y longitud a decimal
+        $latitude_decimal = (float)$latitude_text;
+        $longitude_decimal = (float)$longitude_text;
     } else {
         echo "Formato de datos incorrecto recibido: $buf\n";
         continue;
@@ -75,19 +79,21 @@ while (true) {
     // Escapar los datos para prevenir inyecciones SQL
     $velocidad = $conn->real_escape_string($velocidad);
     $rpm = $conn->real_escape_string($rpm);
-    $latitude = $conn->real_escape_string($latitude);
-    $longitude = $conn->real_escape_string($longitude);
+    $latitude_text = $conn->real_escape_string($latitude_text);
+    $longitude_text = $conn->real_escape_string($longitude_text);
 
     // Insertar los datos en la base de datos
-    $sql = "INSERT INTO mediciones (velocidad, rpm, latitude, longitude, timestamp) VALUES ('$velocidad', '$rpm', '$latitude', '$longitude', '$datetime')";
+    $sql = "INSERT INTO mediciones (velocidad, rpm, latitude, longitude, timestamp) 
+            VALUES ('$velocidad', '$rpm', '$latitude_decimal', '$longitude_decimal', '$datetime')";
     if ($conn->query($sql) !== TRUE) {
         echo "Error al insertar en la base de datos: " . $conn->error . "\n";
     } else {
-        echo "Datos guardados en la base de datos - Velocidad: $velocidad, RPM: $rpm, Latitude: $latitude, Longitude: $longitude, Timestamp: $datetime\n";
+        echo "Datos guardados en la base de datos - Velocidad: $velocidad, RPM: $rpm, Latitude: $latitude_decimal, Longitude: $longitude_decimal, Timestamp: $datetime\n";
     }
     sleep(10);
 }
 
+// Cerrar el socket y la conexión
 socket_close($sock);
 $conn->close();
 ?>
