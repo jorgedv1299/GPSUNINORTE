@@ -27,7 +27,7 @@ function initMapRealTime() {
         strokeOpacity: 1.0,
         strokeWeight: 2
     });
-    .setMap(mapRealTime);
+    realTimePolyline.setMap(mapRealTime);
 
     setInterval(() => {
         fetch('get_location.php')
