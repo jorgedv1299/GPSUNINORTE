@@ -19,12 +19,20 @@ date_default_timezone_set('America/Bogota');
 echo "Escuchando en $ip:$port...\n";
 
 // Configuración de la base de datos
+<<<<<<< HEAD
 $servername = "alex.cpywocwqwde0.us-east-2.rds.amazonaws.com";
 $username = "alex";
 $password = "alex1234567890";
 $dbname = "alex";
 $port_db = 3306;
 
+=======
+$servername = "disenoelec.c98ge4aae1fw.us-east-1.rds.amazonaws.com";
+$username = "bastod";       
+$password = "bastod0529";
+$dbname = "disenoelec";
+$port = 3306;
+>>>>>>> 1d420002a4063787de261193bcf7317d0b87daa2
 
 try {
     // Conectar a la base de datos
@@ -38,8 +46,13 @@ try {
     // Crear la tabla para el carro 1
     $sql1 = "CREATE TABLE IF NOT EXISTS mediciones (
         id INT AUTO_INCREMENT PRIMARY KEY,
+<<<<<<< HEAD
         latitude DECIMAL(10, 6) NOT NULL,
         longitude DECIMAL(10, 6) NOT NULL,
+=======
+        latitud DECIMAL(10, 6) NOT NULL,
+        longitud DECIMAL(10, 6) NOT NULL,
+>>>>>>> 1d420002a4063787de261193bcf7317d0b87daa2
         velocidad TEXT NOT NULL,
         rpm TEXT NOT NULL,
         timestamp DATETIME NOT NULL
@@ -82,6 +95,7 @@ while (true) {
     // Intentar decodificar los datos JSON
     $data = json_decode($buf, true);
 
+<<<<<<< HEAD
     // Verificar si la decodificación fue exitosa y si contiene todos los campos necesarios
     if ($data !== null && 
         isset($data['carId']) && 
@@ -94,6 +108,12 @@ while (true) {
         $carId = $data['carId'];
         $latitude_text = $data['latitude'];
         $longitude_text = $data['longitude'];
+=======
+    // Verificar si la decodificación fue exitosa y si los datos contienen latitude, longitude, speed, rpm, y timestamp
+    if ($data !== null && isset($data['latitude']) && isset($data['longitude']) && isset($data['speed']) && isset($data['rpm']) && isset($data['timestamp'])) {
+        $latitude = $data['latitude'];
+        $longitude = $data['longitude'];
+>>>>>>> 1d420002a4063787de261193bcf7317d0b87daa2
         $velocidad = $data['speed'];
         $rpm = $data['rpm'];
         
@@ -106,9 +126,12 @@ while (true) {
         $longitude = (float)$longitude_text;
 
         // Escapar los datos para evitar inyecciones SQL
+        $latitude = $conn->real_escape_string($latitude);
+        $longitude = $conn->real_escape_string($longitude);
         $velocidad = $conn->real_escape_string($velocidad);
         $rpm = $conn->real_escape_string($rpm);
 
+<<<<<<< HEAD
         // Seleccionar la tabla según el carId
         $tabla = ($carId === 'car1') ? 'mediciones' : 'mediciones2';
 
@@ -116,10 +139,18 @@ while (true) {
         $sql = "INSERT INTO $tabla (latitude, longitude, velocidad, rpm, timestamp) 
                 VALUES ('$latitude', '$longitude', '$velocidad', '$rpm', '$datetime')";
         
+=======
+        // Insertar los datos en la base de datos
+        $sql = "INSERT INTO mediciones (latitude, longitude, velocidad, rpm, timestamp) VALUES ('$latitude', '$longitude', '$velocidad', '$rpm', '$datetime')";
+>>>>>>> 1d420002a4063787de261193bcf7317d0b87daa2
         if ($conn->query($sql) !== TRUE) {
             echo "Error al insertar en la base de datos ($tabla): " . $conn->error . "\n";
         } else {
+<<<<<<< HEAD
             echo "Datos guardados en $tabla - Carro: $carId, Latitud: $latitude, Longitud: $longitude, Velocidad: $velocidad, RPM: $rpm, Timestamp: $datetime\n";
+=======
+            echo "Datos guardados en la base de datos - Latitud: $latitude, Longitud: $longitude, Velocidad: $velocidad, RPM: $rpm, Timestamp: $datetime\n";
+>>>>>>> 1d420002a4063787de261193bcf7317d0b87daa2
         }
     } else {
         echo "Formato de datos incorrecto o JSON inválido recibido: $buf\n";

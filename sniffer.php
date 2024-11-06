@@ -23,14 +23,22 @@ date_default_timezone_set('America/Bogota');
 echo "Escuchando en $ip:$port...\n";
 
 
+<<<<<<< HEAD
 $servername = "alex.cpywocwqwde0.us-east-2.rds.amazonaws.com"; // Reemplaza con el endpoint de tu RDS si es necesario
 $username = "alex";       // Cambia al usuario de tu base de datos
 $password = "alex1234567890";           // Cambia a la contraseña de tu base de datos
 $dbname = "alex";
 
+=======
+>>>>>>> 1d420002a4063787de261193bcf7317d0b87daa2
 
+$servername = "disenoelec.c98ge4aae1fw.us-east-1.rds.amazonaws.com";
+$username = "bastod";       
+$password = "bastod0529";
+$dbname = "disenoelec";
 
 $port = 3306;
+
 try {
     // Conectar a la base de datos
     $conn = new mysqli($servername, $username, $password, $dbname, $port);
