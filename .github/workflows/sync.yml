@@ -13,7 +13,7 @@ jobs:
       - name: Configura SSH para conexión a EC2
         uses: webfactory/ssh-agent@v0.5.3
         with:
-          ssh-private-key: ${{ secrets.gps }}  # Usa el secreto gps configurado en GitHub
+          ssh-private-key: ${{ secrets.GPS }}  # Usa el secreto gps configurado en GitHub
 
       - name: Sincroniza cambios con el servidor EC2
         run: |
