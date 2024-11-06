@@ -17,4 +17,4 @@ jobs:
 
       - name: Sincroniza cambios con el servidor EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@18.117.243.59 "cd /var/www/html/GPSUNINORTE && git pull origin master" 
+          ssh -o StrictHostKeyChecking=no ubuntu@18.117.243.59 "cd /var/www/html/GPSUNINORTE && git pull origin master"  
