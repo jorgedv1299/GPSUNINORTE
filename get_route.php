@@ -17,15 +17,15 @@ $start = $_GET['start'];
 $end = $_GET['end'];
 
 // Consultar todas las ubicaciones entre las fechas seleccionadas
-$sql = "SELECT latitud, longitud, timestamp FROM ubicaciones WHERE timestamp BETWEEN '$start' AND '$end' ORDER BY timestamp ASC";
+$sql = "SELECT latitude, longitude, timestamp FROM mediciones WHERE timestamp BETWEEN '$start' AND '$end' ORDER BY timestamp ASC";
 $result = $conn->query($sql);
 
 $data = [];
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
         $data[] = [
-            'latitud' => $row['latitud'],
-            'longitud' => $row['longitud'],
+            'latitud' => $row['latitude'],
+            'longitud' => $row['longitude'],
             'timestamp' => $row['timestamp']
         ];
     }

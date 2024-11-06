@@ -15,7 +15,7 @@ function initMapRealTime() {
         position: { lat: 11.0190513, lng: -74.8511425 },
         map: mapRealTime,
         icon: {
-            url: "https://maps.google.com/mapfiles/ms/icons/orange-dot.png",
+            url: "https://cdn-icons-png.flaticon.com/512/1048/1048313.png",
             scaledSize: new google.maps.Size(30, 30)
         }
     });
@@ -48,7 +48,7 @@ function initMapRealTime() {
 
         })
         .catch(error => console.error('Error al obtener la ubicación en tiempo real:', error));
-    }, 5000);
+    }, 1000);
 }
 //--------------------------------------Busqueda por Ruta------------------------------------------------------------------------------------
 

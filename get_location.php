@@ -16,7 +16,7 @@ if ($conn->connect_error) {
 
 
 // Obtener la última ubicación
-$sql = "SELECT latitud, longitud, timestamp FROM ubicaciones ORDER BY id DESC LIMIT 1";
+$sql = "SELECT latitude, longitude, timestamp FROM mediciones ORDER BY id DESC LIMIT 1";
 $result = $conn->query($sql);
 
 $data = [];
@@ -28,8 +28,8 @@ if ($result->num_rows > 0) {
     $formattedDate = $row['timestamp'];
     
     $data = [
-        'latitud' => $row['latitud'],
-        'longitud' => $row['longitud'],
+        'latitud' => $row['latitude'],
+        'longitud' => $row['longitude'],
         'timestamp' => $formattedDate // Utilizar directamente el timestamp formateado
     ];
 }
