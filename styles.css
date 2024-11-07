@@ -3,30 +3,54 @@ body {
     font-family: Roboto, sans-serif;
     margin: 0;
     padding: 0;
+
     background-color: #12025a;
     height: 100vh; /* Altura completa de la pantalla */
     overflow: hidden; /* Evitar desplazamiento horizontal y vertical */
+
+    background-color: #2d2d2f;
+    display: flex;
+    flex-direction: column;
+    color: #e4e6eb;
+
 }
 
 html {
-    height: 100%; /* Aseguramos que html ocupe toda la pantalla */
+    height: 100%;
 }
 
 .container {
     padding: 20px;
+
     background-color: #0cc782;
+
+    align-items: center;
+    background-color: #424242;
+
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     max-width: 1200px;
+
     width: calc(100% - 40px); /* Ajuste para el padding */
     margin: 20px auto; /* Centramos el contenedor */
     box-sizing: border-box; /* Asegura que el padding esté dentro de la altura */
     height: calc(100vh - 40px); /* Ajustar altura del contenedor para evitar el desbordamiento */
+
+    width: 100%;
+    margin: 20px auto;
+    box-sizing: border-box;
+    display: none;
+    flex-grow: 1;
+    overflow: hidden;
+    text-align: center;
+
 }
 
 h1 {
-    color: #333;
+    color: #ffffff;
+    margin-top: 10px;
 }
+
 
 /* Ajustar mapas para que ocupen el espacio sin causar desbordamiento */
 #map-realtime, #map-route, #map-search {
@@ -35,30 +59,35 @@ h1 {
     max-width: 100%; /* Asegurar que el mapa no se salga del contenedor */
     margin-top: 20px;
     box-sizing: border-box; /* Asegura que el tamaño del mapa incluya el padding */
+
+/* Estilos para el mapa */
+#map-realtime, #map-route, #map-search {
+    height: 500px;
+    width: 100%;
+    height: calc(100% - 100px);
+    width: 100%;
+    margin-top: 20px;
+    border: 2px solid #e4e6eb;
+    border-radius: 8px;
+
 }
 
-.input-group {
-    margin: 10px 0;
-}
-
-/* Navbar en la parte superior de la página */
+/* Navbar */
 nav {
-    background-color: #444;
-    padding: 10px;
+    background-color: #1f1f1f;
+    padding: 15px;
     display: flex;
     justify-content: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-    border-radius: 0; /* Quitamos el borde redondeado del navbar */
     width: 100%;
-    box-sizing: border-box;
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1000; /* Para mantenerlo encima de otros elementos */
+    z-index: 1000;
 }
 
 nav a {
-    color: white;
+    color: #e4e6eb;
     margin: 0 15px;
     text-decoration: none;
     cursor: pointer;
@@ -68,21 +97,27 @@ nav a {
 }
 
 nav a:hover {
-    background-color: #666;
+    background-color: #333;
     transform: scale(1.05);
 }
 
 nav a.active {
-    background-color: #333;
-    padding: 5px 10px;
+    background-color: #565656;
+    padding: 8px 12px;
     box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.2);
 }
 
-/* Ajuste para dar espacio debajo del navbar */
+/* Ajuste para espacio debajo del navbar */
 .main-content {
+
     padding-top: 80px; /* Espacio para evitar que el contenido quede detrás del navbar */
     overflow: hidden; /* Evitar desplazamiento en la parte principal */
 }
+
+    padding-top: 80px;
+}
+
+/* Display de los textos */
 
 #location {
     display: flex;
@@ -94,6 +129,7 @@ nav a.active {
 #location p {
     margin: 0 20px;
     font-size: 1.2rem;
+    color: #e4e6eb;
 }
 
 /* Tablas */
@@ -104,20 +140,21 @@ table {
 }
 
 th, td {
-    border: 1px solid #ccc;
-    padding: 8px;
+    border: 1px solid #565656;
+    padding: 10px;
     text-align: left;
+    color: #e4e6eb;
 }
 
 th {
-    background-color: #444;
-    color: white;
+    background-color: #333;
 }
 
 #log {
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 5px;
+    background-color: #333;
+    color: #e4e6eb;
+    padding: 15px;
+    border-radius: 8px;
     margin-top: 10px;
     max-height: 200px;
     overflow-y: auto;
@@ -136,16 +173,23 @@ th {
 
 #vehicle-info {
     width: 25%;
+
     padding: 10px;
     scale: 90%;
     background-color: #f0f0f0;
     border: 1px solid #ccc;
+
+    padding: 15px;
+    background-color: #333;
+    border: 1px solid #565656;
+
     border-radius: 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
+/* Indicadores circulares */
 .gauge-container {
     display: flex;
     justify-content: space-around;
@@ -156,18 +200,19 @@ th {
     position: relative;
     width: 150px;
     height: 150px;
-    border: 5px solid #ccc;
+    border: 5px solid #565656;
     border-radius: 50%;
     margin: 20px;
-    background: #fff;
+    background: #222;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
 }
 
 .needle {
     position: absolute;
     width: 4px;
     height: 60px;
-    background: red;
-    top: 5%;
+    background: #ff4c4c;
+    top: 20%;
     left: 50%;
     transform-origin: bottom center;
     transform: rotate(0deg);
@@ -178,7 +223,7 @@ th {
     position: absolute;
     width: 20px;
     height: 20px;
-    background: #333;
+    background: #e4e6eb;
     border-radius: 50%;
     top: 45%;
     left: 50%;
@@ -189,19 +234,25 @@ th {
     position: absolute;
     bottom: 10%;
     left: 50%;
+
     transform: translate(-45%, 200%);
+
+    transform: translate(-50%, 100%);
+
     font-weight: bold;
-    color: #333;
+    color: #e4e6eb;
 }
 
 .gauge-value {
     position: absolute;
     top: 60%;
     left: 50%;
-    transform: translateX(-35%);
+    transform: translateX(-50%);
     font-size: 18px;
     font-weight: bold;
+    color: #ff4c4c;
 }
+
 
 #map-route, #map-search {
     width: 100%; /* Asegura que el mapa use todo el ancho disponible */
@@ -343,6 +394,10 @@ th {
         height: calc(100vh - 40px); /* Mantener altura */
     }
 
+=======
+/* Ajustes responsivos */
+@media (max-width: 1200px) {
+
     #map-realtime, #map-route, #map-search {
         height: calc(100% - 100px); /* Ajuste para que los mapas no causen desbordamiento */
     }
@@ -353,7 +408,6 @@ th {
     }
 }
 
-/* Para pantallas de menos de 768px (tablets en orientación vertical) */
 @media (max-width: 768px) {
     .container {
         margin: 0;
@@ -383,7 +437,6 @@ th {
     }
 }
 
-/* Para pantallas de menos de 480px (smartphones) */
 @media (max-width: 480px) {
     .container {
         margin: 0;
@@ -425,6 +478,10 @@ th {
     #location p {
         margin: 10px 0;
     }
+
 }
 
+
+
+}
 

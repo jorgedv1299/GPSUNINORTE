@@ -23,14 +23,22 @@ date_default_timezone_set('America/Bogota');
 echo "Escuchando en $ip:$port...\n";
 
 
-$servername = "database-1.cdcwiy8egoqg.us-east-1.rds.amazonaws.com"; // Reemplaza con el endpoint de tu RDS si es necesario
-$username = "root";       // Cambia al usuario de tu base de datos
-$password = "15963247";           // Cambia a la contraseña de tu base de datos
-$dbname = "gps";
+<<<<<<< HEAD
+$servername = "alex.cpywocwqwde0.us-east-2.rds.amazonaws.com"; // Reemplaza con el endpoint de tu RDS si es necesario
+$username = "alex";       // Cambia al usuario de tu base de datos
+$password = "alex1234567890";           // Cambia a la contraseña de tu base de datos
+$dbname = "alex";
 
+=======
+>>>>>>> 1d420002a4063787de261193bcf7317d0b87daa2
 
+$servername = "disenoelec.c98ge4aae1fw.us-east-1.rds.amazonaws.com";
+$username = "bastod";       
+$password = "bastod0529";
+$dbname = "disenoelec";
 
 $port = 3306;
+
 try {
     // Conectar a la base de datos
     $conn = new mysqli($servername, $username, $password, $dbname, $port);
@@ -45,6 +53,8 @@ try {
         id INT AUTO_INCREMENT PRIMARY KEY,
         latitud TEXT NOT NULL,
         longitud TEXT NOT NULL,
+        Velocidad TEXT NOT NULL,
+        rpm TEXT NOT NULL,
         timestamp DATETIME NOT NULL
     )";
 
@@ -86,16 +96,18 @@ while (true) {
             $latitud = $conn->real_escape_string($latitud);
             $longitud = $conn->real_escape_string($longitud);
             $datetime = $conn->real_escape_string($datetime);
+            $velocidad=$conn->real_escape_string($velocidad);
+            $rpm=$conn->real_escape_string($rpm);
 
             // Insertar los datos en la base de datos
-            $sql = "INSERT INTO ubicaciones (latitud, longitud, timestamp) VALUES ('$latitud', '$longitud', '$datetime')";
+            $sql = "INSERT INTO ubicaciones (latitud, longitud, timestamp) VALUES ('$latitud', '$longitud', '$datetime','$velocidad' )";
             if ($conn->query($sql) !== TRUE) {
                 echo "Error: " . $sql . "\n" . $conn->error;
             } else {
                 echo "Datos guardados en la base de datos\n";
             }
         } else {
-            echo "Datos inválidos: Latitud: $latitud, Longitud: $longitud, Timestamp: $timestamp\n";
+            echo "Datos inválidos: Latitud: $latitud, Longitud: $longitud, Timestamp: $timestamp, VELOCIDAD: $velocidad\n";
         }
     } else {
         echo "Formato de datos incorrecto\n";

@@ -14,7 +14,7 @@
         <a href="#address-search" id="nav-address-search">Buscar por dirección</a>
     </nav>
     <!-- Pagina principal | Tiempo real  ------------------------------------------------------------------------>
-    <div class="container" id="realtime-section">
+    <div class="container" id="realtime-section" style="display: flex; flex-direction: column; align-items: center; justify-content: center; color: #333; padding: 20px; font-family: 'Times New Roman', sans-serif;">
 
         <h1>GPS Recorrido en Tiempo Real</h1>
         <div class="minicontainer">
@@ -41,6 +41,13 @@
             </select>
             
 
+
+        <h1 style="font-weight: bold; font-size: 50px; color: #ffffff; text-align: center; margin-bottom: 30px;">
+            GPS Recorrido en Tiempo Real
+        </h1>
+    
+        <div id="location" style="text-align: center; margin-bottom: 20px;">
+
             <p><strong>Latitud:</strong> <span id="latitud">Cargando...</span></p>
             <p><strong>Longitud:</strong> <span id="longitud">Cargando...</span></p>
             <p><strong>Timestamp:</strong> <span id="timestamp">Cargando...</span></p>
@@ -51,30 +58,35 @@
             <span class="toggle-slider"></span> Mostrar ambos vehículos
         </label>
         
-        <div id="realtime-info">
-            <div id="map-realtime"></div>
-
-            <div id="vehicle-info">
-                <h2>Información del vehículo</h2>
-                <div class="gauge-container">
-                    <div class="gauge">
-                        <div class="needle" id="speed-needle"></div>
-                        <div class="center-circle"></div>
-                        <div class="gauge-label">Velocidad</div>
-                        <div class="gauge-value" id="speed-value">0 km/h</div>
+        <div id="realtime-info" style="display: flex; gap: 20px; align-items: center; justify-content: center;">
+    
+            <!-- Mapa en tiempo real -->
+            <div id="map-realtime" style="width: 500px; height: 400px; border: 1px solid #ccc; border-radius: 5px;"></div>
+    
+            <!-- Información del vehículo -->
+            <div id="vehicle-info" style="text-align: center; padding: 10px; background-color: #f0f0f0; border: 1px solid #ccc; border-radius: 10px;">
+                <h2 style="font-weight: bold; font-size: 24px; color: #333; margin-bottom: 20px;">Información del vehículo</h2>
+                <div class="gauge-container" style="display: flex; gap: 20px; justify-content: center;">
+                    <div class="gauge" style="position: relative; width: 150px; height: 150px; background-color: #fff; border-radius: 50%; border: 2px solid #ccc;">
+                        <div class="needle" id="speed-needle" style="position: absolute; width: 4px; height: 70px; background-color: red; transform-origin: 50% 90%; top: 15%; left: 50%; transform: rotate(45deg);"></div>
+                        <div class="center-circle" style="position: absolute; width: 20px; height: 20px; background-color: black; border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+                        <div class="gauge-label" style="position: absolute; bottom: 20px; width: 100%; text-align: center; font-size: 14px; color: #333;">Velocidad</div>
+                        <div class="gauge-value" id="speed-value" style="position: absolute; top: 80%; width: 100%; text-align: center; font-size: 16px; color: #333;">0 km/h</div>
                     </div>
-                    <div class="gauge">
-                        <div class="needle" id="rpm-needle"></div>
-                        <div class="center-circle"></div>
-                        <div class="gauge-label">RPM</div>
-                        <div class="gauge-value" id="rpm-value">0</div>
+                    <div class="gauge" style="position: relative; width: 150px; height: 150px; background-color: #fff; border-radius: 50%; border: 2px solid #ccc;">
+                        <div class="needle" id="rpm-needle" style="position: absolute; width: 4px; height: 70px; background-color: red; transform-origin: 50% 90%; top: 15%; left: 50%; transform: rotate(45deg);"></div>
+                        <div class="center-circle" style="position: absolute; width: 20px; height: 20px; background-color: black; border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+                        <div class="gauge-label" style="position: absolute; bottom: 20px; width: 100%; text-align: center; font-size: 14px; color: #333;">RPM</div>
+                        <div class="gauge-value" id="rpm-value" style="position: absolute; top: 80%; width: 100%; text-align: center; font-size: 16px; color: #333;">0</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+        
 
     <!-- Busqueda por Fecha  ------------------------------------------------------------------------------------>
+
 
     <div class="container" id="search-section">
         <h1>GPS<br>Buscar Recorrido</h1>
@@ -85,12 +97,41 @@
         <div class="input-group">
             <label for="end-date">Fecha y hora final:</label>
             <input type="datetime-local" id="end-date">
-        </div>
-        <button id="show-route">Mostrar recorrido</button>
-        <div id="map-route"></div>
-    </div>
 
+    <div class="container" id="search-section" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; color: #333;">
+
+        <h1 style="font-family: 'Times New Roman', sans-serif; font-weight: bold; font-size: 40px; color: #ffffff; text-align: center; margin-bottom: 20px;">
+            Buscar Recorrido
+        </h1>
+    
+    
+        <div class="input-group" style="margin-bottom: 20px;">
+            <label for="start-date" style="font-family: 'Arial', sans-serif; font-weight: bold; font-size: 18px; color: #333; margin-right: 10px;">
+                Fecha y hora inicial:
+            </label>
+            <input type="datetime-local" id="start-date" style="border: 1px solid #ccc; border-radius: 5px; padding: 8px; font-size: 16px;">
+        </div>
+    
+        <div class="input-group" style="margin-bottom: 20px;">
+            <label for="end-date" style="font-family: 'Arial', sans-serif; font-weight: bold; font-size: 18px; color: #333; margin-right: 10px;">
+                Fecha y hora final:
+            </label>
+            <input type="datetime-local" id="end-date" style="border: 1px solid #ccc; border-radius: 5px; padding: 8px; font-size: 16px;">
+
+        </div>
+    
+        <button id="show-route" style="font-family: 'Arial', sans-serif; font-weight: bold; font-size: 18px; color: #fff; background-color: #333; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer;">
+            Mostrar recorrido
+        </button>
+    
+        <div id="map-route" style="margin-top: 30px; width: 100%; max-width: 600px; height: 400px; background-color: #f0f0f0; border: 1px solid #ccc; border-radius: 5px;">
+            <!-- Aquí se mostrará el mapa de la ruta -->
+        </div>
+    
+    </div>
+    
     <!-- Busqueda por direccion -------------------------------------------------------------------------------->
+
 
     <div class="container" id="address-search-section">
         <h1>GPS<br>Buscar por Dirección</h1>
@@ -111,18 +152,86 @@
             <thead>
                 <tr>
                     <th>Fecha</th>
+
+
+    <div class="container" id="address-search-section" style="display: flex; flex-direction: column; align-items: center; justify-content: center; color: #333; padding: 20px; font-family: 'Times New Roman', sans-serif;">
+
+        <h1 style="font-weight: bold; font-size: 40px; color: #ffffff; text-align: center; margin-bottom: 20px;">
+            Búsqueda por Dirección
+        </h1>
+    
+        <div class="input-group" style="margin-bottom: 20px;">
+            <label for="address-input" style="font-weight: bold; font-size: 20px; color: #ffffff; margin-right: 10px;">
+                Dirección:
+            </label>
+            <input type="text" id="autocomplete" placeholder="Ingrese una dirección" style="width: 550px; padding: 8px; border: 1px solid #ccc; border-radius: 5px;">
+        </div>
+    
+        <div class="input-group" style="margin-bottom: 20px; position: relative;">
+            <label for="radius-slider" style="font-weight: bold; font-size: 20px; color: #ffffff; margin-right: 10px;">
+                Radio (m):
+            </label>
+            <input type="range" id="radius-slider" min="10" max="1000" step="10" value="100" style="width: 550px;">
+            <div id="range-value" style="position: absolute; top: -30px; left: 50%; transform: translateX(-50%); font-size: 18px; color: #ff0000;">
+                100 m
+            </div>
+        </div>
+    
+        <button id="search-address" style="font-weight: bold; font-size: 18px; color: #fff; background-color: #333; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer; margin-bottom: 20px;">
+            Buscar
+        </button>
+    
+        <h2 id="table-title" style="font-weight: bold; font-size: 24px; color: #ffffff; margin-top: 30px;">
+            Historial de visitas
+        </h2>
+    
+        <table id="proximity-table" style="width: 100%; max-width: 600px; border-collapse: collapse; margin-top: 10px;">
+            <thead>
+                <tr style="background-color: #333; color: #fff;">
+                    <th style="padding: 10px; border: 1px solid #ccc;">Fecha</th>
+
                 </tr>
             </thead>
             <tbody></tbody>
         </table>
-      <h2>Log de Envíos</h2>
-        <div id="log"></div>
+    
+        <h2 style="font-weight: bold; font-size: 24px; color: #ffffff; margin-top: 30px;">
+            Log de Envíos
+        </h2>
+        <div id="log" style="width: 100%; max-width: 600px; background-color: #f0f0f0; border: 1px solid #ccc; border-radius: 5px; padding: 10px; margin-top: 10px;">
+            <!-- Aquí se mostrará el log de envíos -->
+        </div>
+    
     </div>
+    
+    <!-- Scripts -->
+    <script>
+        const slider = document.getElementById("radius-slider");
+        const rangeValue = document.getElementById("range-value");
+    
+        slider.addEventListener("input", function() {
+            rangeValue.textContent = slider.value + " m";
+            // Actualizar la posición del indicador de valor sobre el deslizador
+            const sliderWidth = slider.offsetWidth;
+            const max = slider.max;
+            const min = slider.min;
+            const valuePosition = ((slider.value - min) / (max - min)) * sliderWidth;
+            rangeValue.style.left = `${valuePosition}px`;
+        });
+    </script>
+    
+    <script src="script.js"></script> <!-- Archivo JS externo que se encarga del Back-end -->
+=======
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRealTime" async defer></script>
-
-    <script src="script.js"></script> 
     <script src="scriptINT.js"></script> 
+
 
 </body>
 </html>
+
+    
+    </body>
+    </html>
+    
+

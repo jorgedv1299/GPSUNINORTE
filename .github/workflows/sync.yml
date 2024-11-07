@@ -1,0 +1,24 @@
+name: Sync Master Branch with EC2
+
+on:
+  push:
+    branches:
+      - master  # Este workflow se activará solo en cambios en la rama master
+
+jobs:
+  sync-to-ec2:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configura SSH para conexión a EC2
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.GPS }}  # Usa el secreto GPS configurado en GitHub
+
+      - name: Sincroniza cambios con el servidor EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@18.117.243.59 << 'EOF'
+            cd /var/www/html/GPSUNINORTE
+            git fetch origin master
+            git reset --hard origin/master  # Asegura que siempre se sincronicen los cambios y resuelva conflictos sobrescribiendo con los cambios remotos
+          EOF
