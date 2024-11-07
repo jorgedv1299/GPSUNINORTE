@@ -117,6 +117,7 @@ function initMapRoute() {
     });
 }
 
+
 //-------------------------------Busqueda por Direccion----------------------------------------------------------------------------------
 
 function initMapSearch() {
@@ -287,6 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('nav-realtime').click();
 });
 
+
 // Función que oculta el enlace del navbar según la sección activa
 function updateNavbar() {
     // Obtener todos los enlaces del navbar
@@ -312,3 +314,4 @@ window.addEventListener('load', updateNavbar);
 
 // Escuchar cambios en el hash de la URL para actualizar la navbar dinámicamente
 window.addEventListener('hashchange', updateNavbar);
+
