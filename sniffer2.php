@@ -151,6 +151,7 @@ while (true) {
         print_r($data); // Muestra el contenido del JSON para depuración
     }
 }
+}
 
 // Cerrar el socket cuando termine (en este caso, nunca terminará)
 socket_close($sock);
