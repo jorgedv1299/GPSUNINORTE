@@ -46,11 +46,5 @@ function fetchData() {
 // Llamar a fetchData cada segundo para actualizar los datos en tiempo real
 setInterval(fetchData, 1000);
 
-// Simulación de datos cada 3 segundos
-setInterval(() => {
-  const randomSpeed = Math.floor(Math.random() * 121); // Simula una velocidad entre 0 y 120 km/h
-  const randomRPM = Math.floor(Math.random() * 8001); // Simula RPM entre 0 y 8000
-  updateSpeed(randomSpeed);
-  updateRPM(randomRPM);
-}, 3000); // Actualiza cada 3 segundos
+
 
