@@ -4,9 +4,8 @@ body {
     margin: 0;
     padding: 0;
     background-color: #12025a;
-    /*height: 100vh; /* Altura completa de la pantalla | Esta linea es el encargado de fijar el tamaño de la pagina */
-    display: flex;
-    flex-direction: column; /* Alineación en columna */
+    height: 100vh; /* Altura completa de la pantalla */
+    overflow: hidden; /* Evitar desplazamiento horizontal y vertical */
 }
 
 html {
@@ -15,39 +14,27 @@ html {
 
 .container {
     padding: 20px;
-
-    align-items: center; /* Cambié 'c' por 'center' para alinear el contenido */
-    background-color: #ff8000;
-
     background-color: #0cc782;
-
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     max-width: 1200px;
-    width: 100%;
+    width: calc(100% - 40px); /* Ajuste para el padding */
     margin: 20px auto; /* Centramos el contenedor */
     box-sizing: border-box; /* Asegura que el padding esté dentro de la altura */
-    display: none; /* Secciones ocultas por defecto */
-    flex-grow: 1; /* Para que el contenido ocupe el espacio restante */
-
-    overflow: hidden; /* Para evitar que los elementos sobrepasen el contenedor */
-    text-align: center; /*para centrar el texto*/
-
+    height: calc(100vh - 40px); /* Ajustar altura del contenedor para evitar el desbordamiento */
 }
 
 h1 {
     color: #333;
 }
 
+/* Ajustar mapas para que ocupen el espacio sin causar desbordamiento */
 #map-realtime, #map-route, #map-search {
-
-    height: 500px; 
-    width: 100%; /* Ocupa todo el ancho del contenedor */
-
-    height: calc(100% - 100px); /* El mapa ocupará todo el contenedor */
+    height: calc(100% - 100px); /* Ajuste dinámico */
     width: 100%;
-
+    max-width: 100%; /* Asegurar que el mapa no se salga del contenedor */
     margin-top: 20px;
+    box-sizing: border-box; /* Asegura que el tamaño del mapa incluya el padding */
 }
 
 .input-group {
@@ -94,8 +81,9 @@ nav a.active {
 /* Ajuste para dar espacio debajo del navbar */
 .main-content {
     padding-top: 80px; /* Espacio para evitar que el contenido quede detrás del navbar */
+    overflow: hidden; /* Evitar desplazamiento en la parte principal */
 }
-/* Display de los textos */
+
 #location {
     display: flex;
     justify-content: space-around;
@@ -135,7 +123,6 @@ th {
     overflow-y: auto;
 }
 
-
 #realtime-info {
     display: flex;
     justify-content: space-between;
@@ -143,13 +130,14 @@ th {
 }
 
 #map-realtime {
-    width: 70%;
-    height: 400px;
+    width: 100%; /* Asegura que el mapa use todo el ancho disponible */
+    height: 400px; /* Ajustar altura del mapa */
 }
 
 #vehicle-info {
     width: 25%;
     padding: 10px;
+    scale: 90%;
     background-color: #f0f0f0;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -202,7 +190,6 @@ th {
     bottom: 10%;
     left: 50%;
     transform: translate(-45%, 200%);
-
     font-weight: bold;
     color: #333;
 }
@@ -216,21 +203,160 @@ th {
     font-weight: bold;
 }
 
+#map-route, #map-search {
+    width: 100%; /* Asegura que el mapa use todo el ancho disponible */
+    height: 60%; /* Asegura que el mapa use toda la altura del contenedor */
+    max-height: calc(100% - 20px); /* Ajustar altura para el padding */
+    margin-top: 20px; /* Espacio adicional en la parte superior */
+    box-sizing: border-box; /* Asegura que el tamaño del mapa incluya el padding */
+}
 
+
+/* From Uiverse.io by SelfMadeSystem */ 
+/* The switch - the box around the slider */
+.switch {
+    --a: 0.5s ease-out;
+    cursor: pointer;
+    position: relative;
+    display: inline-flex;
+    height: 2em;
+    border-radius: 2em;
+    box-shadow: 0 0 0 0.66em #aaa;
+    aspect-ratio: 212.4992/84.4688;
+    background-color: #aaa;
+    transition: background-color 0.3s, box-shadow 0.3s; /* Transición suave para el color de fondo y sombra */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra que da un efecto de flotación */
+}
+
+#car-text {
+    margin-left: 0.5em; /* Espacio entre el switch y el texto */
+    font-weight: bold; /* Resaltar el texto */
+    color: #fff; /* Color del texto */
+    transition: color 0.3s; /* Transición suave para el color */
+    font-family: 'Montserrat', sans-serif; /* Aplicar la fuente Montserrat */
+    border: 1px solid #fff; /* Borde blanco alrededor del texto */
+    padding: 0.2em 0.5em; /* Espaciado interno para el texto */
+    border-radius: 0.5em; /* Bordes redondeados */
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente para resaltar el texto */
+}
+
+  
+  /* Hide default HTML checkbox */
+  #check {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .switch svg {
+    height: 100%;
+  }
+  
+  .switch svg path {
+    color: #fff;
+    stroke-width: 16;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 136 224;
+    transition:
+      all var(--a),
+      0s transform;
+    transform-origin: center;
+  }
+  
+  #check:checked ~ .switch svg path {
+    stroke-dashoffset: 180;
+    transform: scaleY(-1);
+  }
+  
+  .minicontainer{
+    display: flex;
+   
+  }
+
+
+  /* Estilo general del custom toggle */
+  .custom-toggle {
+    display: inline-flex;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #030303; 
+    cursor: pointer;
+    transition: color 0.3s;
+    background-color: #f0f0f0; 
+    padding: 20px 15px; 
+    border-radius: 15px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+}
+.custom-toggle input:checked + .toggle-slider {
+    background-color: #10d816;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); 
+}
+
+.custom-toggle input:checked + .toggle-slider::before {
+    transform: translateX(25px);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+
+.custom-toggle input:checked + .toggle-slider {
+    color: #0c0c0c; 
+}
+
+
+
+.custom-toggle input {
+    display: none;
+}
+
+/* Estilo del toggle slider */
+.toggle-slider {
+    position: relative;
+    width: 50px;
+    height: 25px;
+    background-color: #ccc;
+    border-radius: 25px;
+    margin-right: 10px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}  
+
+/* Círculo dentro del toggle */
+.toggle-slider::before {
+    content: "";
+    position: absolute;
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+    background-color: white;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+
+
+
+
+
+
+
+  
 /* Responsive adjustments */
 
 /* Para pantallas de menos de 1200px (tablets y pequeños escritorios) */
 @media (max-width: 1200px) {
     .container {
-        width: 100%;
+        width: calc(100% - 40px); /* Ajuste para el padding */
         margin: 20px auto; /* Centramos el contenedor */
-        box-sizing: border-box; /* Asegura que el padding esté dentro de la altura */
         display: none; /* Secciones ocultas por defecto */
-        flex-grow: 1; /* Para que el contenido ocupe el espacio restante */
+        height: calc(100vh - 40px); /* Mantener altura */
     }
 
     #map-realtime, #map-route, #map-search {
-        height: calc(100% - 100px);
+        height: calc(100% - 100px); /* Ajuste para que los mapas no causen desbordamiento */
     }
 
     nav a {
@@ -245,7 +371,7 @@ th {
         margin: 0;
         padding: 10px;
         max-width: 95%;
-        height: calc(100vh - 80px);
+        height: calc(100vh - 80px); /* Ajuste para evitar desbordamiento */
     }
 
     h1 {
@@ -274,7 +400,7 @@ th {
     .container {
         margin: 0;
         padding: 10px;
-        height: calc(100vh - 70px);
+        height: calc(100vh - 70px); /* Ajuste para evitar desbordamiento */
     }
 
     h1 {
@@ -312,3 +438,5 @@ th {
         margin: 10px 0;
     }
 }
+
+
