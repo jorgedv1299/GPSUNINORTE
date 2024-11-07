@@ -44,7 +44,7 @@ try {
 
         latitude DECIMAL(10, 6) NOT NULL,
         longitude DECIMAL(10, 6) NOT NULL,
-=======        latitud DECIMAL(10, 6) NOT NULL,
+        latitud DECIMAL(10, 6) NOT NULL,
         longitud DECIMAL(10, 6) NOT NULL,
 
         velocidad TEXT NOT NULL,
