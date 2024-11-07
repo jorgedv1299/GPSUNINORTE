@@ -4,6 +4,9 @@ let mapRealTime, markerRealTime, realTimePath = [], realTimePolyline;
 let mapRoute, routePolyline,segmentPolylines=[];
 let mapSearch, markerSearch;
 
+const iconCar1 = "https://cdn-icons-png.flaticon.com/512/1048/1048313.png"; 
+const iconCar2 = "https://cdn-icons-png.flaticon.com/512/1048/1048361.png "; 
+
 //--------------------------------------Buscada Tiempo Real------------------------------------------------------------------------------------
 
 function initMapRealTime() {
@@ -15,9 +18,23 @@ function initMapRealTime() {
         position: { lat: 11.0190513, lng: -74.8511425 },
         map: mapRealTime,
         icon: {
-            url: "https://cdn-icons-png.flaticon.com/512/1048/1048313.png",
+            url: iconCar1,
             scaledSize: new google.maps.Size(30, 30)
         }
+    });
+
+     // Escuchar el evento del checkbox para cambiar el icono y actualizar la información
+     document.getElementById('check').addEventListener('change', function() {
+        const selectedVehicle = this.checked ? 'vehicle2' : 'vehicle1';
+        const vehicleInfo = vehicleData[selectedVehicle];
+
+        // Cambiar el icono del marcador
+        markerRealTime.setIcon({
+            url: this.checked ? iconCar2 : iconCar1,
+            scaledSize: new google.maps.Size(30, 30)
+        });
+        
+        document.getElementById('car-text').innerText = this.checked ? 'Carro 2' : 'Carro 1';
     });
 
     realTimePolyline = new google.maps.Polyline({
