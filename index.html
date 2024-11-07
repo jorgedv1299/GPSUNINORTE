@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GPS UNINORTE</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Archivo CSS que dicta la Estetica -->
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav>
@@ -15,15 +16,47 @@
     <!-- Pagina principal | Tiempo real  ------------------------------------------------------------------------>
     <div class="container" id="realtime-section" style="display: flex; flex-direction: column; align-items: center; justify-content: center; color: #333; padding: 20px; font-family: 'Times New Roman', sans-serif;">
 
+        <h1>GPS Recorrido en Tiempo Real</h1>
+        <div class="minicontainer">
+            <span class="slider"></span>
+            <span id="car-text">Carro 1</span>
+            <input id="check" type="checkbox" />
+            <label class="switch" for="check">
+            
+                
+              <svg viewBox="0 0 212.4992 84.4688" overflow="visible">
+                <path
+                  pathLength="360"
+                  fill="none"
+                  stroke="currentColor"
+                  d="M 42.2496 0 A 42.24 42.24 90 0 0 0 42.2496 A 42.24 42.24 90 0 0 42.2496 84.4688 A 42.24 42.24 90 0 0 84.4992 42.2496 A 42.24 42.24 90 0 0 42.2496 0 A 42.24 42.24 90 0 0 0 42.2496 A 42.24 42.24 90 0 0 42.2496 84.4688 L 170.2496 84.4688 A 42.24 42.24 90 0 0 212.4992 42.2496 A 42.24 42.24 90 0 0 170.2496 0 A 42.24 42.24 90 0 0 128 42.2496 A 42.24 42.24 90 0 0 170.2496 84.4688 A 42.24 42.24 90 0 0 212.4992 42.2496 A 42.24 42.24 90 0 0 170.2496 0 L 42.2496 0"
+                ></path>
+              </svg>
+            </label>
+             </div>
+        <div id="location">
+            <select id="vehicle-select" style="display: none;">
+                <option value="vehicle1">Carro 1</option>
+                <option value="vehicle2">Carro 2</option>
+            </select>
+            
+
+
         <h1 style="font-weight: bold; font-size: 50px; color: #ffffff; text-align: center; margin-bottom: 30px;">
             GPS Recorrido en Tiempo Real
         </h1>
     
         <div id="location" style="text-align: center; margin-bottom: 20px;">
+
             <p><strong>Latitud:</strong> <span id="latitud">Cargando...</span></p>
             <p><strong>Longitud:</strong> <span id="longitud">Cargando...</span></p>
             <p><strong>Timestamp:</strong> <span id="timestamp">Cargando...</span></p>
         </div>
+
+        <label class="custom-toggle">
+            <input type="checkbox" id="dual-view">
+            <span class="toggle-slider"></span> Mostrar ambos vehículos
+        </label>
         
         <div id="realtime-info" style="display: flex; gap: 20px; align-items: center; justify-content: center;">
     
@@ -54,6 +87,17 @@
 
     <!-- Busqueda por Fecha  ------------------------------------------------------------------------------------>
 
+
+    <div class="container" id="search-section">
+        <h1>GPS<br>Buscar Recorrido</h1>
+        <div class="input-group">
+            <label for="start-date">Fecha y hora inicial:</label>
+            <input type="datetime-local" id="start-date">
+        </div>
+        <div class="input-group">
+            <label for="end-date">Fecha y hora final:</label>
+            <input type="datetime-local" id="end-date">
+
     <div class="container" id="search-section" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; color: #333;">
 
         <h1 style="font-family: 'Times New Roman', sans-serif; font-weight: bold; font-size: 40px; color: #ffffff; text-align: center; margin-bottom: 20px;">
@@ -73,6 +117,7 @@
                 Fecha y hora final:
             </label>
             <input type="datetime-local" id="end-date" style="border: 1px solid #ccc; border-radius: 5px; padding: 8px; font-size: 16px;">
+
         </div>
     
         <button id="show-route" style="font-family: 'Arial', sans-serif; font-weight: bold; font-size: 18px; color: #fff; background-color: #333; border: none; border-radius: 5px; padding: 10px 20px; cursor: pointer;">
@@ -86,6 +131,27 @@
     </div>
     
     <!-- Busqueda por direccion -------------------------------------------------------------------------------->
+
+
+    <div class="container" id="address-search-section">
+        <h1>GPS<br>Buscar por Dirección</h1>
+        <div class="input-group">
+            <label for="address-input">Dirección:</label>
+            <input type="text" id="autocomplete" placeholder="Ingrese una dirección">
+        </div>
+        <div class="input-group">
+            <label for="range-input">Rango (metros):</label>
+            <input type="number" id="range-input" placeholder="Ingrese el rango en metros" min="1">
+        </div>
+        
+        <button id="search-address">Buscar</button>
+        <div id="map-search"></div>
+        <h2>Historial de visitas en 40 metros</h2>
+        <p id="visit-count"></p>
+        <table id="proximity-table">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
 
 
     <div class="container" id="address-search-section" style="display: flex; flex-direction: column; align-items: center; justify-content: center; color: #333; padding: 20px; font-family: 'Times New Roman', sans-serif;">
@@ -123,6 +189,7 @@
             <thead>
                 <tr style="background-color: #333; color: #fff;">
                     <th style="padding: 10px; border: 1px solid #ccc;">Fecha</th>
+
                 </tr>
             </thead>
             <tbody></tbody>
@@ -158,13 +225,13 @@
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRealTime" async defer></script>
     <script src="scriptINT.js"></script> 
-<<<<<<< HEAD
+
 
 </body>
 </html>
-=======
+
     
     </body>
     </html>
     
->>>>>>> 1d420002a4063787de261193bcf7317d0b87daa2
+
