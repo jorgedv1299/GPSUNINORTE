@@ -13,8 +13,12 @@ jobs:
       - name: Configura SSH para conexión a EC2
         uses: webfactory/ssh-agent@v0.5.3
         with:
-          ssh-private-key: ${{ secrets.GPS }}  # Usa el secreto gps configurado en GitHub
+          ssh-private-key: ${{ secrets.GPS }}  # Usa el secreto GPS configurado en GitHub
 
       - name: Sincroniza cambios con el servidor EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@18.117.243.59 "cd /var/www/html/GPSUNINORTE && git pull origin master"  
+          ssh -o StrictHostKeyChecking=no ubuntu@18.117.243.59 << 'EOF'
+            cd /var/www/html/GPSUNINORTE
+            git fetch origin master
+            git reset --hard origin/master  # Asegura que siempre se sincronicen los cambios y resuelva conflictos sobrescribiendo con los cambios remotos
+          EOF
