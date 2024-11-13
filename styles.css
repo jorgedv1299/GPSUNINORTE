@@ -348,6 +348,9 @@ th {
 
 /* Para pantallas de menos de 1200px (tablets y pequeños escritorios) */
 @media (max-width: 1200px) {
+
+ 
+    
     .container {
         width: calc(100% - 40px); /* Ajuste para el padding */
         margin: 20px auto; /* Centramos el contenedor */
