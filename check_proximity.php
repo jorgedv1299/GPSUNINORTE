@@ -15,72 +15,48 @@ if (!$lat || !$lng) {
 error_log("Latitud: $lat, Longitud: $lng, Radio: $radius"); // Registro en el log del servidor
 
 try {
-    // Conectar a la base de datos
+    // Configuración de conexión a la base de datos
     $host = 'alex.cpywocwqwde0.us-east-2.rds.amazonaws.com';
     $db = 'alex';
     $user = 'alex';
     $pass = 'alex1234567890';
-    
+
+    // Conectar a la base de datos
     $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Manejo de errores
 
-    // Consulta para obtener las ubicaciones dentro del radio
+    // Consulta para obtener las ubicaciones dentro del radio, incluyendo velocidad y rpm
     $sql = "
         SELECT 
-            DATE_FORMAT(timestamp, '%Y-%m-%d %H:%i:%s') as fecha, 
-            latitud, 
-            longitud,
-            COUNT(DISTINCT id) as cantidad
+            id,
+            velocidad,
+            rpm,
+            DATE_FORMAT(timestamp, '%Y-%m-%d %H:%i:%s') AS fecha,
+            latitude,
+            longitude
         FROM ubicaciones
         WHERE 
-        (6371000 * acos(cos(radians(:lat)) * cos(radians(latitud)) * 
-        cos(radians(longitud) - radians(:lng)) + 
-        sin(radians(:lat)) * sin(radians(latitud)))) <= :radius
-        GROUP BY fecha, latitud, longitud
-        ORDER BY fecha ASC"; //formula de haaverside
+        (6371000 * acos(cos(radians(:lat)) * cos(radians(latitude)) * 
+        cos(radians(longitude) - radians(:lng)) + 
+        sin(radians(:lat)) * sin(radians(latitude)))) <= :radius
+        ORDER BY fecha ASC"; // Fórmula de Haversine para cálculo de distancia
 
+    // Preparar y ejecutar la consulta
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':lat', $lat, PDO::PARAM_STR);
     $stmt->bindParam(':lng', $lng, PDO::PARAM_STR);
     $stmt->bindParam(':radius', $radius, PDO::PARAM_INT);
     $stmt->execute();
 
-    // Obtener los resultados
+    // Obtener los resultados y almacenarlos en un array asociativo
     $locations = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Obtener los IDs de las ubicaciones para la segunda consulta
-    $ids = [];
-    foreach ($locations as $location) {
-        $ids[] = $location['fecha'];
-    }
-
-    // Obtener 20 datos antes y después de cada ubicación dentro del radio
-    $proximityData = [];
-    foreach ($ids as $fecha) {
-        // Consultas anteriores y posteriores
-        $currentDataSql = "SELECT latitud, longitud, timestamp FROM ubicaciones WHERE DATE_FORMAT(timestamp, '%Y-%m-%d %H:%i:%s') = :fecha";
-        $beforeSql = "SELECT latitud, longitud, timestamp FROM ubicaciones WHERE timestamp < :fecha ORDER BY timestamp DESC LIMIT 4";
-        $afterSql = "SELECT latitud, longitud, timestamp FROM ubicaciones WHERE timestamp > :fecha ORDER BY timestamp ASC LIMIT 4";
-
-        // Consultar datos
-        $currentStmt = $pdo->prepare($currentDataSql);
-        $currentStmt->bindParam(':fecha', $fecha);
-        $currentStmt->execute();
-        $proximityData['current'][$fecha] = $currentStmt->fetchAll(PDO::FETCH_ASSOC);
-
-        $beforeStmt = $pdo->prepare($beforeSql);
-        $beforeStmt->bindParam(':fecha', $fecha);
-        $beforeStmt->execute();
-        $proximityData['before'][$fecha] = $beforeStmt->fetchAll(PDO::FETCH_ASSOC);
-
-        $afterStmt = $pdo->prepare($afterSql);
-        $afterStmt->bindParam(':fecha', $fecha);
-        $afterStmt->execute();
-        $proximityData['after'][$fecha] = $afterStmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    echo json_encode(['locations' => $locations, 'proximityData' => $proximityData]);
+    // Construir la respuesta en JSON
+    echo json_encode(['locations' => $locations]);
 
 } catch (PDOException $e) {
+    // Manejo de errores en la conexión o consulta
+    error_log('Error de conexión o consulta: ' . $e->getMessage());
     echo json_encode(['error' => 'Error al acceder a la base de datos']);
 }
+?>
