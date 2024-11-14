@@ -20,6 +20,7 @@ try {
     $db = 'alex';
     $user = 'alex';
     $pass = 'alex1234567890';
+    
     $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Manejo de errores
 

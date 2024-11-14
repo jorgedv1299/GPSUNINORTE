@@ -21,16 +21,22 @@ const vehicleData = {
 };
 
 
+let markerRealTimeCar1, markerRealTimeCar2;
+let realTimePolylineCar1, realTimePolylineCar2;
+let realTimePathCar1 = [], realTimePathCar2 = [];
+
 //--------------------------------------Buscada Tiempo Real------------------------------------------------------------------------------------
-
 function initMapRealTime() {
-    mapRealTime = new google.maps.Map(document.getElementById('map-realtime'), {
+    const mapOptions = {
+        center: { lat: 11.0190513, lng: -74.8511425 },
         zoom: 15,
-        center: { lat: 11.0190513, lng: -74.8511425 }
-    });
+    };
 
-    // Inicializar marcadores para cada vehículo
+    mapRealTime = new google.maps.Map(document.getElementById("map-realtime"), mapOptions);
+
+    // Marcador para el carro 1
     markerRealTimeCar1 = new google.maps.Marker({
+        position: { lat: 11.0190513, lng: -74.8511425 },
         map: mapRealTime,
         icon: {
             url: iconCar1,
@@ -38,116 +44,118 @@ function initMapRealTime() {
         }
     });
 
+    // Marcador para el carro 2
     markerRealTimeCar2 = new google.maps.Marker({
-        map: null, // Inicialmente oculto
+        position: { lat: 11.0190513, lng: -74.8511425 },
+        map: mapRealTime,
         icon: {
             url: iconCar2,
             scaledSize: new google.maps.Size(30, 30)
         }
     });
 
-    const realTimePathCar1 = [];
-    const realTimePathCar2 = [];
-
-    // Crear polilíneas separadas para cada vehículo
-    const realTimePolylineCar1 = new google.maps.Polyline({
+    // Polilíneas para cada vehículo
+    realTimePolylineCar1 = new google.maps.Polyline({
         path: realTimePathCar1,
         geodesic: true,
         strokeColor: "#0000FF",
         strokeOpacity: 1.0,
         strokeWeight: 2
     });
+    realTimePolylineCar1.setMap(mapRealTime);
 
-    const realTimePolylineCar2 = new google.maps.Polyline({
+    realTimePolylineCar2 = new google.maps.Polyline({
         path: realTimePathCar2,
         geodesic: true,
         strokeColor: "#FF0000",
         strokeOpacity: 1.0,
         strokeWeight: 2
     });
+    realTimePolylineCar2.setMap(mapRealTime);
 
-    // Agregar las polilíneas al mapa
-    realTimePolylineCar1.setMap(mapRealTime);
-    realTimePolylineCar2.setMap(null); // Inicialmente oculto
-
-    document.getElementById('check').addEventListener('change', updateView);
+    // Listeners para el cambio de vista
     document.getElementById('dual-view').addEventListener('change', updateView);
+    document.getElementById('check').addEventListener('change', updateView);
 
-    function updateVehicleData(vehicleNumber) {
-        const endpoint = vehicleNumber === 2 ? 'get_location2.php' : 'get_location.php';
-        const marker = vehicleNumber === 2 ? markerRealTimeCar2 : markerRealTimeCar1;
-        const polyline = vehicleNumber === 2 ? realTimePolylineCar2 : realTimePolylineCar1;
-
-        fetch(endpoint)
-            .then(response => response.json())
-            .then(data => {
-                const { latitud, longitud, timestamp } = data;
-
-                // Actualizar la posición del marcador y la interfaz
-                const newPosition = { lat: parseFloat(latitud), lng: parseFloat(longitud) };
-                marker.setPosition(newPosition);
-
-                // Actualizar la ruta
-                const path = polyline.getPath();
-                path.push(newPosition);
-                polyline.setPath(path);
-
-                // Actualizar la información en la interfaz
-                if (vehicleNumber === 1) {
-                    document.getElementById('latitud').innerText = latitud;
-                    document.getElementById('longitud').innerText = longitud;
-                    document.getElementById('timestamp').innerText = timestamp;
-                    document.getElementById('car-text').innerText = "Carro 1";
-                } else {
-                    document.getElementById('latitud').innerText = latitud;
-                    document.getElementById('longitud').innerText = longitud;
-                    document.getElementById('timestamp').innerText = timestamp;
-                    document.getElementById('car-text').innerText = "Carro 2";
-                }
-            })
-            .catch(error => console.error(`Error al obtener la ubicación del vehículo ${vehicleNumber}:`, error));
-    }
-
-    function updateView() {
-        const isDualView = document.getElementById('dual-view').checked;
-        const isCar2Selected = document.getElementById('check').checked;
-
-        if (isDualView) {
-            // Mostrar ambos vehículos
-            realTimePolylineCar1.setMap(mapRealTime);
-            realTimePolylineCar2.setMap(mapRealTime);
-            markerRealTimeCar1.setMap(mapRealTime);
-            markerRealTimeCar2.setMap(mapRealTime);
-        } else {
-            // Mostrar solo el vehículo seleccionado
-            realTimePolylineCar1.setMap(isCar2Selected ? null : mapRealTime);
-            realTimePolylineCar2.setMap(isCar2Selected ? mapRealTime : null);
-            markerRealTimeCar1.setMap(isCar2Selected ? null : mapRealTime);
-            markerRealTimeCar2.setMap(isCar2Selected ? mapRealTime : null);
-
-            // Centrarse en el marcador activo
-            const activeMarker = isCar2Selected ? markerRealTimeCar2 : markerRealTimeCar1;
-            const position = activeMarker.getPosition();
-            if (position) {
-                mapRealTime.setCenter(position);
-            }
-        }
-    }
-
-    // Llamar a la función de actualización cada segundo para ambos vehículos
+    // Llamada periódica para actualizar los datos de ambos vehículos
     setInterval(() => {
         const isDualView = document.getElementById('dual-view').checked;
         if (isDualView) {
-            // Actualizar ambos vehículos
             updateVehicleData(1);
             updateVehicleData(2);
         } else {
-            // Actualizar solo el vehículo seleccionado
             const isCar2Selected = document.getElementById('check').checked;
             updateVehicleData(isCar2Selected ? 2 : 1);
         }
     }, 1000);
 }
+
+// Función para actualizar la posición y trayectoria de cada vehículo
+function updateVehicleData(vehicleId) {
+    const url = vehicleId === 1 ? 'get_location.php' : 'get_location2.php';
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            const { latitud, longitud, timestamp } = data;
+            const newPosition = { lat: parseFloat(latitud), lng: parseFloat(longitud) };
+
+            if (vehicleId === 1) {
+                markerRealTimeCar1.setPosition(newPosition);
+                realTimePathCar1.push(newPosition);
+                realTimePolylineCar1.setPath(realTimePathCar1);
+
+                if (!document.getElementById('dual-view').checked && !document.getElementById('check').checked) {
+                    document.getElementById('latitud').innerText = latitud;
+                    document.getElementById('longitud').innerText = longitud;
+                    document.getElementById('timestamp').innerText = timestamp;
+                }
+            } else {
+                markerRealTimeCar2.setPosition(newPosition);
+                realTimePathCar2.push(newPosition);
+                realTimePolylineCar2.setPath(realTimePathCar2);
+
+                if (!document.getElementById('dual-view').checked && document.getElementById('check').checked) {
+                    document.getElementById('latitud').innerText = latitud;
+                    document.getElementById('longitud').innerText = longitud;
+                    document.getElementById('timestamp').innerText = timestamp;
+
+                    
+                
+                }
+            }
+        })
+        .catch(error => console.error(`Error al obtener la ubicación del vehículo ${vehicleId}:`, error));
+}
+
+
+// Función para alternar entre la vista de un solo vehículo o ambos
+function updateView() {
+    const isDualView = document.getElementById('dual-view').checked;
+    const isCar2Selected = document.getElementById('check').checked;
+
+    if (isDualView) {
+        // Mostrar ambos vehículos
+        markerRealTimeCar1.setMap(mapRealTime);
+        markerRealTimeCar2.setMap(mapRealTime);
+        realTimePolylineCar1.setMap(mapRealTime);
+        realTimePolylineCar2.setMap(mapRealTime);
+    } else {
+        // Mostrar solo el vehículo seleccionado
+        markerRealTimeCar1.setMap(isCar2Selected ? null : mapRealTime);
+        markerRealTimeCar2.setMap(isCar2Selected ? mapRealTime : null);
+        realTimePolylineCar1.setMap(isCar2Selected ? null : mapRealTime);
+        realTimePolylineCar2.setMap(isCar2Selected ? mapRealTime : null);
+
+        // Centrarse en el marcador activo
+        const activeMarker = isCar2Selected ? markerRealTimeCar2 : markerRealTimeCar1;
+        mapRealTime.setCenter(activeMarker.getPosition());
+
+        document.getElementById('car-text').innerText = isCar2Selected ? 'Carro 2' : 'Carro 1';
+
+    }
+}
+
 
 
 //--------------------------------------Busqueda por Ruta------------------------------------------------------------------------------------
