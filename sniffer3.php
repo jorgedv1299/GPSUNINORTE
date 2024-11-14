@@ -19,10 +19,10 @@ date_default_timezone_set('America/Bogota');
 echo "Escuchando en $ip:$port...\n";
 
 // Configuración de la base de datos
-$servername = "database-1.cdcwiy8egoqg.us-east-1.rds.amazonaws.com";
-$username = "root";
-$password = "15963247";
-$dbname = "gps";
+$servername = "database-1.cxg86oymix3m.us-east-1.rds.amazonaws.com";
+$username = "bastod";
+$password = "bastod0529";
+$dbname = "disenoelec";
 $port_db = 3306;
 
 try {
