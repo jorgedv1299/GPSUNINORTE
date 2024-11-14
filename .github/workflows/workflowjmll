@@ -26,4 +26,4 @@ jobs:
 
       - name: Deploy to server
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/aws_key.pem ubuntu@52.15.171.233 "cd /var/www/html/Semana2_P2/GPSpruebaFront && git pull origin master && sudo systemctl restart apache2"
+          ssh -i ~/.ssh/aws_key.pem ubuntu@52.15.171.233 "cd /var/www/html/Semana2_P2/GPSpruebaFront && git pull origin master && sudo systemctl restart apache2"
