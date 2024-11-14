@@ -3,32 +3,58 @@ name: UpdateRealTime
 on:
   push:
     branches:
-      - master  # Esto asegura que el flujo se ejecute al hacer push a master
+      - master
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Paso para hacer checkout del repositorio
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Paso para configurar la clave SSH desde los secretos de GitHub
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.AWS_SSH_KEY }}
 
-      # Paso para agregar la clave del host de la instancia al archivo known_hosts
       - name: Add host key to known hosts
         run: |
           mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
           ssh-keyscan -H 52.15.171.233 >> ~/.ssh/known_hosts
-          chmod 644 ~/.ssh/known_hosts
+          cat ~/.ssh/known_hosts
 
-      # Paso para desplegar en el servidor
       - name: Deploy to server
         run: |
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/clave-git.pem ubuntu@52.15.171.233 "cd /var/www/html/Semana2_P2/GPSpruebaFront && git pull origin master && sudo systemctl restart apache2"
+name: UpdateRealTime
 
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.AWS_SSH_KEY }}
+
+      - name: Add host key to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan -H 52.15.171.233 >> ~/.ssh/known_hosts
+          cat ~/.ssh/known_hosts
+
+      - name: Deploy to server
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/clave-git.pem ubuntu@52.15.171.233 "cd /var/www/html/Semana2_P2/GPSpruebaFront && git pull origin master && sudo systemctl restart apache2"
