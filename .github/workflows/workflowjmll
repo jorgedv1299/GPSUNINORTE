@@ -1,0 +1,24 @@
+name: UpdateRealTime
+
+on:
+  push:
+    branches:
+      - master  # esta linea se activara cuando ocurra un cambio en la master.
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest 
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2  # revisa el codigo.
+
+      - name: Deploy to AWS
+        uses: appleboy/ssh-action@v0.1.5  # conectarse por ssh a la estancia.
+        with:
+          host: ${{ secrets.AWS_HOST }}  # IP de AWS.
+          username: ${{ secrets.AWS_USER }}  
+          key: ${{ secrets.AWS_SSH_KEY }}  # LLAVE pem
+          script: |
+            cd /var/www/html/Semana2_P2/GPSpruebaFront  # Ruta de tu proyecto en la instancia de AWS.
+            git pull origin SCRIP-OCT-JMLL  # Obtiene los cambios de la rama SCRIP-OCT-JMLL.
