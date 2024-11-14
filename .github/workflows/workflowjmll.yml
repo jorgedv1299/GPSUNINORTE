@@ -1,25 +1,23 @@
-name: UpdateRealTime
+name: Sync Changes to Local Server
 
 on:
   push:
     branches:
-      - master  # Este flujo se activará cuando haya cambios en la rama 'master'.
+      - master
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest  # La acción se ejecutará en una máquina virtual de Ubuntu.
+  sync:
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2  # Revisa el código del repositorio.
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-      - name: Deploy to AWS
-        uses: appleboy/ssh-action@v0.1.5  # Acción para SSH.
+      - name: Set up SSH key
+        uses: webfactory/ssh-agent@v0.5.3
         with:
-          host: ${{ secrets.AWS_HOST }}  # Tu IP de AWS.
-          username: ${{ secrets.AWS_USER }}  # El usuario SSH de AWS (usualmente 'ubuntu').
-          key: ${{ secrets.AWS_SSH_KEY }}  # La clave privada SSH de AWS.
-          script: |
-            cd /var/www/html/Semana2_P2/GPSpruebaFront/GPSUNINORTE  # Ruta de tu proyecto en la instancia de AWS.
-            git pull origin SCRIP-OCT-JMLL  # Obtiene los cambios de la rama SCRIP-OCT-JMLL.
-            # Puedes agregar otros comandos de despliegue aquí si es necesario.
+          ssh-private-key: ${{ secrets.JESUS }}  # Agrega tu clave SSH aquí
+
+      - name: Sync to Local Server
+        run: |
+          ssh -o StrictHostKeyChecking=no user@3.81.159.205 "cd /var/www/html/GPSUNINORTE && git pull origin master"
