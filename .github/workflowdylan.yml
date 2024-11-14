@@ -1,0 +1,23 @@
+name: Sync Changes to Local Server
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up SSH key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.DYLAN }}  # Agrega tu clave SSH aquí
+
+      - name: Sync to Local Server
+        run: |
+          ssh -o StrictHostKeyChecking=no user@3.81.159.205 "cd /var/www/html/GPSUNINORTE && git pull origin master"

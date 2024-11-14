@@ -1,0 +1,34 @@
+name: Sync changes to local master
+
+on:
+  push:
+    branches:
+      - master  # Esto se activa cuando haya un push al branch "master" del repositorio remoto
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Paso 1: Configurar el repositorio
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Paso 2: Configurar SSH para conectarse al servidor local
+      - name: Set up SSH key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.BASTOD }}
+
+      # Paso 3: Realizar un pull desde el repositorio remoto
+      - name: Pull changes from remote master
+        run: |
+          git fetch origin
+          git reset --hard origin/master  # Hacer un pull para actualizar el repositorio local
+
+      # Paso 4: Subir los cambios al repositorio local
+      - name: Push changes to local master
+        run: |
+          git remote add local ssh://ubuntu@54.234.93.168:/var/www/html/GPSUNINORTE  # Reemplaza la URL con la ruta de tu repositorio local
+          git push local master --force  # Forzar el push para asegurar que los cambios se suban
+
