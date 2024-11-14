@@ -18,6 +18,12 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.AWS_SSH_KEY }}
 
+      - name: Add host key to known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H 52.15.171.233 >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
       - name: Deploy to server
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@52.15.171.233 "cd /var/www/html/Semana2_P2/GPSpruebaFront && git pull origin master && sudo systemctl restart apache2"
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/aws_key.pem ubuntu@52.15.171.233 "cd /var/www/html/Semana2_P2/GPSpruebaFront && git pull origin master && sudo systemctl restart apache2"
