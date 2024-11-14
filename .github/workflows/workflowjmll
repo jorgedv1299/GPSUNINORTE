@@ -21,9 +21,14 @@ jobs:
       - name: Add host key to known hosts
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -H 52.15.171.233 >> ~/.ssh/known_hosts
+          ssh-keyscan -H 54.234.93.168 >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
 
-      - name: Deploy to server
+      - name: Configure Git Remote
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/aws_key.pem ubuntu@52.15.171.233 "cd /var/www/html/Semana2_P2/GPSpruebaFront && git pull origin master && sudo systemctl restart apache2"
+          git remote add local ssh://ubuntu@54.234.93.168:/var/www/html/GPSUNINORTE || true
+          git remote set-url local ssh://ubuntu@54.234.93.168:/var/www/html/GPSUNINORTE
+
+      - name: Push Changes to Remote Repository
+        run: |
+          git push local master --force
