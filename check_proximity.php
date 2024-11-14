@@ -16,21 +16,10 @@ error_log("Latitud: $lat, Longitud: $lng, Radio: $radius"); // Registro en el lo
 
 try {
     // Conectar a la base de datos
-<<<<<<< HEAD
     $host = 'alex.cpywocwqwde0.us-east-2.rds.amazonaws.com';
     $db = 'alex';
     $user = 'alex';
     $pass = 'alex1234567890';
-=======
-
-
-    $host = 'disenoelec.c98ge4aae1fw.us-east-1.rds.amazonaws.com';
-    $db = 'disenoelec';
-    $user = 'bastod';
-    $pass = 'bastod0529';
-
-
->>>>>>> 1d420002a4063787de261193bcf7317d0b87daa2
     $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Manejo de errores
 
