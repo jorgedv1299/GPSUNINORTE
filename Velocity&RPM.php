@@ -33,8 +33,4 @@ $conn->close();
 
 // Enviar datos en formato JSON
 echo json_encode($data);
-<<<<<<< HEAD
 ?>
-=======
-?>
->>>>>>> origin/master
