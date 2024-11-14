@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json'); // Para que el cliente sepa que está recibiendo JSON
 
-$servername = "disenoelec.c98ge4aae1fw.us-east-1.rds.amazonaws.com";
+$servername = "database-1.cxg86oymix3m.us-east-1.rds.amazonaws.com";
 $username = "bastod";       
 $password = "basto0529";
 $dbname = "disenoelec";

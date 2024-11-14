@@ -23,7 +23,7 @@ echo "Escuchando en $ip:$port...\n";
 
 
 
-$servername = "disenoelec.c98ge4aae1fw.us-east-1.rds.amazonaws.com";
+$servername = "database-1.cxg86oymix3m.us-east-1.rds.amazonaws.com";
 $username = "bastod";       
 $password = "bastod0529";
 $dbname = "disenoelec";
@@ -92,7 +92,7 @@ while (true) {
 
     // Intentar decodificar los datos JSON
     $data = json_decode($buf, true);
-
+}
 
     // Verificar si la decodificación fue exitosa y si contiene todos los campos necesarios
     if ($data !== null && 

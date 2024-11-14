@@ -18,7 +18,7 @@ try {
     // Conectar a la base de datos
 
 
-    $host = 'disenoelec.c98ge4aae1fw.us-east-1.rds.amazonaws.com';
+    $host = 'database-1.cxg86oymix3m.us-east-1.rds.amazonaws.com';
     $db = 'disenoelec';
     $user = 'bastod';
     $pass = 'bastod0529';
