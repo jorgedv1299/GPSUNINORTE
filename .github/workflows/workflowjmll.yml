@@ -20,4 +20,4 @@ jobs:
 
       - name: Sync to Local Server
         run: |
-          ssh -o StrictHostKeyChecking=no user@3.81.159.205 "cd /var/www/html/GPSUNINORTE && git pull origin master"
+          ssh -o StrictHostKeyChecking=no user@52.15.171.233 "cd /var/www/html/Semana2_P2/GPSpruebaFront/GPSUNINORTE && git pull origin master"
