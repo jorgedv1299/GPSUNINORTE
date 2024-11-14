@@ -20,6 +20,6 @@ jobs:
           username: ${{ secrets.AWS_USER }}  # El usuario SSH de AWS (usualmente 'ubuntu').
           key: ${{ secrets.AWS_SSH_KEY }}  # La clave privada SSH de AWS.
           script: |
-            cd /var/www/html/Semana2_P2/GPSpruebaFront  # Ruta de tu proyecto en la instancia de AWS.
+            cd /var/www/html/Semana2_P2/GPSpruebaFront/GPSUNINORTE  # Ruta de tu proyecto en la instancia de AWS.
             git pull origin SCRIP-OCT-JMLL  # Obtiene los cambios de la rama SCRIP-OCT-JMLL.
             # Puedes agregar otros comandos de despliegue aquí si es necesario.
