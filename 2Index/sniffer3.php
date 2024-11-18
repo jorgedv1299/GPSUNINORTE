@@ -19,20 +19,15 @@ date_default_timezone_set('America/Bogota');
 echo "Escuchando en $ip:$port...\n";
 
 // Configuración de la base de datos
-
-
-
-
 $servername = "database-1.cxg86oymix3m.us-east-1.rds.amazonaws.com";
 $username = "bastod";       
 $password = "bastod0529";
 $dbname = "disenoelec";
-$port = 3306;
-
+$port_db = 3306;
 
 try {
     // Conectar a la base de datos
-    $conn = new mysqli($servername, $username, $password, $dbname, $port);
+    $conn = new mysqli($servername, $username, $password, $dbname, $port_db);
 
     // Verificar la conexión
     if ($conn->connect_error) {
@@ -85,7 +80,6 @@ while (true) {
 
     // Intentar decodificar los datos JSON
     $data = json_decode($buf, true);
-}
 
     // Verificar si la decodificación fue exitosa y si contiene todos los campos necesarios
     if ($data !== null && 
@@ -128,7 +122,7 @@ while (true) {
         echo "Formato de datos incorrecto o JSON inválido recibido: $buf\n";
         print_r($data); // Muestra el contenido del JSON para depuración
     }
-
+}
 
 // Cerrar el socket cuando termine (en este caso, nunca terminará)
 socket_close($sock);
