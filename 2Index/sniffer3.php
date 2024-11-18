@@ -19,7 +19,6 @@ date_default_timezone_set('America/Bogota');
 echo "Escuchando en $ip:$port...\n";
 
 // Configuración de la base de datos
-<<<<<<< HEAD:sniffer2.php
 
 
 
@@ -31,14 +30,6 @@ $dbname = "disenoelec";
 $port = 3306;
 
 
-=======
-$servername = "database-1.cdcwiy8egoqg.us-east-1.rds.amazonaws.com";
-$username = "root";
-$password = "15963247";
-$dbname = "gps";
-$port_db = 3306;
-
->>>>>>> master:2Index/sniffer3.php
 try {
     // Conectar a la base de datos
     $conn = new mysqli($servername, $username, $password, $dbname, $port_db);
@@ -94,10 +85,7 @@ while (true) {
 
     // Intentar decodificar los datos JSON
     $data = json_decode($buf, true);
-<<<<<<< HEAD:sniffer2.php
 }
-=======
->>>>>>> master:2Index/sniffer3.php
 
     // Verificar si la decodificación fue exitosa y si contiene todos los campos necesarios
     if ($data !== null && 
@@ -140,7 +128,7 @@ while (true) {
         echo "Formato de datos incorrecto o JSON inválido recibido: $buf\n";
         print_r($data); // Muestra el contenido del JSON para depuración
     }
-}
+
 
 // Cerrar el socket cuando termine (en este caso, nunca terminará)
 socket_close($sock);
