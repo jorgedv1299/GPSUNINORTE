@@ -1,21 +1,10 @@
 <?php
 header('Content-Type: application/json');
 
-<<<<<<< HEAD
-// Configuración de la base de datos
-$servername = "alex.cpywocwqwde0.us-east-2.rds.amazonaws.com"; // Reemplaza con el endpoint de tu RDS si es necesario
-$username = "alex";       // Cambia al usuario de tu base de datos
-$password = "alex1234567890";           // Cambia a la contraseña de tu base de datos
-$dbname = "alex";
-=======
-
-$servername = "disenoelec.c98ge4aae1fw.us-east-1.rds.amazonaws.com";
-$username = "disenoelec";       
-$password = "bastod";
-$dbname = "bastod0529";
-
->>>>>>> 1d420002a4063787de261193bcf7317d0b87daa2
-
+$servername = "database-1.cdcwiy8egoqg.us-east-1.rds.amazonaws.com"; // Reemplaza con el endpoint de tu RDS si es necesario
+$username = "root";       // Cambia al usuario de tu base de datos
+$password = "15963247";           // Cambia a la contraseña de tu base de datos
+$dbname = "gps";
 
 // Crear conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -29,7 +18,7 @@ $start = $_GET['start'];
 $end = $_GET['end'];
 
 // Consultar todas las ubicaciones entre las fechas seleccionadas
-$sql = "SELECT latitude, longitude, timestamp FROM mediciones WHERE timestamp BETWEEN '$start' AND '$end' ORDER BY timestamp ASC";
+$sql = "SELECT latitude, longitude, timestamp FROM mediciones2 WHERE timestamp BETWEEN '$start' AND '$end' ORDER BY timestamp ASC";
 $result = $conn->query($sql);
 
 $data = [];
