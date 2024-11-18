@@ -32,7 +32,7 @@ $port = 3306;
 
 try {
     // Conectar a la base de datos
-    $conn = new mysqli($servername, $username, $password, $dbname, $port_db);
+    $conn = new mysqli($servername, $username, $password, $dbname, $port);
 
     // Verificar la conexión
     if ($conn->connect_error) {
