@@ -4,53 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/8750339612.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <link rel="stylesheet" href="styles2.css">
     <title>Consulta Histórica</title>
 </head>
 <body>
-    <div class="title">
-       
-        <!-- Parámetros globales -->
-        <div class="global-params">
-            <form id="global-params-form">
+    <div class="header-container">
+        <h1>Consulta de Históricos</h1>
+    </div>
+    
+    <div class="main-container">
+        <div class="options-container">
+            <form class="consulta-form">
                 <label for="inicio">Fecha y hora de inicio:</label>
-                <input type="text" id="inicio" name="inicio">
+                <input type="datetime-local" id="inicio" name="inicio" onchange="actualizarFechaFin()">
                 
                 <label for="fin">Fecha y hora de fin:</label>
-                <input type="text" id="fin" name="fin">
-            </form>
-        </div>
-        
-        <!-- Selector para el tipo de consulta -->
+                <input type="datetime-local" id="fin" name="fin">
+                <!-- Selector para el tipo de consulta -->
         <div class="selector-container">
             <label for="form-selector">Seleccionar tipo de consulta:</label>
-            <select id="form-selector" onchange="consultarHistorial()">
+            <select id="form-selector">
                 <option value="" selected disabled>Seleccione una opción</option>
-                <option value="camion">Consulta Camión</option>
-                <option value="coche">Consulta Coche</option>
-                <option value="mixto">Consulta Mixta</option>
+                <option value="Ambos">Consulta Ambos Vehículos</option>
+                <option value="Vehículo 1">Consulta Vehículo 1</option>
+                <option value="Vehículo 2">Consulta Vehículo 2</option>
             </select>
         </div>
         
-        <div style="align-items: center; justify-content: center;">
-            <form action="/tiempo_real" method="post">
-                <button type="submit" class="btn-volver">Ir a tiempo real</button>
+        <!-- Botón para activar la búsqueda -->
+        <div class="search-button-container"> 
+            <button id="search-button" class="btn-form" onclick="handleSearch()">Buscar</button>
+        </div>
             </form>
-        </div>        
-    </div>
-    
-    <!-- Contenedor del mapa -->
-    <div id="map-container">
-        <div id="map" style="height: 100%;"></div>
-        <div id="recenter-button" class="leaflet-bar leaflet-control">
-            <i class="fas fa-crosshairs"></i>
+        </div>
+
+        <form action="/tiempo_real" method="post" class="btn-volver-container">
+            <button type="submit" class="btn-volver">Ir a tiempo real</button>
+        </form>
+
+        <div id="map-container">
+            <div id="map"></div>
         </div>
     </div>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRealTime" async defer></script>
-    <!-- Script para inicializar Flatpickr -->
-   <script src="script_GET_ROUTE.js"></script>
+    <!-- Script para manejar las fechas -->
+    <script>
+        function actualizarFechaFin() {
+            const fechaInicio = document.getElementById("inicio").value;
+            const fechaFin = document.getElementById("fin");
+            
+            if (fechaInicio) {
+                fechaFin.min = fechaInicio; // Establece la fecha mínima de "fin" según la de "inicio"
+            }
+        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMap" async defer></script>
+    <script>
+        // Función para inicializar el mapa
+        function initMap() {
+            var mapOptions = {
+                center: { lat: 10.9818, lng: -74.8018 },
+                zoom: 12
+            };
+            new google.maps.Map(document.getElementById("map"), mapOptions);
+        }
+    </script>
 </body>
 </html>

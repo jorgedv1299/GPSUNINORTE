@@ -1,10 +1,11 @@
 <?php
 header('Content-Type: application/json'); // Para que el cliente sepa que está recibiendo JSON
 
-$servername = "database-1.cdcwiy8egoqg.us-east-1.rds.amazonaws.com"; // Reemplaza con el endpoint de tu RDS si es necesario
-$username = "root";       // Cambia al usuario de tu base de datos
-$password = "15963247";           // Cambia a la contraseña de tu base de datos
-$dbname = "gps";
+$servername = "database-1.cxg86oymix3m.us-east-1.rds.amazonaws.com";
+$username = "bastod";       
+$password = "bastod0529";
+$dbname = "disenoelec";
+
 // Crear conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
 
@@ -15,7 +16,7 @@ if ($conn->connect_error) {
 
 
 // Obtener la última ubicación
-$sql = "SELECT latitude, longitude, timestamp FROM mediciones2 ORDER BY id DESC LIMIT 1";
+$sql = "SELECT latitude, longitude, timestamp FROM mediciones ORDER BY id DESC LIMIT 1";
 $result = $conn->query($sql);
 
 $data = [];
