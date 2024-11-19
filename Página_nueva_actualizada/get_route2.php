@@ -30,7 +30,7 @@ if (!$start || !$end) {
 $data = [];
 
 // Consultar ubicaciones de la tabla `mediciones2`
-$sql2 = "SELECT latitude, longitude, timestamp FROM mediciones WHERE timestamp BETWEEN '$start' AND '$end' ORDER BY timestamp ASC";
+$sql2 = "SELECT latitude, longitude, timestamp FROM mediciones2 WHERE timestamp BETWEEN '$start' AND '$end' ORDER BY timestamp ASC";
 $result2 = $conn->query($sql2);
 
 if ($result2 && $result2->num_rows > 0) {

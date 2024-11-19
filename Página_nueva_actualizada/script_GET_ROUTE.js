@@ -1,151 +1,126 @@
-let mapRoute;
-let routePolyline = null;
-let segmentPolylines = [];
+let mapRoute; // Mapa de Google Maps
+let markers = []; // Arreglo para almacenar marcadores
+let routePolyline = null; // Polilínea global para la ruta
 
 function initMapRoute() {
-    // Inicializar el mapa dentro de map-container
+    // Inicializa el mapa dentro del contenedor
     mapRoute = new google.maps.Map(document.getElementById('map-container'), {
         zoom: 15,
         center: { lat: 11.0190513, lng: -74.8511425 }
     });
 
-    // Escuchar el evento click del botón para mostrar la ruta
-    document.getElementById('show-route').addEventListener('click', () => {
-        const startDate = document.getElementById('start-date').value;
-        const endDate = document.getElementById('end-date').value;
-
-        if (startDate && endDate) {
-            // Construir la URL para obtener las coordenadas
-            const url = `get_route.php?start=${startDate}&end=${endDate}`;
-            const colors = ["#FF0000", "#0000FF", "#FFA500", "#AA8CAF"]; // colores de segmentos
-
-            // Hacer la solicitud al servidor
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    // Mapear los puntos de la ruta
-                    const routePath = data.map(point => ({
-                        lat: parseFloat(point.latitud),
-                        lng: parseFloat(point.longitud)
-                    }));
-
-                    // Limpiar el mapa de polilíneas previas
-                    if (routePolyline) {
-                        routePolyline.setMap(null);
-                    }
-                    segmentPolylines.forEach(polyline => polyline.setMap(null));
-                    segmentPolylines = [];
-
-                    // Dibujar la ruta completa (opcional)
-                    routePolyline = new google.maps.Polyline({
-                        path: routePath,
-                        geodesic: true,
-                        strokeColor: "#FF0000",
-                        strokeOpacity: 0.5,
-                        strokeWeight: 2
-                    });
-
-                    // Dibujar segmentos de la ruta
-                    for (let i = 0; i < routePath.length - 1; i++) {
-                        const segmentPath = [routePath[i], routePath[i + 1]];
-                        const segmentPolyline = new google.maps.Polyline({
-                            path: segmentPath,
-                            geodesic: true,
-                            strokeColor: colors[i % colors.length],
-                            strokeOpacity: 1.0,
-                            strokeWeight: 2
-                        });
-
-                        // Mostrar el segmento en el mapa
-                        segmentPolyline.setMap(mapRoute);
-                        segmentPolylines.push(segmentPolyline);
-                    }
-
-                    // Centrar el mapa en el primer punto de la ruta
-                    if (routePath.length > 0) {
-                        mapRoute.setCenter(routePath[0]);
-                    }
-                })
-                .catch(error => console.error('Error al obtener el recorrido:', error));
-        } else {
-            alert('Por favor, seleccione una fecha de inicio y final.');
-        }
-    });
+    document.getElementById("buscar").addEventListener("click", handleSearch);
 }
 
-// Llamar a la función initMapRoute cuando el script de Google Maps esté cargado
-window.onload = initMapRoute;
+async function handleSearch() {
+    const inicio = document.getElementById("inicio").value;
+    const fin = document.getElementById("fin").value;
+    const tipoConsulta = document.getElementById("form-selector").value;
 
-//--------------Concatenado de calendarios--------------------------------------------------------------------
-document.addEventListener("DOMContentLoaded", function () {
-    let inicioPicker, finPicker;
-
-    // Inicializar Flatpickr para la fecha de inicio
-    inicioPicker = flatpickr("#inicio", {
-        enableTime: true,
-        dateFormat: "Y-m-d H:i",
-        time_24hr: true,
-        onChange: function (selectedDates) {
-            // Establecer la fecha mínima en el campo de fin cuando se selecciona una fecha de inicio
-            finPicker.set("minDate", selectedDates[0]);
-        }
-    });
-
-    // Inicializar Flatpickr para la fecha de fin
-    finPicker = flatpickr("#fin", {
-        enableTime: true,
-        dateFormat: "Y-m-d H:i",
-        time_24hr: true,
-        onChange: function (selectedDates) {
-            // Validar que la fecha de fin no sea menor que la fecha de inicio
-            const inicio = inicioPicker.selectedDates[0];
-            const fin = selectedDates[0];
-            if (fin < inicio) {
-                alert("La fecha de fin no puede ser menor que la fecha de inicio.");
-                finPicker.clear(); // Limpiar el campo de fecha de fin
-            }
-        }
-    });
-});
-
-function consultarHistorial() {
-    const inicio = document.getElementById('inicio').value;
-    const fin = document.getElementById('fin').value;
-
-    if (!inicio || !fin) {
-        alert('Por favor, complete la fecha y hora de inicio y fin antes de continuar.');
+    if (!inicio || !fin || !tipoConsulta) {
+        alert("Por favor, complete todos los campos antes de continuar.");
         return;
     }
 
-    const tipoConsulta = document.getElementById('form-selector').value;
+    // Selecciona dinámicamente el archivo PHP según el vehículo
+    let endpoints = [];
+    if (tipoConsulta === "Vehículo 1") {
+        endpoints = ["get_route.php"]; // Vehículo 1 usa get_route.php
+    } else if (tipoConsulta === "Vehículo 2") {
+        endpoints = ["get_route2.php"]; // Vehículo 2 usa get_route2.php
+    } else if (tipoConsulta === "Ambos") {
+        endpoints = ["get_route.php", "get_route2.php"]; // Ambos vehículos
+    } else {
+        alert("Por favor, seleccione un vehículo válido.");
+        return;
+    }
 
-    switch (tipoConsulta) {
-        case 'camion':
-            alert(`Consulta para Camión con parámetros: Inicio: ${inicio}, Fin: ${fin}`);
-            break;
-        case 'coche':
-            alert(`Consulta para Coche con parámetros: Inicio: ${inicio}, Fin: ${fin}`);
-            break;
-        case 'mixto':
-            alert(`Consulta para Mixta con parámetros: Inicio: ${inicio}, Fin: ${fin}`);
-            break;
-        default:
-            alert('Seleccione un tipo de consulta válido.');
-            break;
+    try {
+        clearMap(); // Limpiar el mapa antes de la nueva consulta
+
+        let allData = []; // Aquí almacenaremos los datos de ambas consultas
+        let alertMessage = ""; // Mensaje de alerta si no hay datos
+
+        // Hacemos las consultas a los endpoints seleccionados
+        for (const endpoint of endpoints) {
+            console.log(`Consultando el endpoint: ${endpoint}`); // Log para depuración
+
+            const response = await fetch(endpoint, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ inicio, fin }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error al obtener los datos del servidor desde ${endpoint}`);
+            }
+
+            const data = await response.json();
+
+            console.log(`Datos recibidos de ${endpoint}:`, data); // Log para ver la respuesta
+
+            // Si no hay datos para esta consulta y se seleccionó "Ambos", agregamos un mensaje
+            if (data.length === 0) {
+                alertMessage += `${endpoint === "get_route.php" ? "Vehículo 1" : "Vehículo 2"} no tiene datos.\n`;
+                continue; // Saltamos este endpoint si no hay datos
+            }
+
+            // Si hay datos, los agregamos a allData
+            allData.push({ endpoint, data });
+        }
+
+        // Si se ha acumulado algún mensaje de alerta, lo mostramos
+        if (alertMessage !== "") {
+            alert(alertMessage);
+        }
+
+        // Si tenemos datos en allData, procedemos a graficar las rutas
+        if (allData.length > 0) {
+            let bounds = new google.maps.LatLngBounds(); // Para ajustar el mapa a la ruta
+
+            allData.forEach(({ endpoint, data }) => {
+                const routeCoordinates = data.map((point) => {
+                    return { lat: parseFloat(point.lat), lng: parseFloat(point.lng) };
+                });
+
+                // Dibuja la polilínea de la ruta
+                routePolyline = new google.maps.Polyline({
+                    path: routeCoordinates,
+                    geodesic: true,
+                    strokeColor: endpoint === "get_route.php" ? "#FF0000" : "#0000FF", // Color diferente para cada vehículo
+                    strokeOpacity: 1.0,
+                    strokeWeight: 2,
+                });
+
+                routePolyline.setMap(mapRoute);
+
+                // Extender los límites del mapa para que incluya todos los puntos de la ruta
+                routeCoordinates.forEach(function(coord) {
+                    bounds.extend(coord);
+                });
+            });
+
+            // Ajustar el mapa para mostrar todos los puntos de la ruta
+            mapRoute.fitBounds(bounds);
+        } else {
+            alert("No se encontraron datos para los vehículos seleccionados.");
+        }
+
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Hubo un problema al procesar la solicitud.");
     }
 }
 
- // Función para inicializar el mapa
- function initMapRealTime() {
-    const map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: 4.711, lng: -74.0721 }, // Coordenadas de ejemplo (Bogotá)
-        zoom: 12,
-    });
+// Función para limpiar el mapa
+function clearMap() {
+    // Elimina la polilínea existente
+    if (routePolyline) {
+        routePolyline.setMap(null);
+        routePolyline = null;
+    }
 
-    // Agregar marcador de ejemplo
-    new google.maps.Marker({
-        position: { lat: 4.711, lng: -74.0721 },
-        map: map,
-        title: "Ubicación Inicial",
-    });
+    // Limpia los marcadores (si hubiera, aunque en tu caso no los estás usando actualmente)
+    markers.forEach((marker) => marker.setMap(null));
+    markers = [];
 }

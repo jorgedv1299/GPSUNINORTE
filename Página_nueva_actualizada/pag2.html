@@ -11,7 +11,6 @@
 </head>
 <body>
     <div class="title">
-       
         <!-- Parámetros globales -->
         <div class="global-params">
             <form id="global-params-form">
@@ -26,16 +25,21 @@
         <!-- Selector para el tipo de consulta -->
         <div class="selector-container">
             <label for="form-selector">Seleccionar tipo de consulta:</label>
-            <select id="form-selector" onchange="consultarHistorial()">
+            <select id="form-selector">
                 <option value="" selected disabled>Seleccione una opción</option>
-                <option value="camion">Consulta Camión</option>
-                <option value="coche">Consulta Coche</option>
-                <option value="mixto">Consulta Mixta</option>
+                <option value="Ambos">Consulta Ambos Vehículos</option>
+                <option value="Vehículo 1">Consulta Vehículo 1</option>
+                <option value="Vehículo 2">Consulta Vehículo 2</option>
             </select>
         </div>
         
+        <!-- Botón para activar la búsqueda -->
+        <div class="search-button-container">
+            <button id="search-button" onclick="handleSearch()">Buscar</button>
+        </div>
+
         <div style="align-items: center; justify-content: center;">
-            <form action="/tiempo_real" method="post">
+            <form action="/index.html" method="post">
                 <button type="submit" class="btn-volver">Ir a tiempo real</button>
             </form>
         </div>        
@@ -50,7 +54,7 @@
     </div>
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRealTime" async defer></script>
-    <!-- Script para inicializar Flatpickr -->
-   <script src="script_GET_ROUTE.js"></script>
+    <script src="script_GET_ROUTE.js"></script>
+
 </body>
 </html>
