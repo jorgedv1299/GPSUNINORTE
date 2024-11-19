@@ -1,4 +1,4 @@
-name: Sync Changes to Local Server
+name: Sync Changes to Local Server JMLL
 
 on:
   push:
