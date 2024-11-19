@@ -1,260 +1,117 @@
-
+/* Estilos generales */
 body {
-    background-color: #fcfafb; 
-    color: #cc3b62; /* Rosa oscuro */
-    font-family: 'Arial Black', sans-serif; /* Fuente más atractiva */
-    padding: 20px;
-    margin: 0; /* Eliminar el margen predeterminado del cuerpo */
-}
-h1 {
-    display: none; /* Oculta el título "Consulta Histórica" */
-}
-.header-container {
-    background-color: #fcf2f6; 
-    border-radius: 7px; /* Bordes cuadrados */
-    border: 2px solid #cc3b62; /* Rosa oscuro */
-    padding: 10px 20px; /* Menor espacio de relleno arriba y abajo, mayor espacio de relleno a los lados */
-    margin-bottom: 20px;
-    width: calc(70% - 20px);
-    float: left;
-    text-align: center;
-    font-size: 14px;
-}
-header {
-    margin: 0; /* Eliminar el margen del encabezado */
-}
-.title {
+    background-color: #2c2c2c;
+    color: #f0f0f0;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-top: 5px;
-    width: 100%;
-    margin-right: 0.5%;
-}
-.btn-1, .btn-2, .btn-3 {
-    background-color: #fcf2f6; /* Color de fondo rosa oscuro */
-    padding: 10px 20px; /* Espacio de relleno */
-    border: 2px solid #cc3b62; /* Rosa oscuro */
-    border-radius: 10px; /* Bordes redondeados */
-    cursor: pointer; /* Cursor de puntero al pasar sobre él */
-    display: flex; /* Para que el botón se comporte como un elemento en línea */
-    width: calc(5% - 20px);
-    height: 6vh;
-    margin-top: 20px;
+    flex-direction: column;
     align-items: center;
-    justify-content: center; 
+    height: 100vh; /* Ocupa toda la altura de la ventana */
+    overflow: hidden; /* Evita el scroll */
 }
-.btn-1:active, .btn-2:active, .btn-3:active {
-    background-color: #cc3b62;
+
+/* Encabezado */
+.header-container {
+    background-color: #333;
+    color: #fff;
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+    border-bottom: 2px solid #444;
 }
-/* Estilos del botón */
-.btn-volver {
-    background-color: #cc3b62; /* Color de fondo rosa oscuro */
-    color: white; /* Color del texto blanco */
-    padding: 15px 30px; /* Espacio de relleno */
-    border: none; /* Sin borde */
-    border-radius: 10px; /* Bordes redondeados */
-    cursor: pointer; /* Cursor de puntero al pasar sobre él */
-    text-decoration: none; /* Eliminar subrayado del enlace */
-    display: flex; /* Para que el botón se comporte como un elemento en línea */
-    margin-top: 20px; /* Espacio superior */
-    font-size: 15px;
-    flex: 1;
-    justify-content: center; 
+
+.header-container h1 {
+    font-size: 28px;
+    color: #ffffff;
+    margin: 0;
+    font-weight: bold;
 }
-.container {
+
+/* Contenedor principal */
+.main-container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-top: 20px; /* Dejar espacio debajo del encabezado */
+    flex-direction: column;
+    align-items: center;
+    width: 95%;
+    height: calc(100% - 60px); /* Resta el espacio del encabezado */
+    overflow: hidden;
+}
+
+/* Opciones de consulta */
+.options-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    background-color: #444;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.consulta-form {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     width: 100%;
 }
+
+label {
+    font-size: 16px;
+    color: #e0e0e0;
+    text-align: center;
+    width: 150px; /* Ancho fijo para centrar uniformemente */
+}
+
+input[type="datetime-local"], select {
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    margin: 0 10px;
+}
+
+/* Botón "Consultar historial" */
+.btn-form {
+    background-color: #444; /* Color gris oscuro acorde con la página */
+    color: #fff;
+    border: 1px solid #555; /* Borde gris más claro */
+    padding: 12px 20px;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.btn-form:hover {
+    background-color: #555; /* Cambio de color a un gris más claro al pasar el cursor */
+}
+
+/* Botón de volver */
+.btn-volver-container {
+    margin-top: 10px;
+}
+
+.btn-volver {
+    background-color: #f0f0f0;
+    color: #2c2c2c;
+    border: 1px solid #555;
+    padding: 10px 18px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Mapa */
 #map-container {
     width: 100%;
-    height: 60vh;
-    margin-top: 30px;
+    height: 100%; /* Ocupa todo el espacio restante */
+    border: 2px solid #444;
+    border-radius: 5px;
+    margin-top: 10px;
 }
+
 #map {
     width: 100%;
     height: 100%;
-    border-radius: 10px;
-    border: 2px solid #cc3b62; /* Rosa oscuro */
 }
-#recenter-button {
-    background-color: white;
-    border-radius: 5px;
-    padding: 5px;
-    cursor: pointer;
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-}
-#recenter-button i {
-    color: #cc3b62; /* Color rosa oscuro */
-}
-/* Estilos para el formulario */
-.consulta-form, .consulta-form2, .consulta-form3 {
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
-.consulta-form label {
-    display: block;
-    margin-bottom: 5px;
-    margin-right: 7px;
-}
-.consulta-form input[type="text"] {
-    padding: 8px;
-    border-radius: 7px;
-    border: 2px solid #cc3b62;
-    box-sizing: border-box;
-    width: calc(27% - 10px);
-    margin-right: 10px;
-}
-.btn-form, .btn-form2, .btn-form3 {
-    background-color: #cc3b62; /* Color de fondo rosa oscuro */
-    color: white; /* Color del texto blanco */
-    padding: 10px 20px; /* Espacio de relleno */
-    border: none; /* Sin borde */
-    border-radius: 10px; /* Bordes redondeados */
-    cursor: pointer; /* Cursor de puntero al pasar sobre él */
-    text-decoration: none; /* Eliminar subrayado del enlace */
-    display: inline-block; /* Para que el botón se comporte como un elemento en línea */
-    margin-top: 3px; /* Espacio superior */
-    vertical-align: top;
-}
-#time-slider {
-    width: 100%;
-    background-color: #cc3b62; /* Color de fondo rosa oscuro */
-    border: none; /* Sin borde */
-    border-radius: 5px; /* Bordes redondeados */
-    height: 10px; /* Altura del slider */
-    outline: none; /* Sin contorno */
-    -webkit-appearance: none; /* Quitar la apariencia predeterminada en WebKit */
-    appearance: none; /* Quitar la apariencia predeterminada */
-}
-#time-slider::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 10px;
-    background: #878787; /* Color de fondo rosa claro */
-    border-radius: 5px; /* Bordes redondeados */
-}
-#time-slider::-webkit-slider-thumb {
-    -webkit-appearance: none; /* Quitar la apariencia predeterminada en WebKit */
-    appearance: none; /* Quitar la apariencia predeterminada */
-    width: 20px; /* Ancho del control */
-    height: 20px; /* Altura del control */
-    background: #cc3b3b; 
-    border-radius: 50%; /* Hacer el control redondo */
-    cursor: pointer; /* Cambiar el cursor al pasar sobre él */
-    margin-top: -5px; /* Alinear el control verticalmente */
-}
-
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
-/* Estilos para el formulario2 */
-.consulta-form2 label {
-    display: block;
-    margin-bottom: 5px;
-    margin-right: 7px;
-}
-.consulta-form2 input[type="text"] {
-    padding: 8px;
-    border-radius: 7px;
-    border: 2px solid #cc3b62;
-    box-sizing: border-box;
-    width: calc(27% - 10px);
-    margin-right: 10px;
-}
-#time-slider2 {
-    width: 100%;
-    background-color: #cc3b62; /* Color de fondo rosa oscuro */
-    border: none; /* Sin borde */
-    border-radius: 5px; /* Bordes redondeados */
-    height: 10px; /* Altura del slider */
-    outline: none; /* Sin contorno */
-    -webkit-appearance: none; /* Quitar la apariencia predeterminada en WebKit */
-    appearance: none; /* Quitar la apariencia predeterminada */
-}
-#time-slider2::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 10px;
-    background: #878787; /* Color de fondo rosa claro */
-    border-radius: 5px; /* Bordes redondeados */
-}
-#time-slider2::-webkit-slider-thumb {
-    -webkit-appearance: none; /* Quitar la apariencia predeterminada en WebKit */
-    appearance: none; /* Quitar la apariencia predeterminada */
-    width: 20px; /* Ancho del control */
-    height: 20px; /* Altura del control */
-    background: #863bcc; /* Color de fondo circulo */
-    border-radius: 50%; /* Hacer el control redondo */
-    cursor: pointer; /* Cambiar el cursor al pasar sobre él */
-    margin-top: -5px; /* Alinear el control verticalmente */
-}
- /* Estilos para el formulario3 */
-.consulta-form3 label {
-    display: block;
-    margin-bottom: 5px;
-    margin-right: 7px;
-}
-.consulta-form3 input[type="text"] {
-    padding: 8px;
-    border-radius: 7px;
-    border: 2px solid #cc3b62;
-    box-sizing: border-box;
-    width: calc(27% - 10px);
-    margin-right: 10px;
-}
-#time-slider3 {
-    width: 100%;
-    background-color: #cc3b62; /* Color de fondo rosa oscuro */
-    border: none; /* Sin borde */
-    border-radius: 5px; /* Bordes redondeados */
-    height: 10px; /* Altura del slider */
-    outline: none; /* Sin contorno */
-    -webkit-appearance: none; /* Quitar la apariencia predeterminada en WebKit */
-    appearance: none; /* Quitar la apariencia predeterminada */
-}
-#time-slider3::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 10px;
-    background: #878787; /* Color de fondo rosa claro */
-    border-radius: 5px; /* Bordes redondeados */
-}
-#time-slider3::-webkit-slider-thumb {
-    -webkit-appearance: none; /* Quitar la apariencia predeterminada en WebKit */
-    appearance: none; /* Quitar la apariencia predeterminada */
-    width: 20px; /* Ancho del control */
-    height: 20px; /* Altura del control */
-    background: #3b81cc; /* Color de fondo circulo */
-    border-radius: 50%; /* Hacer el control redondo */
-    cursor: pointer; /* Cambiar el cursor al pasar sobre él */
-    margin-top: -5px; /* Alinear el control verticalmente */
-}
-/* Estilo del mensaje */
-.swal2-popup {
-    font-family: 'Roboto', sans-serif; /* Aplica la fuente personalizada */
-    max-width: 400px; /* Ancho máximo del cuadro de mensaje */
-    font-size: 14px; /* Tamaño de fuente */
-}
-.swal2-title {
-    font-size: 20px; /* Tamaño de fuente del título */
-    color: #cc3b62; /* Color del título */
-}
-.swal2-content {
-    font-size: 11px; /* Tamaño de fuente del contenido */
-    color: #333; /* Color del contenido */
-}
-.swal2-icon {
-    color: #fda2ba; /* Color del icono */
-}
-/* Botón de confirmación */
-.swal2-confirm {
-    background-color: #cc3b62; /* Color de fondo del botón */
-    color: white; /* Color del texto del botón */
-}
-
