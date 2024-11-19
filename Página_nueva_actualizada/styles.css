@@ -1,143 +1,108 @@
+/* Estilos generales */
+body {
+    background-color: #2c2c2c;
+    color: #f0f0f0;
+    font-family: 'Arial', sans-serif; /* Cambié la fuente a Arial */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-        body {
-            background-color: #787474; 
-            color: #0c12c9; /* Rosa oscuro */
-            font-family: 'Arial Black', sans-serif;
-            padding: 20px;
-            margin: 0; /* Eliminar el margen predeterminado del cuerpo */
-        }
-        h1 {
-            display: none; /* Oculta el título "Coordenadas" */
-        }
-        .header-container {
-            background-color: #787474; /* Fondo blanco */
-       
-        
-            padding: 10px 20px; /* Menor espacio de relleno arriba y abajo, mayor espacio de relleno a los lados */
-            margin-right: 4%;
-            width: calc(77% - 20px); /* Ancho del cuadro de bienvenida */
-            float: left; /* Alineación a la izquierda */
-            font-size: 17.5px;
-            text-align: center;
-        }
-        .title {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-top: 0.5px;
-            width: 100%;
-            margin-right: 1%;
-        }
-        .coord-icon1 {
-            float: left;
-            margin-top: 3px;
-        }
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-top: 20px; /* Dejar espacio debajo del encabezado */
-            width: 100%;
-        }
-        .container2 {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-top: 0px; /* Dejar espacio debajo del encabezado */
-            width: 100%;
-        }
-        .coord-data {
-            font-family: 'Arial Rounded MT Bold', sans-serif; /* Fuente más atractiva */
-            font-size: 14px; /* Tamaño de la letra */
-            border-radius: 10px;
-            border: 2px solid #3b022f; /* Rosa oscuro */
-            padding: 8px;
-            margin-bottom: 8px;
-            width: 22%; /* Ancho de los cuadros */
-            margin-left: 1%; /* Espacio entre los cuadros */
-            box-sizing: border-box; /* Incluye el borde en el cálculo del ancho */
-            background-color: #fcf2f6;
-        }
-        .coord-data2 {
-            font-family: 'Arial Rounded MT Bold', sans-serif; /* Fuente más atractiva */
-            font-size: 14px; /* Tamaño de la letra */
-            border-radius: 10px;
-            border: 2px solid #3b022f; /* Rosa oscuro */
-            padding: 8px;
-            margin-bottom: 8px;
-            width: 22%; /* Ancho de los cuadros */
-            margin-left: 1%; /* Espacio entre los cuadros */
-            box-sizing: border-box; /* Incluye el borde en el cálculo del ancho */
-            background-color: #fcf2f6; 
-        }
-        #map-container {
-            width: 75%;
-            height: 68vh;
-            margin-top: 10px;
-            float: left;
-        }
-        #map {
-            width: 100%;
-            height: 100%;
-            border-radius: 10px;
-            border: 2px solid #3b022f; /* Rosa oscuro */
-        }
-        #data-container {
-            width: 23%;
-            height: 68vh;
-            margin-top: 10px;
-            background-color: #fcf2f6; 
-            border-radius: 10px;
-            border: 2px solid #3b022f;
-            float: right;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-        }
-        #rpm {
-            width: 100%;
-            max-width: 300px; 
-            height: 200px;
-            margin-bottom: 90px;
-            margin-top: 20px;
-        }
-        #data-container h2 {
-            text-align: center;
-            margin-top: 30px;
-            margin-bottom: 30px;
-            font-size: 23px;
-        }
-        .gauge-value {
-            text-align: center;
-            font-size: 17px;
-            margin-top: 10px;
-        }
-         #rpm svg path:nth-child(3) {
-            fill: #8c8b8b; 
-        }
-        #rpm svg path:nth-child(4) {
-            fill: #de5959; 
-        }
-        .btn-consulta {
-            background-color: #3b022f; /* Color de fondo rosa oscuro */
-            color: white; /* Color del texto blanco */
-            padding: 15px 30px; /* Espacio de relleno aumentado */
-            border: none; /* Sin borde */
-            border-radius: 10px; /* Bordes redondeados */
-            cursor: pointer; /* Cursor de puntero al pasar sobre él */
-            text-decoration: none; /* Eliminar subrayado del enlace */
-            display: flex; /* Para que el botón se comporte como un elemento en línea */
-            flex: 1;
-            margin-top: 20px; /* Espacio superior */
-            font-size: 13.5px; /* Tamaño del texto aumentado */
-            float: right;
-        }
-        .coord-icon1:hover {
-            cursor: pointer;
-            transform: scale(1.1);
-            transition: transform 0.3s ease;
-        }
+/* Encabezado */
+.header-container {
+    background-color: #333;
+    color: #fff;
+    width: 100%;
+    padding: 25px;
+    text-align: center;
+    border-bottom: 2px solid #444;
+}
+
+.header-container h1 {
+    font-size: 32px;
+    color: #fff;
+    margin: 0;
+    font-weight: bold;
+}
+
+.controls {
+    margin-top: 15px;
+}
+
+#vehicleSelector {
+    padding: 8px;
+    margin-right: 15px;
+    font-size: 16px;
+}
+
+.btn-consulta {
+    background-color: #f0f0f0;
+    color: #2c2c2c;
+    border: 1px solid #555;
+    padding: 10px 18px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Contenedores de vehículos */
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    width: 98%;
+    margin: 25px 0;
+}
+
+.vehicle-container {
+    background-color: #444;
+    border-radius: 10px;
+    padding: 25px;
+    color: #fff;
+    width: 280px;
+    text-align: center;
+    margin-right: 25px;
+    font-size: 16px; /* Aumenté el tamaño de la letra */
+}
+
+.vehicle-container img {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 15px;
+}
+
+.data-container {
+    margin-top: 15px;
+}
+
+.coord-data {
+    margin: 7px 0;
+    font-size: 18px; /* Letra más grande y legible */
+}
+
+.gauge-container {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background-color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    margin: 15px auto;
+    font-size: 16px;
+}
+
+/* Mapa */
+#map-container {
+    flex-grow: 1;
+    margin-left: 25px;
+    height: 500px;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    border: 2px solid #444;
+}
