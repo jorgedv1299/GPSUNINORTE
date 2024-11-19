@@ -32,6 +32,21 @@ if ($result->num_rows > 0) {
     }
 }
 
+// Consultar todas las ubicaciones entre las fechas seleccionadas
+$sql = "SELECT latitude, longitude, timestamp FROM mediciones2 WHERE timestamp BETWEEN '$start' AND '$end' ORDER BY timestamp ASC";
+$result = $conn->query($sql);
+
+$data = [];
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        $data[] = [
+            'latitud' => $row['latitude'],
+            'longitud' => $row['longitude'],
+            'timestamp' => $row['timestamp']
+        ];
+    }
+}
+
 // Cerrar la conexión
 $conn->close();
 
