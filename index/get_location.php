@@ -5,7 +5,10 @@ $servername = "alex.cpywocwqwde0.us-east-2.rds.amazonaws.com"; // Reemplaza con 
 $username = "alex";       // Cambia al usuario de tu base de datos
 $password = "alex1234567890";           // Cambia a la contraseña de tu base de datos
 $dbname = "alex";
+<<<<<<< HEAD:index/get_location.php
 
+=======
+>>>>>>> a858395cb6ced70b43a29b099fbce746037e342e:get_location.php
 
 // Crear conexión
 $conn = new mysqli($servername, $username, $password, $dbname);

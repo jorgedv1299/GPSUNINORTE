@@ -1,12 +1,16 @@
 <?php
 header('Content-Type: application/json');
 
+<<<<<<< HEAD:index/get_route.php
 <<<<<<< HEAD:get_route.php
 // Configuración de la base de datos
+=======
+>>>>>>> a858395cb6ced70b43a29b099fbce746037e342e:get_route.php
 $servername = "alex.cpywocwqwde0.us-east-2.rds.amazonaws.com"; // Reemplaza con el endpoint de tu RDS si es necesario
 $username = "alex";       // Cambia al usuario de tu base de datos
 $password = "alex1234567890";           // Cambia a la contraseña de tu base de datos
 $dbname = "alex";
+<<<<<<< HEAD:index/get_route.php
 
 =======
 $servername = "database-1.cdcwiy8egoqg.us-east-1.rds.amazonaws.com"; // Reemplaza con el endpoint de tu RDS si es necesario
@@ -15,6 +19,8 @@ $password = "15963247";           // Cambia a la contraseña de tu base de datos
 $dbname = "gps";
 >>>>>>> 4153ab5c187ce471bad69dba281015bd89d15eb5:index/get_route.php
 
+=======
+>>>>>>> a858395cb6ced70b43a29b099fbce746037e342e:get_route.php
 // Crear conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
 
