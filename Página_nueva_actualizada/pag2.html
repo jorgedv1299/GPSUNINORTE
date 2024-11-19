@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/8750339612.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="styles2.css">
+    <title>Consulta Histórica</title>
+</head>
+<body>
+    <div class="title">
+       
+        <!-- Parámetros globales -->
+        <div class="global-params">
+            <form id="global-params-form">
+                <label for="inicio">Fecha y hora de inicio:</label>
+                <input type="text" id="inicio" name="inicio">
+                
+                <label for="fin">Fecha y hora de fin:</label>
+                <input type="text" id="fin" name="fin">
+            </form>
+        </div>
+        
+        <!-- Selector para el tipo de consulta -->
+        <div class="selector-container">
+            <label for="form-selector">Seleccionar tipo de consulta:</label>
+            <select id="form-selector" onchange="consultarHistorial()">
+                <option value="" selected disabled>Seleccione una opción</option>
+                <option value="camion">Consulta Camión</option>
+                <option value="coche">Consulta Coche</option>
+                <option value="mixto">Consulta Mixta</option>
+            </select>
+        </div>
+        
+        <div style="align-items: center; justify-content: center;">
+            <form action="/tiempo_real" method="post">
+                <button type="submit" class="btn-volver">Ir a tiempo real</button>
+            </form>
+        </div>        
+    </div>
+    
+    <!-- Contenedor del mapa -->
+    <div id="map-container">
+        <div id="map" style="height: 100%;"></div>
+        <div id="recenter-button" class="leaflet-bar leaflet-control">
+            <i class="fas fa-crosshairs"></i>
+        </div>
+    </div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRealTime" async defer></script>
+    <!-- Script para inicializar Flatpickr -->
+   <script src="script_GET_ROUTE.js"></script>
+</body>
+</html>
