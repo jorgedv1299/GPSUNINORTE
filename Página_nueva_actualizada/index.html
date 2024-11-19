@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/8750339612.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="styles.css">
+    <title>GPSUNINORTE</title>
+</head>
+<body>
+    <!-- Encabezado -->
+    <div class="header-container">
+        <h1>Ubicación en tiempo real</h1>
+        <div class="controls">
+            <select id="vehicleSelector" onchange="updateFollowMode()">
+                <option value="both">Seguir Ambos</option>
+                <option value="1">Seguir Vehículo 1</option>
+                <option value="2">Seguir Vehículo 2</option>
+            </select>
+            <form action="pag2.html" method="post" style="display: inline;">
+                <button type="submit" class="btn-consulta">Consulta de históricos</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <!-- Contenedor de datos del vehículo amarillo -->
+        <div class="vehicle-container">
+            <img src="https://cdn-icons-png.flaticon.com/512/1048/1048313.png" alt="vehicle1" onclick="toggleVehicle(1)">
+            <div class="data-container">
+                <div class="coord-data">Latitud: <span id="latitud"></span></div>
+                <div class="coord-data">Longitud: <span id="longitud"></span></div>
+                <div class="coord-data">Timestamp: <span id="timestamp"></span></div>
+            </div>
+            <div class="gauge-container">Velocidad</div>
+            <div class="gauge-container">RPM</div>
+        </div>
+
+        <!-- Contenedor de datos del vehículo azul -->
+        <div class="vehicle-container">
+            <img src="https://cdn-icons-png.flaticon.com/512/1048/1048361.png" alt="vehicle2" onclick="toggleVehicle(2)">
+            <div class="data-container">
+                <div class="coord-data">Latitud: <span id="latitud2"></span></div>
+                <div class="coord-data">Longitud: <span id="longitud2"></span></div>
+                <div class="coord-data">Timestamp: <span id="timestamp2"></span></div>
+            </div>
+            <div class="gauge-container">Velocidad</div>
+            <div class="gauge-container">RPM</div>
+        </div>
+
+        <!-- Mapa -->
+        <div id="map-container">
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRealTime" async defer></script>
+    <script src="script_REAL_TIME.js"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/8750339612.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="styles2.css">
+    <title>Consulta Histórica</title>
+</head>
+<body>
+    <div class="header-container">
+        <h1>Consulta de Históricos</h1>
+    </div>
+    
+    <div class="main-container">
+        <div class="options-container">
+            <form class="consulta-form">
+                <label for="inicio">Fecha y hora de inicio:</label>
+                <input type="datetime-local" id="inicio" name="inicio" onchange="actualizarFechaFin()">
+                
+                <label for="fin">Fecha y hora de fin:</label>
+                <input type="datetime-local" id="fin" name="fin">
+                <!-- Selector para el tipo de consulta -->
+        <div class="selector-container">
+            <label for="form-selector">Seleccionar tipo de consulta:</label>
+            <select id="form-selector">
+                <option value="" selected disabled>Seleccione una opción</option>
+                <option value="Ambos">Consulta Ambos Vehículos</option>
+                <option value="Vehículo 1">Consulta Vehículo 1</option>
+                <option value="Vehículo 2">Consulta Vehículo 2</option>
+            </select>
+        </div>
+        
+        <!-- Botón para activar la búsqueda -->
+        <div class="search-button-container"> 
+            <button id="search-button" class="btn-form" onclick="handleSearch()">Buscar</button>
+        </div>
+            </form>
+        </div>
+
+        <form action="/tiempo_real" method="post" class="btn-volver-container">
+            <button type="submit" class="btn-volver">Ir a tiempo real</button>
+        </form>
+
+        <div id="map-container">
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <!-- Script para manejar las fechas -->
+    <script>
+        function actualizarFechaFin() {
+            const fechaInicio = document.getElementById("inicio").value;
+            const fechaFin = document.getElementById("fin");
+            
+            if (fechaInicio) {
+                fechaFin.min = fechaInicio; // Establece la fecha mínima de "fin" según la de "inicio"
+            }
+        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMap" async defer></script>
+    <script>
+        // Función para inicializar el mapa
+        function initMap() {
+            var mapOptions = {
+                center: { lat: 10.9818, lng: -74.8018 },
+                zoom: 12
+            };
+            new google.maps.Map(document.getElementById("map"), mapOptions);
+        }
+    </script>
+</body>
+</html>
