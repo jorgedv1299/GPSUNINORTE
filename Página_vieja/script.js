@@ -147,7 +147,6 @@ function updateView() {
 }
 
 //--------------------------------------Busqueda por Ruta------------------------------------------------------------------------------------
-
 function initMapRoute() {
     mapRoute = new google.maps.Map(document.getElementById('map-route'), {
         zoom: 15,

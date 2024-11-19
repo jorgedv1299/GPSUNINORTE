@@ -1,0 +1,143 @@
+
+        body {
+            background-color: #787474; 
+            color: #0c12c9; /* Rosa oscuro */
+            font-family: 'Arial Black', sans-serif;
+            padding: 20px;
+            margin: 0; /* Eliminar el margen predeterminado del cuerpo */
+        }
+        h1 {
+            display: none; /* Oculta el título "Coordenadas" */
+        }
+        .header-container {
+            background-color: #787474; /* Fondo blanco */
+       
+        
+            padding: 10px 20px; /* Menor espacio de relleno arriba y abajo, mayor espacio de relleno a los lados */
+            margin-right: 4%;
+            width: calc(77% - 20px); /* Ancho del cuadro de bienvenida */
+            float: left; /* Alineación a la izquierda */
+            font-size: 17.5px;
+            text-align: center;
+        }
+        .title {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 0.5px;
+            width: 100%;
+            margin-right: 1%;
+        }
+        .coord-icon1 {
+            float: left;
+            margin-top: 3px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 20px; /* Dejar espacio debajo del encabezado */
+            width: 100%;
+        }
+        .container2 {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: 0px; /* Dejar espacio debajo del encabezado */
+            width: 100%;
+        }
+        .coord-data {
+            font-family: 'Arial Rounded MT Bold', sans-serif; /* Fuente más atractiva */
+            font-size: 14px; /* Tamaño de la letra */
+            border-radius: 10px;
+            border: 2px solid #3b022f; /* Rosa oscuro */
+            padding: 8px;
+            margin-bottom: 8px;
+            width: 22%; /* Ancho de los cuadros */
+            margin-left: 1%; /* Espacio entre los cuadros */
+            box-sizing: border-box; /* Incluye el borde en el cálculo del ancho */
+            background-color: #fcf2f6;
+        }
+        .coord-data2 {
+            font-family: 'Arial Rounded MT Bold', sans-serif; /* Fuente más atractiva */
+            font-size: 14px; /* Tamaño de la letra */
+            border-radius: 10px;
+            border: 2px solid #3b022f; /* Rosa oscuro */
+            padding: 8px;
+            margin-bottom: 8px;
+            width: 22%; /* Ancho de los cuadros */
+            margin-left: 1%; /* Espacio entre los cuadros */
+            box-sizing: border-box; /* Incluye el borde en el cálculo del ancho */
+            background-color: #fcf2f6; 
+        }
+        #map-container {
+            width: 75%;
+            height: 68vh;
+            margin-top: 10px;
+            float: left;
+        }
+        #map {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            border: 2px solid #3b022f; /* Rosa oscuro */
+        }
+        #data-container {
+            width: 23%;
+            height: 68vh;
+            margin-top: 10px;
+            background-color: #fcf2f6; 
+            border-radius: 10px;
+            border: 2px solid #3b022f;
+            float: right;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        #rpm {
+            width: 100%;
+            max-width: 300px; 
+            height: 200px;
+            margin-bottom: 90px;
+            margin-top: 20px;
+        }
+        #data-container h2 {
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            font-size: 23px;
+        }
+        .gauge-value {
+            text-align: center;
+            font-size: 17px;
+            margin-top: 10px;
+        }
+         #rpm svg path:nth-child(3) {
+            fill: #8c8b8b; 
+        }
+        #rpm svg path:nth-child(4) {
+            fill: #de5959; 
+        }
+        .btn-consulta {
+            background-color: #3b022f; /* Color de fondo rosa oscuro */
+            color: white; /* Color del texto blanco */
+            padding: 15px 30px; /* Espacio de relleno aumentado */
+            border: none; /* Sin borde */
+            border-radius: 10px; /* Bordes redondeados */
+            cursor: pointer; /* Cursor de puntero al pasar sobre él */
+            text-decoration: none; /* Eliminar subrayado del enlace */
+            display: flex; /* Para que el botón se comporte como un elemento en línea */
+            flex: 1;
+            margin-top: 20px; /* Espacio superior */
+            font-size: 13.5px; /* Tamaño del texto aumentado */
+            float: right;
+        }
+        .coord-icon1:hover {
+            cursor: pointer;
+            transform: scale(1.1);
+            transition: transform 0.3s ease;
+        }

@@ -73,11 +73,23 @@
         <div class="input-group">
             <label for="start-date">Fecha y hora inicial:</label>
             <input type="datetime-local" id="start-date">
+
+
+
+
         </div>
         <div class="input-group">
             <label for="end-date">Fecha y hora final:</label>
             <input type="datetime-local" id="end-date">
         </div>
+
+
+        <select id="vehicle2-select" onchange="updateMapRoute()">
+            <option value="both" selected>Ambos Carros</option>
+            <option value="vehicle1">Carro 1</option>
+            <option value="vehicle2">Carro 2</option>
+        </select>
+
         <button id="show-route">Mostrar recorrido</button>
         <div id="map-route"></div>
     </div>

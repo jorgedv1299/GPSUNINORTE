@@ -30,12 +30,12 @@ $password = "alex1234567890";           // Cambia a la contraseña de tu base de
 $dbname = "alex";
 
 =======
+>>>>>>> 1d420002a4063787de261193bcf7317d0b87daa2
 
-$servername = "database-1.cxg86oymix3m.us-east-1.rds.amazonaws.com";
+$servername = "disenoelec.c98ge4aae1fw.us-east-1.rds.amazonaws.com";
 $username = "bastod";       
-$password = "basto0529";
+$password = "bastod0529";
 $dbname = "disenoelec";
->>>>>>> 4153ab5c187ce471bad69dba281015bd89d15eb5
 
 $port = 3306;
 
