@@ -4,96 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/8750339612.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="styles2.css">
     <title>Consulta Histórica</title>
-
 </head>
 <body>
     <div class="title">
-        <div class="header-container">
-            <header>
-                <h1>Consulta Histórica</h1><p>Aja Pahdre</p>
-            </header>
+       
+        <!-- Parámetros globales -->
+        <div class="global-params">
+            <form id="global-params-form">
+                <label for="inicio">Fecha y hora de inicio:</label>
+                <input type="text" id="inicio" name="inicio">
+                
+                <label for="fin">Fecha y hora de fin:</label>
+                <input type="text" id="fin" name="fin">
+            </form>
         </div>
         
-        <button type="button" class="btn-1" id="btnToggle1" onclick="mostrarCuestionario1();">
-         <i class="fa-solid fa-truck fa-xl" style="color: #000000;"></i>
-        </button>
-    
-        <button type="button" class="btn-2" id="btnToggle2" onclick="mostrarCuestionario2();">
-            <i class="fa-solid fa-car-side fa-xl" style="color: #000000;"></i>
-        </button>
+        <!-- Selector para el tipo de consulta -->
+        <div class="selector-container">
+            <label for="form-selector">Seleccionar tipo de consulta:</label>
+            <select id="form-selector" onchange="consultarHistorial()">
+                <option value="" selected disabled>Seleccione una opción</option>
+                <option value="camion">Consulta Camión</option>
+                <option value="coche">Consulta Coche</option>
+                <option value="mixto">Consulta Mixta</option>
+            </select>
+        </div>
         
-        <button type="button" class="btn-3" id="btnToggle3" onclick="mostrarCuestionario3();">
-            <i class="fa-solid fa-car fa-lg" style="color: #000000; margin-right: 5px;"></i>
-            <i class="fa-solid fa-truck-front fa-lg" style="color: #000000;"></i>
-        </button>
-        
-        <div style="align-items: center; justify-content: center; ">
+        <div style="align-items: center; justify-content: center;">
             <form action="/tiempo_real" method="post">
                 <button type="submit" class="btn-volver">Ir a tiempo real</button>
             </form>
         </div>        
     </div>
     
-   
-    <div id="formularios">
-        <div id="cuestionario1" style="display: none;">
-            <form class="consulta-form">
-                <!-- Campo de entrada para la fecha de inicio -->
-                <label for="inicio">Fecha y hora de inicio:</label>
-                <input type="text" id="inicio" name="inicio" data-input>                       
-                <!-- Campo de entrada para la fecha de fin -->
-                <label for="fin">Fecha y hora de fin:</label>
-                <input type="text" id="fin" name="fin" data-input>
-                        
-                <!-- Agrega el identificador "consultar-historicos-btn" al botón -->
-                <button type="button" id="consultar-historicos-btn" class="btn-form">Consultar historial</button>  
-            </form>
-            <input type="range" id="time-slider" min="0" max="0" value="0" style="width: 100%;">
-        </div>
-
-        <div id="cuestionario2" style="display: none;">
-            <form class="consulta-form2">
-                <!-- Campo de entrada para la fecha de inicio -->
-                <label for="inicio">Fecha y hora de inicio:</label>
-                <input type="text" id="inicio2" name="inicio" data-input>
-        
-                <!-- Campo de entrada para la fecha de fin -->
-                <label for="fin">Fecha y hora de fin:</label>
-                <input type="text" id="fin2" name="fin" data-input>
-                    
-                <!-- Agrega el identificador "consultar-historicos-btn" al botón -->
-                <button type="button" id="consultar-historicos-btn2" class="btn-form2">Consultar historial</button>
-            </form>
-            <input type="range" id="time-slider2" min="0" max="0" value="0" style="width: 100%;">
-        </div>
-
-        <div id="cuestionario3" style="display: none;">
-            <form class="consulta-form3">
-                <!-- Campo de entrada para la fecha de inicio -->
-                <label for="inicio">Fecha y hora de inicio:</label>
-                <input type="text" id="inicio3" name="inicio" data-input>
-        
-                <!-- Campo de entrada para la fecha de fin -->
-                <label for="fin">Fecha y hora de fin:</label>
-                <input type="text" id="fin3" name="fin" data-input>
-                    
-                <!-- Agrega el identificador "consultar-historicos-btn" al botón -->
-                <button type="button" id="consultar-historicos-btn3" class="btn-form3">Consultar historial</button>
-            </form>
-            <input type="range" id="time-slider3" min="0" max="0" value="0" style="width: 100%;">
-        </div>
-    </div>
-    
     <!-- Contenedor del mapa -->
     <div id="map-container">
         <div id="map" style="height: 100%;"></div>
-
         <div id="recenter-button" class="leaflet-bar leaflet-control">
             <i class="fas fa-crosshairs"></i>
         </div>
     </div>
 
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRealTime" async defer></script>
+    <!-- Script para inicializar Flatpickr -->
+   <script src="script_GET_ROUTE.js"></script>
 </body>
 </html>

@@ -16,7 +16,7 @@ if ($conn->connect_error) {
 
 
 // Obtener la última ubicación
-$sql = "SELECT latitude, longitude, timestamp FROM mediciones ORDER BY id DESC LIMIT 1";
+$sql = "SELECT latitude, longitude, timestamp FROM mediciones2 ORDER BY id DESC LIMIT 1";
 $result = $conn->query($sql);
 
 $data = [];
