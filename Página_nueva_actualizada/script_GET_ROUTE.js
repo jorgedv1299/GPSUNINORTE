@@ -2,6 +2,9 @@ let mapRoute;
 let routePolyline = null;
 let segmentPolylines = [];
 
+// Variables para autocompletado y resultados
+let autocomplete;
+
 function initMapRoute() {
     // Inicializar el mapa dentro de map-container
     mapRoute = new google.maps.Map(document.getElementById('map-container'), {
@@ -71,6 +74,52 @@ function initMapRoute() {
             alert('Por favor, seleccione una fecha de inicio y final.');
         }
     });
+
+    // Inicializar autocompletado de Google Maps API
+    const input = document.getElementById('search-address');
+    autocomplete = new google.maps.places.Autocomplete(input, { fields: ['geometry'] });
+
+    // Escuchar evento del botón de búsqueda por proximidad
+    document.getElementById('search-proximity-button').addEventListener('click', () => {
+        const addressInput = autocomplete.getPlace();
+        if (!addressInput || !addressInput.geometry) {
+            alert('Por favor selecciona una dirección válida del autocompletado.');
+            return;
+        }
+
+        const latitude = addressInput.geometry.location.lat();
+        const longitude = addressInput.geometry.location.lng();
+        const radius = document.getElementById('search-radius').value;
+
+        if (!radius || radius <= 0) {
+            alert('Por favor ingresa un radio válido.');
+            return;
+        }
+
+        const start = document.getElementById('inicio').value;
+        const end = document.getElementById('fin').value;
+
+        if (!start || !end) {
+            alert('Por favor selecciona un rango de tiempo válido.');
+            return;
+        }
+
+        // Llamar al backend para consultar proximidad
+        fetch(`check_proximity.php?lat=${latitude}&lng=${longitude}&radius=${radius}&start=${start}&end=${end}`)
+            .then(response => response.json())
+            .then(data => {
+                // Mostrar resultados en el contenedor
+                const resultsContainer = document.getElementById('results-container');
+                resultsContainer.innerHTML = '<h3>Resultados:</h3>';
+                data.forEach(item => {
+                    resultsContainer.innerHTML += `
+                        <div>
+                            <p>Latitud: ${item.latitud}, Longitud: ${item.longitud}, Fecha: ${item.timestamp}</p>
+                        </div>`;
+                });
+            })
+            .catch(error => console.error('Error al consultar proximidad:', error));
+    });
 }
 
 // Llamar a la función initMapRoute cuando el script de Google Maps esté cargado
@@ -107,45 +156,3 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
-
-function consultarHistorial() {
-    const inicio = document.getElementById('inicio').value;
-    const fin = document.getElementById('fin').value;
-
-    if (!inicio || !fin) {
-        alert('Por favor, complete la fecha y hora de inicio y fin antes de continuar.');
-        return;
-    }
-
-    const tipoConsulta = document.getElementById('form-selector').value;
-
-    switch (tipoConsulta) {
-        case 'camion':
-            alert(`Consulta para Camión con parámetros: Inicio: ${inicio}, Fin: ${fin}`);
-            break;
-        case 'coche':
-            alert(`Consulta para Coche con parámetros: Inicio: ${inicio}, Fin: ${fin}`);
-            break;
-        case 'mixto':
-            alert(`Consulta para Mixta con parámetros: Inicio: ${inicio}, Fin: ${fin}`);
-            break;
-        default:
-            alert('Seleccione un tipo de consulta válido.');
-            break;
-    }
-}
-
- // Función para inicializar el mapa
- function initMapRealTime() {
-    const map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: 4.711, lng: -74.0721 }, // Coordenadas de ejemplo (Bogotá)
-        zoom: 12,
-    });
-
-    // Agregar marcador de ejemplo
-    new google.maps.Marker({
-        position: { lat: 4.711, lng: -74.0721 },
-        map: map,
-        title: "Ubicación Inicial",
-    });
-}

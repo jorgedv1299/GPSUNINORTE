@@ -20,23 +20,37 @@
                 
                 <label for="fin">Fecha y hora de fin:</label>
                 <input type="datetime-local" id="fin" name="fin">
-                <!-- Selector para el tipo de consulta -->
-        <div class="selector-container">
-            <label for="form-selector">Seleccionar tipo de consulta:</label>
-            <select id="form-selector">
-                <option value="" selected disabled>Seleccione una opción</option>
-                <option value="Ambos">Consulta Ambos Vehículos</option>
-                <option value="Vehículo 1">Consulta Vehículo 1</option>
-                <option value="Vehículo 2">Consulta Vehículo 2</option>
-            </select>
-        </div>
-        
-        <!-- Botón para activar la búsqueda -->
-        <div class="search-button-container"> 
-            <button id="search-button" class="btn-form" onclick="handleSearch()">Buscar</button>
-        </div>
+                
+                <div class="selector-container">
+                    <label for="form-selector">Seleccionar tipo de consulta:</label>
+                    <select id="form-selector">
+                        <option value="" selected disabled>Seleccione una opción</option>
+                        <option value="Ambos">Consulta Ambos Vehículos</option>
+                        <option value="Vehículo 1">Consulta Vehículo 1</option>
+                        <option value="Vehículo 2">Consulta Vehículo 2</option>
+                    </select>
+                </div>
+                
+                <div class="search-button-container"> 
+                    <button id="search-button" class="btn-form" type="button" onclick="handleSearch()">Buscar</button>
+                </div>
             </form>
         </div>
+
+        <!-- Nueva funcionalidad de búsqueda por proximidad -->
+        <div class="proximity-search-container">
+            <form id="search-proximity-form">
+                <label for="search-address">Buscar por dirección:</label>
+                <input type="text" id="search-address" name="address" placeholder="Escribe la dirección">
+                
+                <label for="search-radius">Radio (metros):</label>
+                <input type="number" id="search-radius" name="radius" placeholder="Ejemplo: 500" min="0">
+                
+                <button type="button" id="search-proximity-button">Buscar Proximidad</button>
+            </form>
+        </div>
+
+        <div id="results-container"></div>
 
         <form action="/GPSUNINORTE/Página_nueva_actualizada/index.html" method="post" class="btn-volver-container">
             <button type="submit" class="btn-volver">Ir a tiempo real</button>
@@ -47,7 +61,6 @@
         </div>
     </div>
 
-    <!-- Script para manejar las fechas -->
     <script>
         function actualizarFechaFin() {
             const fechaInicio = document.getElementById("inicio").value;
@@ -57,18 +70,86 @@
                 fechaFin.min = fechaInicio; // Establece la fecha mínima de "fin" según la de "inicio"
             }
         }
+
+        function handleSearch() {
+            const inicio = document.getElementById('inicio').value;
+            const fin = document.getElementById('fin').value;
+            const tipoConsulta = document.getElementById('form-selector').value;
+
+            if (!inicio || !fin) {
+                alert('Por favor, complete la fecha y hora de inicio y fin antes de continuar.');
+                return;
+            }
+
+            if (!tipoConsulta) {
+                alert('Seleccione un tipo de consulta válido.');
+                return;
+            }
+
+            alert(`Consulta para ${tipoConsulta} con parámetros: Inicio: ${inicio}, Fin: ${fin}`);
+        }
     </script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMap" async defer></script>
     <script>
-        // Función para inicializar el mapa
+        // Inicializar el autocompletado y búsqueda por proximidad
+        let autocomplete;
+
+        function initAutocomplete() {
+            const input = document.getElementById("search-address");
+            autocomplete = new google.maps.places.Autocomplete(input, {
+                fields: ["geometry"]
+            });
+        }
+
+        document.getElementById("search-proximity-button").addEventListener("click", function () {
+            const addressInput = autocomplete.getPlace();
+            if (!addressInput || !addressInput.geometry) {
+                alert("Por favor selecciona una dirección válida del autocompletado.");
+                return;
+            }
+
+            const latitude = addressInput.geometry.location.lat();
+            const longitude = addressInput.geometry.location.lng();
+            const radius = document.getElementById("search-radius").value;
+
+            if (!radius || radius <= 0) {
+                alert("Por favor ingresa un radio válido.");
+                return;
+            }
+
+            const start = document.getElementById("inicio").value;
+            const end = document.getElementById("fin").value;
+
+            if (!start || !end) {
+                alert("Por favor selecciona un rango de tiempo válido.");
+                return;
+            }
+
+            fetch(`check_proximity.php?lat=${latitude}&lng=${longitude}&radius=${radius}&start=${start}&end=${end}`)
+                .then(response => response.json())
+                .then(data => {
+                    const resultsContainer = document.getElementById("results-container");
+                    resultsContainer.innerHTML = "<h3>Resultados:</h3>";
+                    data.forEach(item => {
+                        resultsContainer.innerHTML += `
+                            <div>
+                                <p>Latitud: ${item.latitud}, Longitud: ${item.longitud}, Fecha: ${item.timestamp}</p>
+                            </div>`;
+                    });
+                })
+                .catch(error => console.error("Error al consultar proximidad:", error));
+        });
+
+        // Inicializar Google Maps
         function initMap() {
-            var mapOptions = {
+            const mapOptions = {
                 center: { lat: 10.9818, lng: -74.8018 },
                 zoom: 12
             };
             new google.maps.Map(document.getElementById("map"), mapOptions);
         }
     </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRealTime" async defer></script>
 </body>
 </html>
