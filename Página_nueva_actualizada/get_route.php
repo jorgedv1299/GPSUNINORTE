@@ -1,9 +1,9 @@
 <?php
 header('Content-Type: application/json');
 
-$servername = "alex.cpywocwqwde0.us-east-2.rds.amazonaws.com"; // Reemplaza con el endpoint de tu RDS si es necesario
-$username = "alex";       // Cambia al usuario de tu base de datos
-$password = "alex1234567890";           // Cambia a la contraseña de tu base de datos
+$servername = "alex.cpywocwqwde0.us-east-2.rds.amazonaws.com";
+$username = "alex";
+$password = "alex1234567890";
 $dbname = "alex";
 $port_db = 3306;
 
@@ -14,17 +14,18 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
+
 // Obtener fechas desde la solicitud
 $start = $_GET['start'];
 $end = $_GET['end'];
 
-// Consultar todas las ubicaciones entre las fechas seleccionadas
-$sql = "SELECT latitude, longitude, timestamp FROM mediciones WHERE timestamp BETWEEN '$start' AND '$end' ORDER BY timestamp ASC";
-$result = $conn->query($sql);
+// Consultar todas las ubicaciones entre las fechas seleccionadas de la primera tabla
+$sql1 = "SELECT latitude, longitude, timestamp FROM mediciones WHERE timestamp BETWEEN '$start' AND '$end' ORDER BY timestamp ASC";
+$result1 = $conn->query($sql1);
 
 $data = [];
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
+if ($result1->num_rows > 0) {
+    while ($row = $result1->fetch_assoc()) {
         $data[] = [
             'latitud' => $row['latitude'],
             'longitud' => $row['longitude'],
@@ -33,13 +34,12 @@ if ($result->num_rows > 0) {
     }
 }
 
-// Consultar todas las ubicaciones entre las fechas seleccionadas
-$sql = "SELECT latitude, longitude, timestamp FROM mediciones2 WHERE timestamp BETWEEN '$start' AND '$end' ORDER BY timestamp ASC";
-$result = $conn->query($sql);
+// Consultar todas las ubicaciones entre las fechas seleccionadas de la segunda tabla
+$sql2 = "SELECT latitude, longitude, timestamp FROM mediciones2 WHERE timestamp BETWEEN '$start' AND '$end' ORDER BY timestamp ASC";
+$result2 = $conn->query($sql2);
 
-$data = [];
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
+if ($result2->num_rows > 0) {
+    while ($row = $result2->fetch_assoc()) {
         $data[] = [
             'latitud' => $row['latitude'],
             'longitud' => $row['longitude'],
