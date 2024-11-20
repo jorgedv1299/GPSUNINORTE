@@ -93,22 +93,6 @@ async function handleSearch() {
     }
 }
 
-<<<<<<< HEAD
-// Función para inicializar el mapa
-function initMapRealTime() {
-    const map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: 4.711, lng: -74.0721 }, // Coordenadas de ejemplo (Bogotá)
-        zoom: 12,
-    });
-
-    // Agregar marcador de ejemplo
-    new google.maps.Marker({
-        position: { lat: 4.711, lng: -74.0721 },
-        map: map,
-        title: "Ubicación Inicial",
-    });
-} 
-=======
 async function handleLocationSearch() {
     const place = autocomplete.getPlace();
     const radio = document.getElementById('radio').value;
@@ -263,4 +247,4 @@ function clearMessage() {
     const messageContainer = document.getElementById("message-container");
     messageContainer.innerText = "";
 }
->>>>>>> jorgecambios
+
