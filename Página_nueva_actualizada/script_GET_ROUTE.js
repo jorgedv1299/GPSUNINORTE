@@ -1,6 +1,6 @@
 let mapRoute; // Mapa de Google Maps
 let markers = []; // Arreglo para almacenar marcadores
-let routePolyline = null; // Polilínea global para la ruta
+let routePolylines = []; // Arreglo para almacenar las polilíneas (en lugar de una sola)
 
 function initMapRoute() {
     // Inicializa el mapa dentro del contenedor
@@ -84,7 +84,7 @@ async function handleSearch() {
                 });
 
                 // Dibuja la polilínea de la ruta
-                routePolyline = new google.maps.Polyline({
+                const newPolyline = new google.maps.Polyline({
                     path: routeCoordinates,
                     geodesic: true,
                     strokeColor: endpoint === "get_route.php" ? "#FF0000" : "#0000FF", // Color diferente para cada vehículo
@@ -92,7 +92,9 @@ async function handleSearch() {
                     strokeWeight: 2,
                 });
 
-                routePolyline.setMap(mapRoute);
+                // Guardar la nueva polilínea
+                routePolylines.push(newPolyline);
+                newPolyline.setMap(mapRoute);
 
                 // Extender los límites del mapa para que incluya todos los puntos de la ruta
                 routeCoordinates.forEach(function(coord) {
@@ -114,13 +116,11 @@ async function handleSearch() {
 
 // Función para limpiar el mapa
 function clearMap() {
-    // Elimina la polilínea existente
-    if (routePolyline) {
-        routePolyline.setMap(null);
-        routePolyline = null;
-    }
+    // Elimina todas las polilíneas existentes
+    routePolylines.forEach((polyline) => polyline.setMap(null));
+    routePolylines = []; // Vacía el arreglo de polilíneas
 
     // Limpia los marcadores (si hubiera, aunque en tu caso no los estás usando actualmente)
     markers.forEach((marker) => marker.setMap(null));
-    markers = [];
+    markers = []; // Vacía el arreglo de marcadores
 }

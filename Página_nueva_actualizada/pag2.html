@@ -33,12 +33,12 @@
         
         <!-- Botón para activar la búsqueda -->
         <div class="search-button-container"> 
-            <button id="search-button" class="btn-form" onclick="handleSearch()">Buscar</button>
+            <button id="buscar" class="btn-form" type="button" onclick="handleSearch()">Buscar</button>
         </div>
             </form>
         </div>
 
-        <form action="/tiempo_real" method="post" class="btn-volver-container">
+        <form action="/Página_nueva_actualizada/index.html" method="post" class="btn-volver-container">
             <button type="submit" class="btn-volver">Ir a tiempo real</button>
         </form>
 
@@ -47,28 +47,9 @@
         </div>
     </div>
 
-    <!-- Script para manejar las fechas -->
-    <script>
-        function actualizarFechaFin() {
-            const fechaInicio = document.getElementById("inicio").value;
-            const fechaFin = document.getElementById("fin");
-            
-            if (fechaInicio) {
-                fechaFin.min = fechaInicio; // Establece la fecha mínima de "fin" según la de "inicio"
-            }
-        }
-    </script>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMap" async defer></script>
-    <script>
-        // Función para inicializar el mapa
-        function initMap() {
-            var mapOptions = {
-                center: { lat: 10.9818, lng: -74.8018 },
-                zoom: 12
-            };
-            new google.maps.Map(document.getElementById("map"), mapOptions);
-        }
-    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRoute" async defer></script>
+    <script src="script_GET_ROUTE.js"></script>
 </body>
 </html>
