@@ -23,11 +23,6 @@ $servername = "alex.cpywocwqwde0.us-east-2.rds.amazonaws.com"; // Reemplaza con 
 $username = "alex";       // Cambia al usuario de tu base de datos
 $password = "alex1234567890";           // Cambia a la contraseña de tu base de datos
 $dbname = "alex";
-$port_db = 3306;
-$servername = "alex.cpywocwqwde0.us-east-2.rds.amazonaws.com";
-$username = "alex";       
-$password = "alex1234567890";
-$dbname = "alex";
 
 try {
     // Conectar a la base de datos

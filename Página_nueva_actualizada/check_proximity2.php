@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: application/json');
 
+// Obtener los parámetros enviados desde la solicitud
 $input = json_decode(file_get_contents("php://input"), true);
 $lat = $input['lat'] ?? null;
 $lng = $input['lng'] ?? null;
@@ -13,6 +14,7 @@ if (!$lat || !$lng || !$radius || !$start || !$end) {
     exit;
 }
 
+// Conexión a la base de datos
 $servername = "alex.cpywocwqwde0.us-east-2.rds.amazonaws.com";
 $username = "alex";
 $password = "alex1234567890";
@@ -24,9 +26,10 @@ if ($conn->connect_error) {
     exit;
 }
 
+// Consulta para obtener los puntos dentro del radio y el intervalo de tiempo
 $sql = "
     SELECT latitude, longitude, velocidad, rpm, timestamp 
-    FROM mediciones
+    FROM mediciones2
     WHERE 
     (6371000 * acos(cos(radians($lat)) * cos(radians(latitude)) * 
     cos(radians(longitude) - radians($lng)) + 

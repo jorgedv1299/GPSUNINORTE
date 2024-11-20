@@ -21,27 +21,45 @@
                 <label for="fin">Fecha y hora de fin:</label>
                 <input type="datetime-local" id="fin" name="fin">
 
-                <!-- Selector para activar búsqueda por proximidad -->
                 <div class="selector-container">
-                    <label for="filter-by-location">Filtrar por ubicación:</label>
-                    <input type="checkbox" id="filter-by-location">
+                    <label for="form-selector">Seleccionar tipo de consulta:</label>
+                    <select id="form-selector">
+                        <option value="" selected disabled>Seleccione una opción</option>
+                        <option value="Ambos">Consulta Ambos Vehículos</option>
+                        <option value="Vehículo 1">Consulta Vehículo 1</option>
+                        <option value="Vehículo 2">Consulta Vehículo 2</option>
+                    </select>
                 </div>
-
-                <!-- Subcontenedor para opciones de proximidad -->
-                <div id="location-options" style="display: none;">
-                    <label for="search-address">Dirección:</label>
-                    <input type="text" id="search-address" placeholder="Escribe la dirección">
-
-                    <label for="search-radius">Radio (metros):</label>
-                    <input type="number" id="search-radius" min="0" placeholder="Ejemplo: 500">
-                </div>
-
-                <!-- Botón para activar la búsqueda -->
+        
                 <div class="search-button-container"> 
-                    <button type="button" id="search-button" class="btn-form">Buscar</button>
+                    <button id="buscar" class="btn-form" type="button" onclick="handleSearch()">Buscar</button>
                 </div>
             </form>
+
+            <!-- Botón para activar/desactivar la búsqueda por ubicación -->
+            <div class="toggle-button-container">
+                <button id="toggle-ubicacion" class="btn-form" type="button" onclick="toggleUbicacionContainer()">Activar Búsqueda por Ubicación</button>
+            </div>
+
+            <!-- Subcontenedor de búsqueda por ubicación (inicialmente oculto) -->
+            <div id="ubicacion-container" style="display: none;">
+                <label for="ubicacion">Ubicación:</label>
+                <input id="ubicacion" type="text" placeholder="Seleccionar ubicación">
+                
+                <label for="radio">Radio (en metros):</label>
+                <input id="radio" type="number" placeholder="Radio en metros">
+
+                <div class="search-button-container">
+                    <button id="buscar-ubicacion" class="btn-form" type="button" onclick="handleLocationSearch()">Buscar por ubicación</button>
+                </div>
+            </div>
         </div>
+
+        <form action="/GPSUNINORTE/Página_nueva_actualizada/index.html" method="post" class="btn-volver-container">
+            <button type="submit" class="btn-volver">Ir a tiempo real</button>
+        </form>
+        <div id="message-container" style="text-align: center; color: red; margin-top: 10px;"></div>
+
 
         <div id="map-container">
             <div id="map"></div>
@@ -49,106 +67,7 @@
         <div id="results-container"></div>
     </div>
 
-    <!-- Script para manejar las fechas y mapas -->
-    <script>
-        let map; 
-        let routePolyline;
-
-        function initMap() {
-            map = new google.maps.Map(document.getElementById("map"), {
-                center: { lat: 10.9818, lng: -74.8018 },
-                zoom: 12
-            });
-        }
-
-        function actualizarFechaFin() {
-            const fechaInicio = document.getElementById("inicio").value;
-            if (fechaInicio) {
-                document.getElementById("fin").min = fechaInicio;
-            }
-        }
-
-        // Mostrar u ocultar opciones de ubicación
-        document.getElementById("filter-by-location").addEventListener("change", function () {
-            const locationOptions = document.getElementById("location-options");
-            locationOptions.style.display = this.checked ? "block" : "none";
-        });
-
-        // Buscar rutas
-        document.getElementById("search-button").addEventListener("click", function () {
-            const start = document.getElementById("inicio").value;
-            const end = document.getElementById("fin").value;
-
-            if (!start || !end) {
-                alert("Por favor selecciona un rango de tiempo válido.");
-                return;
-            }
-
-            const filterByLocation = document.getElementById("filter-by-location").checked;
-
-            let url = `get_route.php?start=${start}&end=${end}`;
-            if (filterByLocation) {
-                const addressInput = document.getElementById("search-address").value;
-                const radius = document.getElementById("search-radius").value;
-
-                if (!addressInput || !radius || radius <= 0) {
-                    alert("Por favor ingresa una dirección válida y un radio positivo.");
-                    return;
-                }
-
-                url += `&address=${addressInput}&radius=${radius}`;
-            }
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        alert(data.error);
-                        return;
-                    }
-
-                    if (routePolyline) {
-                        routePolyline.setMap(null);
-                    }
-
-                    const routePath = data.map(item => ({
-                        lat: parseFloat(item.latitud),
-                        lng: parseFloat(item.longitud)
-                    }));
-
-                    routePolyline = new google.maps.Polyline({
-                        path: routePath,
-                        geodesic: true,
-                        strokeColor: filterByLocation ? "#0000FF" : "#FF0000",
-                        strokeOpacity: 1.0,
-                        strokeWeight: 2
-                    });
-
-                    routePolyline.setMap(map);
-
-                    const bounds = new google.maps.LatLngBounds();
-                    routePath.forEach(point => bounds.extend(point));
-                    map.fitBounds(bounds);
-
-                    const resultsContainer = document.getElementById("results-container");
-                    resultsContainer.innerHTML = "<h3>Resultados:</h3>";
-                    data.forEach(item => {
-                        resultsContainer.innerHTML += `
-                            <p>Latitud: ${item.latitud}, Longitud: ${item.longitud}, Fecha: ${item.timestamp}</p>`;
-                    });
-                })
-                .catch(error => console.error("Error al obtener los datos:", error));
-        });
-
-        function loadGoogleMapsAPI() {
-            const script = document.createElement("script");
-            script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&callback=initMap`;
-            script.async = true;
-            script.defer = true;
-            document.head.appendChild(script);
-        }
-
-        loadGoogleMapsAPI();
-    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRoute" async defer></script>
+    <script src="script_GET_ROUTE.js"></script>
 </body>
 </html>
