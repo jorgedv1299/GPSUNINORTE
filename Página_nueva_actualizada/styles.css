@@ -2,7 +2,7 @@
 body {
     background-color: #2c2c2c;
     color: #f0f0f0;
-    font-family: 'Arial', sans-serif; /* Cambié la fuente a Arial */
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     display: flex;
@@ -63,7 +63,7 @@ body {
     width: 280px;
     text-align: center;
     margin-right: 25px;
-    font-size: 16px; /* Aumenté el tamaño de la letra */
+    font-size: 16px;
 }
 
 .vehicle-container img {
@@ -78,20 +78,44 @@ body {
 
 .coord-data {
     margin: 7px 0;
-    font-size: 18px; /* Letra más grande y legible */
+    font-size: 18px;
 }
 
+/* Círculos de velocidad y RPM */
 .gauge-container {
-    width: 90px;
-    height: 90px;
+    width: 100px;
+    height: 100px;
+    border: 3px solid #888;
     border-radius: 50%;
-    background-color: #555;
+    background-color: #333;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     color: #fff;
     margin: 15px auto;
-    font-size: 16px;
+    font-size: 14px;
+    position: relative;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    transition: border-color 0.3s ease;
+}
+
+.gauge-container:hover {
+    border-color: #00ff00; /* Cambio de color al pasar el ratón */
+}
+
+.gauge-text {
+    font-size: 12px;
+    color: #ddd;
+    margin-bottom: 5px;
+}
+
+.velocidad:hover {
+    border-color: #00ffff;
+}
+
+.rpm:hover {
+    border-color: #ff4500;
 }
 
 /* Mapa */
