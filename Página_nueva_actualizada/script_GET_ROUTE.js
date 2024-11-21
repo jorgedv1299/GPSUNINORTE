@@ -332,3 +332,33 @@ function clearMessage() {
     const messageContainer = document.getElementById("message-container");
     messageContainer.innerText = "";
 }
+
+// Obtenemos los elementos de las fechas
+const fechaInicio = document.getElementById("inicio");
+const fechaFin = document.getElementById("fin");
+
+// Evento para actualizar la fecha mínima del campo de fin
+fechaInicio.addEventListener("change", () => {
+    // Tomar el valor seleccionado en fechaInicio
+    const fechaSeleccionada = fechaInicio.value;
+
+    // Establecerla como fecha mínima en fechaFin
+    fechaFin.min = fechaSeleccionada;
+
+    // Opcional: Si la fecha y hora de fin actual es menor a la nueva fecha mínima, reiniciarla
+    if (fechaFin.value && new Date(fechaFin.value) < new Date(fechaSeleccionada)) {
+        fechaFin.value = "";
+    }
+});
+
+// Validación adicional al intentar seleccionar la fecha de fin
+fechaFin.addEventListener("input", () => {
+    const inicioSeleccionado = new Date(fechaInicio.value);
+    const finSeleccionado = new Date(fechaFin.value);
+
+    // Si la fecha y hora de fin es menor que la de inicio, se reinicia
+    if (finSeleccionado < inicioSeleccionado) {
+        alert("La fecha y hora de fin no puede ser menor que la de inicio.");
+        fechaFin.value = "";
+    }
+});

@@ -193,28 +193,3 @@ function initMapRealTime() {
     setInterval(updateVehicle1Data, 1000);  // Vehículo 1
     setInterval(updateVehicle2Data, 1000);  // Vehículo 2
 }
-
-
-
-// Función para alternar la visibilidad de los vehículos y su recorrido
-function toggleVehicle(vehicleNumber) {
-    if (vehicleNumber === 1) {
-        isVehicle1Visible = !isVehicle1Visible; // Alternar visibilidad del vehículo 1
-        if (isVehicle1Visible) {
-            vehicle1Marker.setMap(map);  // Mostrar el marcador
-            vehicle1Polyline.setMap(map);  // Mostrar la polilínea
-        } else {
-            vehicle1Marker.setMap(null);  // Ocultar el marcador
-            vehicle1Polyline.setMap(null);  // Ocultar la polilínea
-        }
-    } else if (vehicleNumber === 2) {
-        isVehicle2Visible = !isVehicle2Visible; // Alternar visibilidad del vehículo 2
-        if (isVehicle2Visible) {
-            vehicle2Marker.setMap(map);  // Mostrar el marcador
-            vehicle2Polyline.setMap(map);  // Mostrar la polilínea
-        } else {
-            vehicle2Marker.setMap(null);  // Ocultar el marcador
-            vehicle2Polyline.setMap(null);  // Ocultar la polilínea
-        }
-    }
-}
