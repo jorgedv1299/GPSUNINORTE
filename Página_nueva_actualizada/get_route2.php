@@ -2,10 +2,11 @@
 header('Content-Type: application/json');
 
 
-$servername = "database-1.cxg86oymix3m.us-east-1.rds.amazonaws.com";
-$username = "bastod";       
-$password = "bastod0529";
-$dbname = "disenoelec";
+$$servername = "dbjmll.c16ww6ag23kz.us-east-2.rds.amazonaws.com";
+$username = "administrador";       
+$password = "condorito1";
+$dbname = "dbjmll";
+
 
 // Crear conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
