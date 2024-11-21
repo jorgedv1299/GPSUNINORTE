@@ -10,65 +10,70 @@
 <body>
     <div class="header-container">
         <h1>Consulta de Históricos</h1>
+
+        <form action="/Página_nueva_actualizada/index.html" method="post" class="btn-volver-container">
+            <button type="submit" class="btn-volver">Ir a tiempo real</button>
+        </form>
     </div>
     
     <div class="main-container">
         <div class="options-container">
             <form class="consulta-form">
                 <label for="inicio">Fecha y hora de inicio:</label>
-                <input type="datetime-local" id="inicio" name="inicio" onchange="actualizarFechaFin()">
+                <input type="datetime-local" id="inicio" name="inicio">
                 
                 <label for="fin">Fecha y hora de fin:</label>
                 <input type="datetime-local" id="fin" name="fin">
-                <!-- Selector para el tipo de consulta -->
-        <div class="selector-container">
-            <label for="form-selector">Seleccionar tipo de consulta:</label>
-            <select id="form-selector">
-                <option value="" selected disabled>Seleccione una opción</option>
-                <option value="Ambos">Consulta Ambos Vehículos</option>
-                <option value="Vehículo 1">Consulta Vehículo 1</option>
-                <option value="Vehículo 2">Consulta Vehículo 2</option>
-            </select>
-        </div>
+
+                <div class="selector-container">
+                    <label for="form-selector">Seleccionar tipo de consulta:</label>
+                    <select id="form-selector">
+                        <option value="" selected disabled>Seleccione una opción</option>
+                        <option value="Ambos">Consulta Ambos Vehículos</option>
+                        <option value="Vehículo 1">Consulta Vehículo 1</option>
+                        <option value="Vehículo 2">Consulta Vehículo 2</option>
+                    </select>
+                </div>
         
-        <!-- Botón para activar la búsqueda -->
-        <div class="search-button-container"> 
-            <button id="search-button" class="btn-form" onclick="handleSearch()">Buscar</button>
-        </div>
+                <div class="search-button-container"> 
+                    <button id="buscar" class="btn-form" type="button" onclick="handleSearch()">Buscar</button>
+                </div>
             </form>
+
+            <!-- Botón para activar/desactivar la búsqueda por ubicación -->
+            <div class="toggle-button-container">
+                <button id="toggle-ubicacion" class="btn-form" type="button" onclick="toggleUbicacionContainer()">Activar Búsqueda por Ubicación</button>
+            </div>
+
+            <!-- Subcontenedor de búsqueda por ubicación (inicialmente oculto) -->
+            <div id="ubicacion-container" style="display: none;">
+                <label for="ubicacion">Ubicación:</label>
+                <input id="ubicacion" type="text" placeholder="Seleccionar ubicación">
+                
+                <label for="radio">Radio (en metros):</label>
+                <input id="radio" type="number" placeholder="Radio en metros">
+
+                <div class="search-button-container">
+                    <button id="buscar-ubicacion" class="btn-form" type="button" onclick="handleLocationSearch()">Buscar por ubicación</button>
+                </div>
+            </div>
         </div>
 
-        <form action="/tiempo_real" method="post" class="btn-volver-container">
+
+        <form action="/GPSUNINORTE/Página_nueva_actualizada/index.html" method="post" class="btn-volver-container">
             <button type="submit" class="btn-volver">Ir a tiempo real</button>
         </form>
+        <div id="message-container" style="text-align: center; color: red; margin-top: 10px;"></div>
+
+
 
         <div id="map-container">
             <div id="map"></div>
         </div>
+        <div id="results-container"></div>
     </div>
 
-    <!-- Script para manejar las fechas -->
-    <script>
-        function actualizarFechaFin() {
-            const fechaInicio = document.getElementById("inicio").value;
-            const fechaFin = document.getElementById("fin");
-            
-            if (fechaInicio) {
-                fechaFin.min = fechaInicio; // Establece la fecha mínima de "fin" según la de "inicio"
-            }
-        }
-    </script>
-
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMap" async defer></script>
-    <script>
-        // Función para inicializar el mapa
-        function initMap() {
-            var mapOptions = {
-                center: { lat: 10.9818, lng: -74.8018 },
-                zoom: 12
-            };
-            new google.maps.Map(document.getElementById("map"), mapOptions);
-        }
-    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRoute" async defer></script>
+    <script src="script_GET_ROUTE.js"></script>
 </body>
 </html>

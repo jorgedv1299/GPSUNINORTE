@@ -26,26 +26,40 @@
     <div class="wrapper">
         <!-- Contenedor de datos del vehículo amarillo -->
         <div class="vehicle-container">
+            <h2>Carro 1</h2>
             <img src="https://cdn-icons-png.flaticon.com/512/1048/1048313.png" alt="vehicle1" onclick="toggleVehicle(1)">
             <div class="data-container">
                 <div class="coord-data">Latitud: <span id="latitud"></span></div>
                 <div class="coord-data">Longitud: <span id="longitud"></span></div>
                 <div class="coord-data">Timestamp: <span id="timestamp"></span></div>
             </div>
-            <div class="gauge-container">Velocidad</div>
-            <div class="gauge-container">RPM</div>
+            <div class="gauge-container velocidad" id="vel1">
+                <span class="gauge-text">Velocidad</span>
+                <span id="speed">0 km/h</span>
+            </div>
+            <div class="gauge-container rpm" id="rpm1">
+                <span class="gauge-text">RPM</span>
+                <span id="rpm">0</span>
+            </div>
         </div>
 
         <!-- Contenedor de datos del vehículo azul -->
         <div class="vehicle-container">
+            <h2>Carro 2</h2>
             <img src="https://cdn-icons-png.flaticon.com/512/1048/1048361.png" alt="vehicle2" onclick="toggleVehicle(2)">
             <div class="data-container">
                 <div class="coord-data">Latitud: <span id="latitud2"></span></div>
                 <div class="coord-data">Longitud: <span id="longitud2"></span></div>
                 <div class="coord-data">Timestamp: <span id="timestamp2"></span></div>
             </div>
-            <div class="gauge-container">Velocidad</div>
-            <div class="gauge-container">RPM</div>
+            <div class="gauge-container velocidad" id="vel2">
+                <span class="gauge-text">Velocidad</span>
+                <span id="speed2">0 km/h</span>
+            </div>
+            <div class="gauge-container rpm" id="rpm2">
+                <span class="gauge-text">RPM</span>
+                <span id="rpm2">0</span>
+            </div>
         </div>
 
         <!-- Mapa -->
@@ -56,5 +70,7 @@
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRealTime" async defer></script>
     <script src="script_REAL_TIME.js"></script>
+    <script src="fetch_data.js"></script>
+    <script src="script_VELOCIDAD&RPM.js"></script>
 </body>
 </html>

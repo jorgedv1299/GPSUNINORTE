@@ -1,0 +1,23 @@
+name: Sync to EC2
+
+on:
+  push:
+    branches:
+      - master  # Cambia esto si tu branch principal tiene otro nombre
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Sync to EC2
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@18.117.243.59 "cd /var/www/html/GPSUNINORTE && git pull origin master"
