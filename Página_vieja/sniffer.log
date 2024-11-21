@@ -1,21 +1,334 @@
 nohup: ignoring input
 Escuchando en 0.0.0.0:6100...
 Tabla 'ubicaciones' verificada o creada exitosamente.
-Datos recibidos: 11.021620531704162,-74.87084527050568,1727974023627
+Datos recibidos: 10.992969689729932,-74.80007524396055,1727309651202
 Datos divididos: Array
 (
-    [0] => 11.021620531704162
-    [1] => -74.87084527050568
-    [2] => 1727974023627
+    [0] => 10.992969689729932
+    [1] => -74.80007524396055
+    [2] => 1727309651202
 )
 
 Datos guardados en la base de datos
-Datos recibidos: 11.02090599961343,-74.86986285659061,1727974033628
+Datos recibidos: 10.992407220875597,-74.79901115198076,1727309661203
 Datos divididos: Array
 (
-    [0] => 11.02090599961343
-    [1] => -74.86986285659061
-    [2] => 1727974033628
+    [0] => 10.992407220875597
+    [1] => -74.79901115198076
+    [2] => 1727309661203
 )
 
 Datos guardados en la base de datos
+Datos recibidos: 10.991845662199083,-74.79794878189706,1727309671201
+Datos divididos: Array
+(
+    [0] => 10.991845662199083
+    [1] => -74.79794878189706
+    [2] => 1727309671201
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.991283288437517,-74.79688486981605,1727309681202
+Datos divididos: Array
+(
+    [0] => 10.991283288437517
+    [1] => -74.79688486981605
+    [2] => 1727309681202
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.990721215976622,-74.79582152774282,1727309691201
+Datos divididos: Array
+(
+    [0] => 10.990721215976622
+    [1] => -74.79582152774282
+    [2] => 1727309691201
+)
+
+Datos guardados en la base de datos
+PHP Warning:  socket_recvfrom(): Unable to recvfrom [4]: Interrupted system call in /var/www/html/GPSUNINORTE/sniffer.php on line 66
+Datos recibidos: 
+Datos divididos: Array
+(
+    [0] => 
+)
+
+Formato de datos incorrecto
+Datos recibidos: 10.990155231176763,-74.79475078421352,1727309701202
+Datos divididos: Array
+(
+    [0] => 10.990155231176763
+    [1] => -74.79475078421352
+    [2] => 1727309701202
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.98953709388911,-74.79358137736526,1727309712202
+Datos divididos: Array
+(
+    [0] => 10.98953709388911
+    [1] => -74.79358137736526
+    [2] => 1727309712202
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.988972733359514,-74.79251370666914,1727309722202
+Datos divididos: Array
+(
+    [0] => 10.988972733359514
+    [1] => -74.79251370666914
+    [2] => 1727309722202
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.98840887686787,-74.79144698952403,1727309732203
+Datos divididos: Array
+(
+    [0] => 10.98840887686787
+    [1] => -74.79144698952403
+    [2] => 1727309732203
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.987844748112455,-74.79037975730384,1727309742202
+Datos divididos: Array
+(
+    [0] => 10.987844748112455
+    [1] => -74.79037975730384
+    [2] => 1727309742202
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.987283774192889,-74.78931849347727,1727309752202
+Datos divididos: Array
+(
+    [0] => 10.987283774192889
+    [1] => -74.78931849347727
+    [2] => 1727309752202
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.986720139063824,-74.78825219511116,1727309762202
+Datos divididos: Array
+(
+    [0] => 10.986720139063824
+    [1] => -74.78825219511116
+    [2] => 1727309762202
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.986159284877864,-74.78719115779947,1727309772204
+Datos divididos: Array
+(
+    [0] => 10.986159284877864
+    [1] => -74.78719115779947
+    [2] => 1727309772204
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.98559314957231,-74.78612012953992,1727309782202
+Datos divididos: Array
+(
+    [0] => 10.98559314957231
+    [1] => -74.78612012953992
+    [2] => 1727309782202
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.98488573225281,-74.7853826673262,1727309792203
+Datos divididos: Array
+(
+    [0] => 10.98488573225281
+    [1] => -74.7853826673262
+    [2] => 1727309792203
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.983730560109962,-74.78565751299521,1727309802202
+Datos divididos: Array
+(
+    [0] => 10.983730560109962
+    [1] => -74.78565751299521
+    [2] => 1727309802202
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.982568804872583,-74.7859339249546,1727309812203
+Datos divididos: Array
+(
+    [0] => 10.982568804872583
+    [1] => -74.7859339249546
+    [2] => 1727309812203
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.981410976281552,-74.78620940266212,1727309822202
+Datos divididos: Array
+(
+    [0] => 10.981410976281552
+    [1] => -74.78620940266212
+    [2] => 1727309822202
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.98025120629302,-74.7864853422789,1727309832205
+Datos divididos: Array
+(
+    [0] => 10.98025120629302
+    [1] => -74.7864853422789
+    [2] => 1727309832205
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.979089861414561,-74.78676165660316,1727309842202
+Datos divididos: Array
+(
+    [0] => 10.979089861414561
+    [1] => -74.78676165660316
+    [2] => 1727309842202
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.977927670483256,-74.78703817222554,1727309852203
+Datos divididos: Array
+(
+    [0] => 10.977927670483256
+    [1] => -74.78703817222554
+    [2] => 1727309852203
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.97676438993675,-74.78731494709587,1727309862202
+Datos divididos: Array
+(
+    [0] => 10.97676438993675
+    [1] => -74.78731494709587
+    [2] => 1727309862202
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.975595983776204,-74.78759294148385,1727309872203
+Datos divididos: Array
+(
+    [0] => 10.975595983776204
+    [1] => -74.78759294148385
+    [2] => 1727309872203
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.974436017732163,-74.78786892774735,1727309882203
+Datos divididos: Array
+(
+    [0] => 10.974436017732163
+    [1] => -74.78786892774735
+    [2] => 1727309882203
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.973278376900872,-74.78814436078191,1727309892203
+Datos divididos: Array
+(
+    [0] => 10.973278376900872
+    [1] => -74.78814436078191
+    [2] => 1727309892203
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.972111453123091,-74.78842200247227,1727309902203
+Datos divididos: Array
+(
+    [0] => 10.972111453123091
+    [1] => -74.78842200247227
+    [2] => 1727309902203
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.970948197165745,-74.7886987714922,1727309912202
+Datos divididos: Array
+(
+    [0] => 10.970948197165745
+    [1] => -74.7886987714922
+    [2] => 1727309912202
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.969787631675173,-74.7889749003797,1727309922202
+Datos divididos: Array
+(
+    [0] => 10.969787631675173
+    [1] => -74.7889749003797
+    [2] => 1727309922202
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.96862902256222,-74.7892505637938,1727309932202
+Datos divididos: Array
+(
+    [0] => 10.96862902256222
+    [1] => -74.7892505637938
+    [2] => 1727309932202
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.967470041391412,-74.7895263157302,1727309942204
+Datos divididos: Array
+(
+    [0] => 10.967470041391412
+    [1] => -74.7895263157302
+    [2] => 1727309942204
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.966309831844576,-74.78980235992938,1727309952203
+Datos divididos: Array
+(
+    [0] => 10.966309831844576
+    [1] => -74.78980235992938
+    [2] => 1727309952203
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.965151576526875,-74.79007793916634,1727309962202
+Datos divididos: Array
+(
+    [0] => 10.965151576526875
+    [1] => -74.79007793916634
+    [2] => 1727309962202
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.963989277392045,-74.79035448053315,1727309972205
+Datos divididos: Array
+(
+    [0] => 10.963989277392045
+    [1] => -74.79035448053315
+    [2] => 1727309972205
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.962828435215505,-74.79063067525149,1727309982202
+Datos divididos: Array
+(
+    [0] => 10.962828435215505
+    [1] => -74.79063067525149
+    [2] => 1727309982202
+)
+
+Datos guardados en la base de datos
+Datos recibidos: 10.961663794156944,-74.79090777382324,1727309992203
+Datos divididos: Array
+(
+    [0] => 10.961663794156944
+    [1] => -74.79090777382324
+    [2] => 1727309992203
+)
+
+Datos guardados en la base de datos
+<<<<<<< HEAD
+=======
+PHP Warning:  socket_bind(): Unable to bind address [98]: Address already in use in /var/www/html/GPSUNINORTE/sniffer.php on line 17
+No se pudo asociar el socket: Address already in use
+>>>>>>> Alexander
+=======
+>>>>>>> master
+>>>>>>> ea6c37af2124be884417120807cbd202440be8f3

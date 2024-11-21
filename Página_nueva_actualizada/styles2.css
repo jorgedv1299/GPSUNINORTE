@@ -119,6 +119,13 @@ input[type="datetime-local"], select {
     height: 100%;
 }
 
+
+#scroll-container {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
 /* Ajustes para que el slider ocupe todo el ancho del contenedor */
 .options-container .slider {
     display: flex;
@@ -160,4 +167,5 @@ input[type="datetime-local"], select {
     background: #4CAF50;
     border-radius: 50%;
     cursor: pointer;
+
 }
