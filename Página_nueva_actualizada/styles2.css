@@ -73,8 +73,8 @@ input[type="datetime-local"], select {
 
 /* Botón "Consultar historial" */
 .btn-form {
-    background-color: #444; /* Color gris oscuro acorde con la página */
-    color: #fff;
+    background-color: #ffffff; /* Color gris oscuro acorde con la página */
+    color: #030303;
     border: 1px solid #555; /* Borde gris más claro */
     padding: 12px 20px;
     font-size: 15px;
@@ -84,7 +84,7 @@ input[type="datetime-local"], select {
 }
 
 .btn-form:hover {
-    background-color: #555; /* Cambio de color a un gris más claro al pasar el cursor */
+    background-color: #999999; /* Cambio de color a un gris más claro al pasar el cursor */
 }
 
 /* Botón de volver */
