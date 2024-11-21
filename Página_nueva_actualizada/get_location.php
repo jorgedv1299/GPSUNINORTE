@@ -1,10 +1,10 @@
 <?php
 header('Content-Type: application/json'); // Para que el cliente sepa que está recibiendo JSON
 
-$servername = "database-1.cxg86oymix3m.us-east-1.rds.amazonaws.com";
-$username = "bastod";       
-$password = "bastod0529";
-$dbname = "disenoelec";
+$servername = "database-1.cdcwiy8egoqg.us-east-1.rds.amazonaws.com";
+$username = "root";
+$password = "15963247";
+$dbname = "gps";
 
 // Crear conexión
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -16,7 +16,7 @@ if ($conn->connect_error) {
 
 
 // Obtener la última ubicación
-$sql = "SELECT latitude, longitude, timestamp FROM mediciones ORDER BY id DESC LIMIT 1";
+$sql = "SELECT latitude, longitude, velocidad, rpm,  timestamp FROM mediciones ORDER BY id DESC LIMIT 1";
 $result = $conn->query($sql);
 
 $data = [];
@@ -30,6 +30,8 @@ if ($result->num_rows > 0) {
     $data = [
         'latitud' => $row['latitude'],
         'longitud' => $row['longitude'],
+        'speed' => (float)$row['velocidad'], 
+        'rpm' => (int)$row['rpm'],
         'timestamp' => $formattedDate // Utilizar directamente el timestamp formateado
     ];
 }
