@@ -32,8 +32,8 @@
                 <div class="coord-data">Longitud: <span id="longitud"></span></div>
                 <div class="coord-data">Timestamp: <span id="timestamp"></span></div>
             </div>
-            <div class="gauge-container">Velocidad</div>
-            <div class="gauge-container">RPM</div>
+            <div class="gauge-container">Velocidad: <span id="speed"></span> km/h</div>
+            <div class="gauge-container">RPM: <span id="rpm"></span></div>
         </div>
 
         <!-- Contenedor de datos del vehículo azul -->
@@ -44,8 +44,8 @@
                 <div class="coord-data">Longitud: <span id="longitud2"></span></div>
                 <div class="coord-data">Timestamp: <span id="timestamp2"></span></div>
             </div>
-            <div class="gauge-container">Velocidad</div>
-            <div class="gauge-container">RPM</div>
+            <div class="gauge-container">Velocidad: <span id="speed2"></span> km/h</div>
+            <div class="gauge-container">RPM: <span id="rpm2"></span></div>
         </div>
 
         <!-- Mapa -->
@@ -56,5 +56,7 @@
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjXW8vBhlpVflxXu1wZaBKYJ3xxeDbOOA&libraries=places&callback=initMapRealTime" async defer></script>
     <script src="script_REAL_TIME.js"></script>
+    <script src="fetch_data.js"></script>
+    <script src="script_VELOCIDAD&RPM.js"></script>
 </body>
 </html>
