@@ -4,6 +4,7 @@ let routePolylines = [];
 let autocomplete;
 let ubicacionContainerVisible = false; // Estado inicial del subcontenedor
 let searchCircles = []; // Arreglo para manejar múltiples círculos
+let centralMarker; // Marcador del lugar central seleccionado
 
 function initMapRoute() {
     mapRoute = new google.maps.Map(document.getElementById('map-container'), {
@@ -16,6 +17,8 @@ function initMapRoute() {
 
     document.getElementById("buscar").addEventListener("click", handleSearch);
     document.getElementById("buscar-ubicacion").addEventListener("click", handleLocationSearch);
+    document.getElementById("inicio").addEventListener("change", actualizarFechaFin); // Actualiza fecha final
+    document.getElementById("fin").addEventListener("change", actualizarFechaInicio); // Actualiza fecha inicio
 }
 
 function toggleUbicacionContainer() {
@@ -31,6 +34,22 @@ function toggleUbicacionContainer() {
     }
 
     ubicacionContainerVisible = !ubicacionContainerVisible; // Cambiar el estado
+}
+
+function actualizarFechaFin() {
+    const fechaInicio = document.getElementById("inicio").value;
+    const fechaFin = document.getElementById("fin");
+    if (fechaInicio) {
+        fechaFin.min = fechaInicio; // Establece la fecha mínima para el campo de fecha final
+    }
+}
+
+function actualizarFechaInicio() {
+    const fechaFin = document.getElementById("fin").value;
+    const fechaInicio = document.getElementById("inicio");
+    if (fechaFin) {
+        fechaInicio.max = fechaFin; // Establece la fecha máxima para el campo de fecha inicio
+    }
 }
 
 async function handleSearch() {
@@ -66,7 +85,7 @@ async function handleSearch() {
         }
 
         if (allData.every(({ data }) => data.length === 0)) {
-            displayMessage("No se encontró información para ninguno de los vehículos.");
+            displayMessage("No hay información disponible en ese rango de tiempo.");
             return;
         } else {
             clearMessage(); // Limpiar cualquier mensaje previo si hay datos
@@ -75,9 +94,24 @@ async function handleSearch() {
         let bounds = new google.maps.LatLngBounds();
         allData.forEach(({ endpoint, data }) => {
             const routeCoordinates = data.map(point => ({ lat: parseFloat(point.lat), lng: parseFloat(point.lng) }));
+
+            // Configurar las flechas en la polilínea
+            const arrowSymbol = {
+                path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                scale: 3,
+                strokeColor: endpoint === "get_route.php" ? "#FF5733" : "#33CFFF", // Naranja para Vehículo 1, Azul para Vehículo 2
+            };
+
             const newPolyline = new google.maps.Polyline({
                 ...getPolylineOptions(endpoint),
                 path: routeCoordinates,
+                icons: [
+                    {
+                        icon: arrowSymbol,
+                        offset: "100%", // Flecha al final
+                        repeat: "50px", // Repetir cada 50px
+                    },
+                ],
             });
 
             routePolylines.push(newPolyline);
@@ -120,9 +154,35 @@ async function handleLocationSearch() {
     try {
         clearMap();
 
-        let bounds = new google.maps.LatLngBounds();
-        let circleColors = ["#FF0000", "#0000FF"]; // Rojo para Vehículo 1, Azul para Vehículo 2
+        // Centrar el mapa en la ubicación seleccionada
+        mapRoute.setCenter({ lat, lng });
+        mapRoute.setZoom(15);
 
+        // Crear un marcador para la ubicación seleccionada
+        if (centralMarker) centralMarker.setMap(null); // Eliminar marcador previo si existe
+        centralMarker = new google.maps.Marker({
+            position: { lat, lng },
+            map: mapRoute,
+            icon: {
+                url: "http://maps.google.com/mapfiles/ms/icons/yellow-dot.png", // Marcador amarillo para el lugar seleccionado
+            },
+            title: "Ubicación Seleccionada",
+        });
+
+        // Determinar el color del círculo según el tipo de consulta
+        let circleColor = "#FFD700"; // Amarillo por defecto
+        if (tipoConsulta === "Vehículo 1") {
+            circleColor = "#FF0000"; // Rojo para Vehículo 1
+        } else if (tipoConsulta === "Vehículo 2") {
+            circleColor = "#0000FF"; // Azul para Vehículo 2
+        } else if (tipoConsulta === "Ambos") {
+            circleColor = "#800080"; // Púrpura para la combinación de ambos
+        }
+
+        // Dibujar un círculo del radio
+        drawSearchCircle(lat, lng, radio, circleColor, 0.3); // Círculo semitransparente
+
+        let bounds = new google.maps.LatLngBounds();
         let noDataCount = 0; // Contador para verificar si no hay datos para ambos vehículos
         let hasDataForVehicle = [false, false]; // Indica si hay datos para cada vehículo
 
@@ -137,17 +197,21 @@ async function handleLocationSearch() {
             const data = await response.json();
 
             if (data.length === 0) {
+                if (tipoConsulta === "Vehículo 1") {
+                    displayMessage("No se encontró información para el vehículo 1 en el radio seleccionado.");
+                } else if (tipoConsulta === "Vehículo 2") {
+                    displayMessage("No se encontró información para el vehículo 2 en el radio seleccionado.");
+                } else if (tipoConsulta === "Ambos" && noDataCount === 1) {
+                    displayMessage("No se encontró información para los vehículos en el radio seleccionado.");
+                }
                 noDataCount++; // Incrementa si no hay datos
             } else {
                 hasDataForVehicle[i] = true; // Marca que hay datos para este vehículo
                 clearMessage(); // Limpia cualquier mensaje previo si hay datos
 
-                // Dibujar el círculo de búsqueda para este vehículo
-                drawSearchCircle(lat, lng, radio, circleColors[i]);
-
                 const polylineOptions = getPolylineOptions(endpoint);
 
-                // Dibujar los puntos en el mapa con una polilínea
+                // Dibujar los puntos en el mapa con una polilínea y flechas
                 const routeCoordinates = data.map(point => {
                     const latLng = { lat: parseFloat(point.latitude), lng: parseFloat(point.longitude) };
                     bounds.extend(latLng);
@@ -163,7 +227,7 @@ async function handleLocationSearch() {
                     });
 
                     const infoWindow = new google.maps.InfoWindow({
-                        content: `<div>
+                        content: `<div style="color: ${i === 0 ? "red" : "blue"};">
                                     <p><strong>Velocidad:</strong> ${point.velocidad} km/h</p>
                                     <p><strong>RPM:</strong> ${point.rpm}</p>
                                     <p><strong>Fecha:</strong> ${point.timestamp}</p>
@@ -178,9 +242,22 @@ async function handleLocationSearch() {
                     return latLng;
                 });
 
+                const arrowSymbol = {
+                    path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW,
+                    scale: 3,
+                    strokeColor: i === 0 ? "#FF5733" : "#33CFFF", // Naranja o azul según el vehículo
+                };
+
                 const newPolyline = new google.maps.Polyline({
                     ...polylineOptions,
                     path: routeCoordinates,
+                    icons: [
+                        {
+                            icon: arrowSymbol,
+                            offset: "100%", // Flecha al final
+                            repeat: "50px", // Repetir cada 50px
+                        },
+                    ],
                 });
 
                 routePolylines.push(newPolyline);
@@ -188,19 +265,8 @@ async function handleLocationSearch() {
             }
         }
 
-        // Mostrar mensajes apropiados dependiendo de los datos encontrados
-        if (tipoConsulta === "Ambos") {
-            if (!hasDataForVehicle[0] && !hasDataForVehicle[1]) {
-                displayMessage("No se encontró información para ninguno de los vehículos en el radio seleccionado.");
-            } else if (!hasDataForVehicle[0]) {
-                displayMessage("No se encontró información para el Vehículo 1 en el radio seleccionado.");
-            } else if (!hasDataForVehicle[1]) {
-                displayMessage("No se encontró información para el Vehículo 2 en el radio seleccionado.");
-            } else {
-                mapRoute.fitBounds(bounds);
-            }
-        } else if (noDataCount === endpoints.length) {
-            displayMessage(`No se encontró información para ${tipoConsulta} en el radio seleccionado.`);
+        if (noDataCount === endpoints.length) {
+            displayMessage("No se encontró información para los vehículos en el radio seleccionado.");
         } else {
             mapRoute.fitBounds(bounds);
         }
@@ -211,13 +277,13 @@ async function handleLocationSearch() {
     }
 }
 
-function drawSearchCircle(lat, lng, radius, color) {
+function drawSearchCircle(lat, lng, radius, color, opacity) {
     const searchCircle = new google.maps.Circle({
         strokeColor: color,
         strokeOpacity: 0.8,
         strokeWeight: 2,
         fillColor: color,
-        fillOpacity: 0.2,
+        fillOpacity: opacity,
         map: mapRoute,
         center: { lat, lng },
         radius: parseFloat(radius),
@@ -253,6 +319,7 @@ function clearMap() {
     markers = [];
     searchCircles.forEach(circle => circle.setMap(null));
     searchCircles = [];
+    if (centralMarker) centralMarker.setMap(null); // Limpia el marcador central
     clearMessage(); // Limpiar mensajes
 }
 
