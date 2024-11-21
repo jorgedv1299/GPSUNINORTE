@@ -47,6 +47,7 @@ body {
     background-color: #444;
     padding: 10px;
     border-radius: 5px;
+    flex-wrap: wrap; /* Permite ajustar los elementos en varias filas */
 }
 
 .consulta-form {
@@ -54,6 +55,7 @@ body {
     justify-content: space-around;
     align-items: center;
     width: 100%;
+    flex-wrap: wrap; /* Ajusta el formulario en dispositivos pequeños */
 }
 
 label {
@@ -69,16 +71,14 @@ input[type="datetime-local"], select {
     border-radius: 5px;
     font-size: 15px;
     margin: 0 10px;
+    width: auto;
 }
 
 /* Botón "Consultar historial" */
 .btn-form {
-    background-color: #ffffff; /* Color gris oscuro acorde con la página */
-    color: #030303;
-    border: 1px solid #555; /* Borde gris más claro */
-    background-color: #ffffff; /* Color gris oscuro acorde con la página */
+    background-color: #ffffff;
     color: #000000;
-    border: 1px solid #000000; /* Borde gris más claro */
+    border: 1px solid #000000;
     padding: 12px 20px;
     font-size: 15px;
     cursor: pointer;
@@ -119,14 +119,7 @@ input[type="datetime-local"], select {
     height: 100%;
 }
 
-
-#scroll-container {
-    background-color: #f9f9f9;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-
-/* Ajustes para que el slider ocupe todo el ancho del contenedor */
+/* Ajustes para el slider */
 .options-container .slider {
     display: flex;
     flex-direction: column;
@@ -167,5 +160,81 @@ input[type="datetime-local"], select {
     background: #4CAF50;
     border-radius: 50%;
     cursor: pointer;
+}
 
+/* Media query para pantallas pequeñas */
+@media (max-width: 767px) {
+    body {
+        font-size: 14px;
+    }
+
+    .header-container h1 {
+        font-size: 22px;
+    }
+
+    .main-container {
+        width: 100%;
+        height: auto;
+    }
+
+    .options-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    label {
+        width: auto;
+        font-size: 14px;
+    }
+
+    input[type="datetime-local"], select {
+        width: 100%;
+        margin: 5px 0;
+        font-size: 14px;
+    }
+
+    .btn-form, .btn-volver {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    #map-container {
+        height: 300px;
+    }
+}
+
+/* Media query para pantallas medianas */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .options-container {
+        gap: 10px;
+    }
+
+    .btn-form, .btn-volver {
+        width: auto;
+    }
+
+    #map-container {
+        height: 400px;
+    }
+}
+
+/* Media query para pantallas grandes */
+@media (min-width: 1024px) {
+    .main-container {
+        width: 90%;
+    }
+
+    .options-container {
+        gap: 20px;
+    }
+
+    .btn-form, .btn-volver {
+        font-size: 16px;
+        padding: 12px 20px;
+    }
+
+    #map-container {
+        height: 500px;
+    }
 }
