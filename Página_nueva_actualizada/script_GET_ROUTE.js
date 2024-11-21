@@ -66,7 +66,7 @@ async function handleSearch() {
         }
 
         if (allData.every(({ data }) => data.length === 0)) {
-            displayMessage("No se encontró información para la consulta.");
+            displayMessage("No se encontró información para ninguno de los vehículos.");
             return;
         } else {
             clearMessage(); // Limpiar cualquier mensaje previo si hay datos
@@ -123,6 +123,9 @@ async function handleLocationSearch() {
         let bounds = new google.maps.LatLngBounds();
         let circleColors = ["#FF0000", "#0000FF"]; // Rojo para Vehículo 1, Azul para Vehículo 2
 
+        let noDataCount = 0; // Contador para verificar si no hay datos para ambos vehículos
+        let hasDataForVehicle = [false, false]; // Indica si hay datos para cada vehículo
+
         for (let i = 0; i < endpoints.length; i++) {
             const endpoint = endpoints[i];
             const response = await fetch(endpoint, {
@@ -134,58 +137,73 @@ async function handleLocationSearch() {
             const data = await response.json();
 
             if (data.length === 0) {
-                displayMessage(`No se encontró información para ${endpoint === "check_proximity.php" ? "Vehículo 1" : "Vehículo 2"} en el radio seleccionado.`);
-                continue;
+                noDataCount++; // Incrementa si no hay datos
             } else {
-                clearMessage(); // Limpiar cualquier mensaje previo si hay datos
+                hasDataForVehicle[i] = true; // Marca que hay datos para este vehículo
+                clearMessage(); // Limpia cualquier mensaje previo si hay datos
+
+                // Dibujar el círculo de búsqueda para este vehículo
+                drawSearchCircle(lat, lng, radio, circleColors[i]);
+
+                const polylineOptions = getPolylineOptions(endpoint);
+
+                // Dibujar los puntos en el mapa con una polilínea
+                const routeCoordinates = data.map(point => {
+                    const latLng = { lat: parseFloat(point.latitude), lng: parseFloat(point.longitude) };
+                    bounds.extend(latLng);
+
+                    // Crear un marcador con InfoWindow
+                    const marker = new google.maps.Marker({
+                        position: latLng,
+                        map: mapRoute,
+                        icon: {
+                            url: `http://maps.google.com/mapfiles/ms/icons/${i === 0 ? "red" : "blue"}-dot.png`,
+                        },
+                        title: `Velocidad: ${point.velocidad}, RPM: ${point.rpm}, Hora: ${point.timestamp}`,
+                    });
+
+                    const infoWindow = new google.maps.InfoWindow({
+                        content: `<div>
+                                    <p><strong>Velocidad:</strong> ${point.velocidad} km/h</p>
+                                    <p><strong>RPM:</strong> ${point.rpm}</p>
+                                    <p><strong>Fecha:</strong> ${point.timestamp}</p>
+                                  </div>`,
+                    });
+
+                    marker.addListener("click", () => {
+                        infoWindow.open(mapRoute, marker);
+                    });
+
+                    markers.push(marker);
+                    return latLng;
+                });
+
+                const newPolyline = new google.maps.Polyline({
+                    ...polylineOptions,
+                    path: routeCoordinates,
+                });
+
+                routePolylines.push(newPolyline);
+                newPolyline.setMap(mapRoute);
             }
-
-            // Dibujar el círculo de búsqueda para este vehículo
-            drawSearchCircle(lat, lng, radio, circleColors[i]);
-
-            const polylineOptions = getPolylineOptions(endpoint);
-
-            // Dibujar los puntos en el mapa con una polilínea
-            const routeCoordinates = data.map(point => {
-                const latLng = { lat: parseFloat(point.latitude), lng: parseFloat(point.longitude) };
-                bounds.extend(latLng);
-
-                // Crear un marcador con InfoWindow
-                const marker = new google.maps.Marker({
-                    position: latLng,
-                    map: mapRoute,
-                    icon: {
-                        url: `http://maps.google.com/mapfiles/ms/icons/${i === 0 ? "red" : "blue"}-dot.png`,
-                    },
-                    title: `Velocidad: ${point.velocidad}, RPM: ${point.rpm}, Hora: ${point.timestamp}`,
-                });
-
-                const infoWindow = new google.maps.InfoWindow({
-                    content: `<div>
-                                <p><strong>Velocidad:</strong> ${point.velocidad} km/h</p>
-                                <p><strong>RPM:</strong> ${point.rpm}</p>
-                                <p><strong>Fecha:</strong> ${point.timestamp}</p>
-                              </div>`,
-                });
-
-                marker.addListener("click", () => {
-                    infoWindow.open(mapRoute, marker);
-                });
-
-                markers.push(marker);
-                return latLng;
-            });
-
-            const newPolyline = new google.maps.Polyline({
-                ...polylineOptions,
-                path: routeCoordinates,
-            });
-
-            routePolylines.push(newPolyline);
-            newPolyline.setMap(mapRoute);
         }
 
-        mapRoute.fitBounds(bounds);
+        // Mostrar mensajes apropiados dependiendo de los datos encontrados
+        if (tipoConsulta === "Ambos") {
+            if (!hasDataForVehicle[0] && !hasDataForVehicle[1]) {
+                displayMessage("No se encontró información para ninguno de los vehículos en el radio seleccionado.");
+            } else if (!hasDataForVehicle[0]) {
+                displayMessage("No se encontró información para el Vehículo 1 en el radio seleccionado.");
+            } else if (!hasDataForVehicle[1]) {
+                displayMessage("No se encontró información para el Vehículo 2 en el radio seleccionado.");
+            } else {
+                mapRoute.fitBounds(bounds);
+            }
+        } else if (noDataCount === endpoints.length) {
+            displayMessage(`No se encontró información para ${tipoConsulta} en el radio seleccionado.`);
+        } else {
+            mapRoute.fitBounds(bounds);
+        }
 
     } catch (error) {
         console.error("Error:", error);
@@ -247,4 +265,3 @@ function clearMessage() {
     const messageContainer = document.getElementById("message-container");
     messageContainer.innerText = "";
 }
-
