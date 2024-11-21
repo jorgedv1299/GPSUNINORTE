@@ -15,10 +15,10 @@ if (!$lat || !$lng || !$radius || !$start || !$end) {
 }
 
 // Conexión a la base de datos
-$servername = "alex.cpywocwqwde0.us-east-2.rds.amazonaws.com";
-$username = "alex";
-$password = "alex1234567890";
-$dbname = "alex";
+$servername = "database-1.cxg86oymix3m.us-east-1.rds.amazonaws.com";
+$username = "bastod";       
+$password = "bastod0529";
+$dbname = "disenoelec";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
