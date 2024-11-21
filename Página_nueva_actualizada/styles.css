@@ -189,14 +189,3 @@ body {
     }
 }
 
-/* Estilos para pantallas grandes */
-@media screen and (min-width: 1024px) {
-    .wrapper {
-        max-width: 1200px;
-        padding: 0 30px;
-    }
-
-    .vehicle-container {
-        width: 300px;
-    }
-}
