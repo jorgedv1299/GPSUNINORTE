@@ -10,13 +10,17 @@
 <body>
     <div class="header-container">
         <h1>Consulta de Históricos</h1>
+
+        <form action="/Página_nueva_actualizada/index.html" method="post" class="btn-volver-container">
+            <button type="submit" class="btn-volver">Ir a tiempo real</button>
+        </form>
     </div>
     
     <div class="main-container">
         <div class="options-container">
             <form class="consulta-form">
                 <label for="inicio">Fecha y hora de inicio:</label>
-                <input type="datetime-local" id="inicio" name="inicio" onchange="actualizarFechaFin()">
+                <input type="datetime-local" id="inicio" name="inicio">
                 
                 <label for="fin">Fecha y hora de fin:</label>
                 <input type="datetime-local" id="fin" name="fin">
@@ -38,9 +42,7 @@
             </form>
         </div>
 
-        <form action="/Página_nueva_actualizada/index.html" method="post" class="btn-volver-container">
-            <button type="submit" class="btn-volver">Ir a tiempo real</button>
-        </form>
+       
 
         <div id="map-container">
             <div id="map"></div>
